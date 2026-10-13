@@ -311,7 +311,7 @@ footer{text-align:center;padding:1.4rem;border-top:1px solid var(--bdr);font-fam
     <div class="sec-head">
       <span class="sec-title">Mini-Jeux</span>
       <div class="sec-rule"></div>
-      <span class="sec-count">02 disponibles</span>
+      <span class="sec-count">03 disponibles</span>
     </div>
 
     <div class="game-grid" id="gameGrid"></div>
@@ -343,7 +343,7 @@ const RICOCHET_IMG='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCA
 const GAMES=[
   {id:'ricochet',url:'ricochet.html',name:'Ricochet',rtp:'98.0',players:'1\u202f247',bg:['#1a5fa8','#2d8fe8','#0d3d6e'],img:RICOCHET_IMG,draw:null},
   {id:'candy',url:'candy_monster.html',name:'Candy Monster',rtp:'98.0',players:'834',bg:['#8b1fc8','#c836c8','#4a0e80'],img:null,draw:drawCandyMonster},
-  {id:'s1',url:null,name:'???',rtp:null,players:null,bg:['#1a3040','#243b52','#0d1a28'],img:null,draw:drawSoon},
+  {id:'corsair',url:'corsairs_fortune.html',name:"Corsair's Fortune",rtp:'96.0',players:'512',bg:['#0b1a2b','#14304a','#050c14'],img:null,draw:drawCorsair},
   {id:'s2',url:null,name:'???',rtp:null,players:null,bg:['#1a2818','#2a3a22','#0d1a0a'],img:null,draw:drawSoon},
 ];
 
@@ -484,6 +484,41 @@ function drawCandyMonster(cv){
   c.fillStyle='#fff';c.fillText('CANDY',W*.07,H*.875);
   c.fillText('MONSTER',W*.07,H*.97);
   c.font=Math.round(W*.055)+'px Space Mono,monospace';
+  c.fillStyle='rgba(255,255,255,.45)';c.fillText('KACHING ORIGINALS',W*.07,H*.92);
+}
+
+function drawCorsair(cv){
+  if(!cv)return;
+  const c=cv.getContext('2d'),W=cv.width,H=cv.height;
+  const sky=c.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#0b1a2b');sky.addColorStop(.55,'#14304a');sky.addColorStop(1,'#050c14');
+  c.fillStyle=sky;c.fillRect(0,0,W,H);
+  c.fillStyle='rgba(255,255,255,.7)';[[.12,.08],[.3,.15],[.78,.06],[.9,.2],[.55,.1]].forEach(([x,y])=>{c.beginPath();c.arc(W*x,H*y,1.3,0,7);c.fill();});
+  const mg=c.createRadialGradient(W*.76,H*.15,2,W*.76,H*.15,W*.2);mg.addColorStop(0,'rgba(255,240,200,.95)');mg.addColorStop(.3,'rgba(255,230,170,.5)');mg.addColorStop(1,'rgba(255,220,150,0)');
+  c.fillStyle=mg;c.beginPath();c.arc(W*.76,H*.15,W*.2,0,7);c.fill();
+  // navire en silhouette
+  c.fillStyle='#07111c';c.beginPath();c.moveTo(W*.06,H*.47);c.lineTo(W*.44,H*.47);c.lineTo(W*.38,H*.52);c.lineTo(W*.1,H*.52);c.fill();
+  c.fillRect(W*.2,H*.27,3,H*.2);c.fillRect(W*.31,H*.31,3,H*.16);
+  c.beginPath();c.moveTo(W*.12,H*.29);c.quadraticCurveTo(W*.17,H*.36,W*.12,H*.44);c.lineTo(W*.2,H*.44);c.lineTo(W*.2,H*.29);c.fill();
+  c.beginPath();c.moveTo(W*.24,H*.32);c.quadraticCurveTo(W*.3,H*.38,W*.24,H*.45);c.lineTo(W*.31,H*.45);c.lineTo(W*.31,H*.32);c.fill();
+  // mer
+  const sea=c.createLinearGradient(0,H*.5,0,H);sea.addColorStop(0,'#123a5c');sea.addColorStop(1,'#061624');c.fillStyle=sea;c.fillRect(0,H*.5,W,H*.5);
+  c.strokeStyle='rgba(120,190,255,.15)';c.lineWidth=1;
+  for(let i=0;i<5;i++){c.beginPath();for(let x=0;x<=W;x+=4)c.lineTo(x,H*.54+i*H*.035+Math.sin(x/18+i)*2);c.stroke();}
+  // coffre
+  const cx=W*.5,cy=H*.62;
+  const gl=c.createRadialGradient(cx,cy-10,4,cx,cy-10,W*.42);gl.addColorStop(0,'rgba(255,215,100,.55)');gl.addColorStop(1,'rgba(255,200,80,0)');c.fillStyle=gl;c.fillRect(0,0,W,H);
+  c.fillStyle='#f6d36a';[[-26,-40],[-8,-48],[10,-46],[26,-38],[0,-36],[-16,-34],[16,-32]].forEach(([dx,dy])=>{c.beginPath();c.arc(cx+dx,cy+dy,9,0,7);c.fill();c.strokeStyle='#b8872a';c.lineWidth=1.5;c.stroke();});
+  c.fillStyle='#7a4420';c.fillRect(cx-58,cy-24,116,58);
+  c.fillStyle='#d6a73e';c.fillRect(cx-60,cy-27,120,7);c.fillRect(cx-44,cy-24,9,58);c.fillRect(cx+35,cy-24,9,58);
+  c.fillStyle='#f2c14e';c.fillRect(cx-11,cy-14,22,20);c.fillStyle='#3a2410';c.beginPath();c.arc(cx,cy-4,3.5,0,7);c.fill();
+  // pièces volantes
+  [[.16,.66,10],[.84,.6,12],[.78,.74,8],[.22,.76,7]].forEach(([x,y,r])=>{const g=c.createRadialGradient(W*x-3,H*y-3,1,W*x,H*y,r);g.addColorStop(0,'#fff2b8');g.addColorStop(.5,'#f2c14e');g.addColorStop(1,'#8a5a10');c.fillStyle=g;c.beginPath();c.arc(W*x,H*y,r,0,7);c.fill();});
+  // nom
+  c.fillStyle='rgba(0,0,0,.45)';c.fillRect(0,H*.78,W,H*.22);
+  c.font='bold '+Math.round(W*.14)+'px Barlow Condensed,Arial';c.textAlign='left';
+  c.fillStyle='#f2c14e';c.fillText("CORSAIR'S",W*.07,H*.875);
+  c.fillStyle='#fff';c.fillText('FORTUNE',W*.07,H*.97);
+  c.font=Math.round(W*.05)+'px Space Mono,monospace';
   c.fillStyle='rgba(255,255,255,.45)';c.fillText('KACHING ORIGINALS',W*.07,H*.92);
 }
 
