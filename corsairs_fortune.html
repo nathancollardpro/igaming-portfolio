@@ -314,7 +314,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:4px solid #ffe0
         <div class="opt aopt"><label data-i18n="au.loss">Limite de perte</label><div class="segs" id="aLoss" role="group" data-i18n-attr="aria-label:au.loss"></div></div>
         <div class="opt aopt"><label data-i18n="au.win">Arrêt si un gain dépasse</label><div class="segs" id="aWin" role="group" data-i18n-attr="aria-label:au.win"></div></div>
         <div class="opt aopt"><label data-i18n="au.bonus">Arrêt au bonus</label><div class="segs" id="aBonus" role="group" data-i18n-attr="aria-label:au.bonus"></div></div>
-        <p class="anote" data-i18n="au.note">La limite de perte est obligatoire. Le bonus au canon se joue tout seul, sauf si « Arrêt au bonus » est activé. Barre d'espace ou bouton AUTO pour arrêter.</p>
+        <p class="anote" data-i18n="au.note">La limite de perte est obligatoire. « Arrêt au bonus » arrête l'auto dès qu'un bonus se déclenche. Barre d'espace ou bouton AUTO pour arrêter.</p>
         <button class="autogo" type="button" id="aGo">LANCER</button>
       </div>
     </div>
@@ -347,16 +347,16 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:4px solid #ffe0
           <h3>Barils de poudre</h3>
           <p>3, 4 ou 5 barils paient ×2, ×10 ou ×100 la mise et lancent un bonus : <b>Simple Treasure</b> (3), <b>Incredible Treasure</b> (4) ou <b>Mega Start</b> (5). Dès que 2 barils sont posés, les rouleaux suivants ralentissent.</p>
           <h3>Le bonus au canon</h3>
-          <p>Le plateau compte 4 blocs de 3×3. Le centre de chaque bloc est un multiplicateur, les 32 autres cases sont des tonneaux. Appuie sur <b>FEU</b> : chaque tonneau a 5 % de chances de révéler une pièce, et chaque pièce remet le compteur à 3 tirs.</p>
+          <p>Le plateau compte 4 blocs de 3×3. Les 4 radeaux sont séparés par des allées de mer ; au carrefour, une tourelle tire toute seule. Le centre de chaque bloc est un multiplicateur, les 32 autres cases sont des tonneaux. À chaque tir, chaque tonneau a 5 % de chances de révéler une pièce, et chaque pièce remet le compteur à 3 tirs.</p>
           <p><b>Activation</b> : un bloc active son multiplicateur quand sa ligne du bas ou sa colonne de droite est remplie. Sans activation, ses pièces paient ×1.</p>
-          <p><b>Ponts</b> : quand les bords qui se font face entre deux blocs voisins sont remplis, les blocs se relient et leurs multiplicateurs s'additionnent. 4 blocs reliés = <b>Grand Chelem</b>.</p>
+          <p><b>Ponts</b> : quand les bords qui se font face entre deux blocs voisins sont remplis, un pont de planches enjambe l'allée et leurs multiplicateurs s'additionnent. 4 blocs reliés = <b>Grand Chelem</b>.</p>
           <p><b>Simple Treasure</b> : multiplicateurs ×2 à ×4 (MEGA ×8 / ×12 / ×20). <b>Incredible Treasure</b> : pièces plus fortes, multiplicateurs ×3 à ×6 (MEGA ×15 / ×25 / ×40). <b>Mega Start</b> : Incredible Treasure avec 4 pièces déjà révélées et un multiplicateur MEGA garanti.</p>
           <h3>Menu bonus</h3>
           <p><b>Scatter augmenté</b> : +25 % de mise, bonus 1,6 fois plus fréquent, même RTP. <b>Simple Treasure</b> s'achète 85× la mise, <b>Incredible Treasure</b> 430×.</p>
           <h3>Mode auto</h3>
-          <p>Le bouton <b>AUTO</b> enchaîne 10 à 250 tirages avec le même moteur et le même RTP. La limite de perte est obligatoire ; l'auto peut aussi s'arrêter sur un gros gain ou au déclenchement du bonus. Sinon, le canon tire tout seul.</p>
+          <p>Le bouton <b>AUTO</b> enchaîne 10 à 250 tirages avec le même moteur et le même RTP. La limite de perte est obligatoire ; l'auto peut aussi s'arrêter sur un gros gain ou au déclenchement du bonus.</p>
           <h3>Commandes</h3>
-          <p><b>Espace</b> lance le tirage, tire au canon pendant le bonus et arrête les rouleaux en cours. Le bouton vitesse passe de &gt; à &gt;&gt;&gt;.</p>
+          <p><b>Espace</b> lance le tirage et arrête les rouleaux en cours. Le bouton vitesse passe de &gt; à &gt;&gt;&gt;.</p>
           <p><b>Provably fair</b> : le résultat de chaque spin et de chaque bonus est entièrement tiré avant l'animation.</p>
         </div>
         </div>
@@ -571,16 +571,16 @@ KC.add({
           <h3>Barils de poudre</h3>
           <p>3, 4 ou 5 barils paient ×2, ×10 ou ×100 la mise et lancent un bonus : <b>Simple Treasure</b> (3), <b>Incredible Treasure</b> (4) ou <b>Mega Start</b> (5). Dès que 2 barils sont posés, les rouleaux suivants ralentissent.</p>
           <h3>Le bonus au canon</h3>
-          <p>Le plateau compte 4 blocs de 3×3. Le centre de chaque bloc est un multiplicateur, les 32 autres cases sont des tonneaux. Appuie sur <b>FEU</b> : chaque tonneau a 5 % de chances de révéler une pièce, et chaque pièce remet le compteur à 3 tirs.</p>
+          <p>Le plateau compte 4 blocs de 3×3. Les 4 radeaux sont séparés par des allées de mer ; au carrefour, une tourelle tire toute seule. Le centre de chaque bloc est un multiplicateur, les 32 autres cases sont des tonneaux. À chaque tir, chaque tonneau a 5 % de chances de révéler une pièce, et chaque pièce remet le compteur à 3 tirs.</p>
           <p><b>Activation</b> : un bloc active son multiplicateur quand sa ligne du bas ou sa colonne de droite est remplie. Sans activation, ses pièces paient ×1.</p>
-          <p><b>Ponts</b> : quand les bords qui se font face entre deux blocs voisins sont remplis, les blocs se relient et leurs multiplicateurs s'additionnent. 4 blocs reliés = <b>Grand Chelem</b>.</p>
+          <p><b>Ponts</b> : quand les bords qui se font face entre deux blocs voisins sont remplis, un pont de planches enjambe l'allée et leurs multiplicateurs s'additionnent. 4 blocs reliés = <b>Grand Chelem</b>.</p>
           <p><b>Simple Treasure</b> : multiplicateurs ×2 à ×4 (MEGA ×8 / ×12 / ×20). <b>Incredible Treasure</b> : pièces plus fortes, multiplicateurs ×3 à ×6 (MEGA ×15 / ×25 / ×40). <b>Mega Start</b> : Incredible Treasure avec 4 pièces déjà révélées et un multiplicateur MEGA garanti.</p>
           <h3>Menu bonus</h3>
           <p><b>Scatter augmenté</b> : +25 % de mise, bonus 1,6 fois plus fréquent, même RTP. <b>Simple Treasure</b> s'achète 85× la mise, <b>Incredible Treasure</b> 430×.</p>
           <h3>Mode auto</h3>
-          <p>Le bouton <b>AUTO</b> enchaîne 10 à 250 tirages avec le même moteur et le même RTP. La limite de perte est obligatoire ; l'auto peut aussi s'arrêter sur un gros gain ou au déclenchement du bonus. Sinon, le canon tire tout seul.</p>
+          <p>Le bouton <b>AUTO</b> enchaîne 10 à 250 tirages avec le même moteur et le même RTP. La limite de perte est obligatoire ; l'auto peut aussi s'arrêter sur un gros gain ou au déclenchement du bonus.</p>
           <h3>Commandes</h3>
-          <p><b>Espace</b> lance le tirage, tire au canon pendant le bonus et arrête les rouleaux en cours. Le bouton vitesse passe de &gt; à &gt;&gt;&gt;.</p>
+          <p><b>Espace</b> lance le tirage et arrête les rouleaux en cours. Le bouton vitesse passe de &gt; à &gt;&gt;&gt;.</p>
           <p><b>Provably fair</b> : le résultat de chaque spin et de chaque bonus est entièrement tiré avant l'animation.</p>
         `,en:`
           <h3>243 ways</h3>
@@ -588,16 +588,16 @@ KC.add({
           <h3>Powder kegs</h3>
           <p>3, 4 or 5 kegs pay ×2, ×10 or ×100 the bet and trigger a bonus: <b>Simple Treasure</b> (3), <b>Incredible Treasure</b> (4) or <b>Mega Start</b> (5). Once 2 kegs have landed, the remaining reels slow down.</p>
           <h3>The cannon bonus</h3>
-          <p>The board has 4 blocks of 3×3. The centre of each block is a multiplier; the other 32 cells are barrels. Press <b>FIRE</b>: each barrel has a 5% chance to reveal a coin, and every coin resets the counter to 3 shots.</p>
+          <p>The board has 4 blocks of 3×3. The 4 rafts are separated by sea lanes; at the crossroads, a turret fires on its own. The centre of each block is a multiplier; the other 32 cells are barrels. On every shot, each barrel has a 5% chance to reveal a coin, and every coin resets the counter to 3 shots.</p>
           <p><b>Activation</b>: a block activates its multiplier when its bottom row or right column is full. Without activation, its coins pay ×1.</p>
-          <p><b>Bridges</b>: when the facing edges of two neighbouring blocks are full, the blocks link up and their multipliers add together. 4 linked blocks = <b>Grand Slam</b>.</p>
+          <p><b>Bridges</b>: when the facing edges of two neighbouring blocks are full, a plank bridge spans the lane and their multipliers add together. 4 linked blocks = <b>Grand Slam</b>.</p>
           <p><b>Simple Treasure</b>: multipliers ×2 to ×4 (MEGA ×8 / ×12 / ×20). <b>Incredible Treasure</b>: bigger coins, multipliers ×3 to ×6 (MEGA ×15 / ×25 / ×40). <b>Mega Start</b>: Incredible Treasure with 4 coins already revealed and a guaranteed MEGA multiplier.</p>
           <h3>Bonus menu</h3>
           <p><b>Scatter Boost</b>: +25% bet, bonus 1.6 times more frequent, same RTP. <b>Simple Treasure</b> costs 85× the bet, <b>Incredible Treasure</b> 430×.</p>
           <h3>Autoplay</h3>
-          <p>The <b>AUTO</b> button chains 10 to 250 spins with the same engine and the same RTP. A loss limit is mandatory; autoplay can also stop on a big win or when the bonus triggers. Otherwise, the cannon fires by itself.</p>
+          <p>The <b>AUTO</b> button chains 10 to 250 spins with the same engine and the same RTP. A loss limit is mandatory; autoplay can also stop on a big win or when the bonus triggers.</p>
           <h3>Controls</h3>
-          <p><b>Space</b> spins, fires the cannon during the bonus and stops spinning reels. The speed button cycles from &gt; to &gt;&gt;&gt;.</p>
+          <p><b>Space</b> spins and stops spinning reels. The speed button cycles from &gt; to &gt;&gt;&gt;.</p>
           <p><b>Provably fair</b>: the outcome of every spin and every bonus is fully drawn before the animation.</p>
         `},
   'i.payNote':{fr:'Gain par way pour 3, 4 et 5 rouleaux, à la mise actuelle.',en:'Win per way for 3, 4 and 5 reels, at the current bet.'},
@@ -624,14 +624,14 @@ KC.add({
   'au.none':{fr:'Aucun',en:'Off'},
   'au.yes':{fr:'Oui',en:'Yes'},
   'au.no':{fr:'Non',en:'No'},
-  'au.note':{fr:"La limite de perte est obligatoire. Le bonus au canon se joue tout seul, sauf si « Arrêt au bonus » est activé. Barre d'espace ou bouton AUTO pour arrêter.",en:'A loss limit is mandatory. The cannon bonus plays itself unless “Stop on bonus” is on. Press Space or the AUTO button to stop.'},
+  'au.note':{fr:"La limite de perte est obligatoire. « Arrêt au bonus » arrête l'auto dès qu'un bonus se déclenche. Barre d'espace ou bouton AUTO pour arrêter.",en:'A loss limit is mandatory. “Stop on bonus” ends autoplay as soon as a bonus triggers. Press Space or the AUTO button to stop.'},
   'au.go':{fr:'LANCER {n} TOURS',en:'START {n} SPINS'},
   'au.startSay':{fr:'Pilote automatique, cap sur le trésor !',en:'Autopilot on, set course for treasure!'},
   'au.end.done':{fr:'Fin du mode auto.',en:'Autoplay finished.'},
   'au.end.user':{fr:'Mode auto arrêté.',en:'Autoplay stopped.'},
   'au.end.loss':{fr:'Limite de perte atteinte, on jette l\'ancre.',en:'Loss limit reached, dropping anchor.'},
   'au.end.win':{fr:'Gros butin ! Auto arrêté.',en:'Big haul! Autoplay stopped.'},
-  'au.end.bonus':{fr:'Bonus ! À toi de tirer, matelot.',en:'Bonus! Your turn to fire, sailor.'},
+  'au.end.bonus':{fr:'Bonus ! Mode auto arrêté.',en:'Bonus! Autoplay stopped.'},
   'au.end.funds':{fr:'Caisse vide, auto arrêté.',en:'The chest is empty, autoplay stopped.'},
   'cf.logoSub':{fr:'KACHING ORIGINALS · 243 WAYS · RTP 96 %',en:'KACHING ORIGINALS · 243 WAYS · 96% RTP'},
   'cf.maxWin':{fr:'GAIN MAX',en:'MAX WIN'},
@@ -652,7 +652,7 @@ KC.add({
   'cf.trig5':{fr:'5 BARILS · MEGA START !',en:'5 KEGS · MEGA START!'},
   'cf.trig4':{fr:'4 BARILS · INCREDIBLE TREASURE !',en:'4 KEGS · INCREDIBLE TREASURE!'},
   'cf.trig3':{fr:'3 BARILS · SIMPLE TREASURE !',en:'3 KEGS · SIMPLE TREASURE!'},
-  'cf.bonusSub':{fr:'Appuie sur FEU · chaque pièce relance le compteur',en:'Press FIRE · every coin resets the counter'},
+  'cf.bonusSub':{fr:'Le canon tire tout seul · chaque pièce relance le compteur',en:'The cannon fires by itself · every coin resets the counter'},
   'cf.rare':{fr:'Multiplicateur rare',en:'Rare multiplier'},
   'cf.megaSay':{fr:'Un MEGA ! Mille sabords !',en:'A MEGA! Shiver me timbers!'},
   'cf.3shots':{fr:'3 TIRS !',en:'3 SHOTS!'},
@@ -706,12 +706,12 @@ const LAYOUTS={
     logo:{x:800,y:76,w:600},winY:[684,716],
     cap:{x:160,y:792,s:.93},bubble:{dx:-100,dy:-640,tail:[130,74]},
     port:{x:1462,y:172,r:80},gmax:{x:1292,y:560,w:276},
-    bonus:{BC:104,BG:20,BX0:478,BY0:120,title:[478,96],side:{x:1162,y:150,w:410},cannon:[392,746,1.7],cap:{x:150,y:792,s:.9}}},
+    bonus:{BC:85,BG:149,BX0:478,BY0:118,title:[478,96],side:{x:1162,y:150,w:410},cannon:[392,746,1.7],cap:{x:150,y:792,s:.9}}},
   port:{SW:900,SH:1600,CW:168,CH:147,GX:30,GY:212,hudTop:1336,
     logo:{x:450,y:92,w:640},winY:[712,750],
     cap:{x:215,y:1338,s:1.0},bubble:{dx:150,dy:-600,tail:[-40,50]},
     port:null,gmax:{x:540,y:1246,w:330},
-    bonus:{BC:130,BG:20,BX0:50,BY0:212,title:[50,186],side:{x:500,y:1022,w:360},cannon:[430,1270,1.6],cap:{x:180,y:1338,s:.6}}}
+    bonus:{BC:103,BG:180,BX0:51,BY0:212,title:[50,186],side:{x:500,y:1022,w:360},cannon:[430,1270,1.6],cap:{x:180,y:1338,s:.6}}}
 };
 let L=LAYOUTS.land,SW=1600,SH=900,CW=184,CH=161,GX=340,GY=150;
 let BC=92,BG=20,BX0=514,BY0=122,POT=[0,0];
@@ -1475,7 +1475,38 @@ function drawBaseScene(c,t){
 // ── plateau du bonus ──
 const cellXY=i=>{const r=Math.floor(i/6),c=i%6;return [BX0+c*BC+(c>=3?BG:0),BY0+r*BC+(r>=3?BG:0)];};
 const blockXY=b=>{const [r0,c0]=CF.BLOCKS[b];return cellXY(r0*6+c0);};
-function muzzle(){const [x,y,s]=L.bonus.cannon,ang=-.62;return [x+Math.cos(ang)*38*s,y+Math.sin(ang)*38*s];}
+// Tourelle au carrefour des quatre radeaux : elle pivote vers la case visée
+const turretS=()=>BG/110;
+function muzzle(){const a=bonusView&&bonusView.aim!=null?bonusView.aim:-Math.PI/2,s=turretS();return [POT[0]+Math.cos(a)*44*s,POT[1]-6*s+Math.sin(a)*44*s];}
+function drawTurret(c,x,y,t,fireT,s,ang){
+  const a=Math.max(0,t-fireT),kick=a<260?Math.sin(a/260*Math.PI)*8:0,bob=Math.sin(t/700)*2;
+  c.save();c.translate(x,y+bob);c.scale(s,s);
+  // flotteur : plateau de tonneaux cerclé, vu en plongée
+  c.fillStyle='rgba(0,0,0,.35)';c.beginPath();c.ellipse(0,14,50,18,0,0,7);c.fill();
+  const pg=c.createRadialGradient(-10,-8,4,0,0,50);pg.addColorStop(0,'#b07a40');pg.addColorStop(1,'#5a3418');
+  c.fillStyle=pg;c.beginPath();c.ellipse(0,4,48,30,0,0,7);c.fill();c.strokeStyle='#2a1608';c.lineWidth=3;c.stroke();
+  c.strokeStyle='rgba(40,20,5,.45)';c.lineWidth=1.5;for(let k=-3;k<=3;k++){c.beginPath();c.moveTo(k*12,4-Math.sqrt(Math.max(0,1-(k*12/48)**2))*30);c.lineTo(k*12,4+Math.sqrt(Math.max(0,1-(k*12/48)**2))*30);c.stroke();}
+  c.strokeStyle='#d6a73e';c.lineWidth=2.5;c.beginPath();c.ellipse(0,4,40,24,0,0,7);c.stroke();
+  // affût circulaire
+  c.fillStyle='#2a1608';c.beginPath();c.ellipse(0,-2,20,13,0,0,7);c.fill();c.strokeStyle='#d6a73e';c.lineWidth=2;c.stroke();
+  // fût qui pivote
+  c.save();c.translate(0,-6);c.rotate(ang);if(Math.cos(ang)<0)c.scale(1,-1);c.translate(-kick,0);
+  const g=c.createLinearGradient(0,-9,0,9);g.addColorStop(0,'#f7d77a');g.addColorStop(.45,'#c8902e');g.addColorStop(1,'#6e4612');
+  c.fillStyle=g;c.beginPath();c.moveTo(-14,-10);c.lineTo(38,-7);c.lineTo(38,7);c.lineTo(-14,10);c.closePath();c.fill();
+  c.fillStyle='#c8902e';c.beginPath();c.arc(-15,0,6,0,7);c.fill();
+  c.fillStyle='#b07a20';c.fillRect(36,-9,7,18);c.fillStyle='#0b0f12';c.beginPath();c.ellipse(43,0,2,5.5,0,0,7);c.fill();
+  c.fillStyle='rgba(90,58,14,.6)';c.fillRect(6,-9,3,18);c.fillRect(22,-8,3,16);
+  if(a<160){const f=1-a/160;c.fillStyle=`rgba(255,${180+60*f|0},80,${f})`;c.beginPath();c.moveTo(43,0);c.lineTo(70,-12*f-4);c.lineTo(61,0);c.lineTo(70,12*f+4);c.closePath();c.fill();
+    c.fillStyle=`rgba(255,250,210,${f})`;c.beginPath();c.arc(47,0,8*f+2,0,7);c.fill();}
+  c.restore();
+  c.fillStyle='#3e2410';c.beginPath();c.arc(0,-6,7,0,7);c.fill();c.fillStyle='#d6a73e';c.beginPath();c.arc(0,-6,2.5,0,7);c.fill();
+  c.restore();}
+// amarres : cordages entre la tourelle et le coin intérieur de chaque radeau
+function drawMoorings(c,t){const s=turretS(),cx=POT[0],cy=POT[1]+4*s;
+  [[0,BX0+BC*3,BY0+BC*3],[1,BX0+BC*3+BG,BY0+BC*3],[2,BX0+BC*3,BY0+BC*3+BG],[3,BX0+BC*3+BG,BY0+BC*3+BG]].forEach(([b,x,y],k)=>{
+    const sx=cx+Math.sign(x-cx)*34*s,sy=cy+Math.sign(y-cy)*14*s,mx=(sx+x)/2,my=(sy+y)/2+BC*.22+Math.sin(t/900+k)*3;
+    c.strokeStyle='#5a3c1c';c.lineWidth=5;c.beginPath();c.moveTo(sx,sy);c.quadraticCurveTo(mx,my,x,y);c.stroke();
+    c.strokeStyle='#c9a46a';c.lineWidth=2;c.setLineDash([6,5]);c.beginPath();c.moveTo(sx,sy);c.quadraticCurveTo(mx,my,x,y);c.stroke();c.setLineDash([]);});}
 const pose=(i,t)=>({dy:Math.sin(t/620+i*1.37)*BC*.036,rot:Math.sin(t/880+i*.91)*.045});
 function drawRaft(c,s){
   const w=s*.88,h=s*.12;
@@ -1492,12 +1523,20 @@ function waterFront(c,x,y,t,i){const base=y+BC*.86;c.fillStyle='rgba(10,40,64,.6
 function rope(c,x,y,w,h,t,col,glow){c.save();if(glow){c.shadowColor=col;c.shadowBlur=22;}
   rr(c,x,y,w,h,18);c.lineWidth=7;c.strokeStyle=glow?col:'#5a3c1c';c.stroke();c.shadowBlur=0;
   c.lineWidth=2.5;c.setLineDash([7,6]);c.lineDashOffset=-t/60;c.strokeStyle=glow?'#fff6d0':'#c9a46a';rr(c,x,y,w,h,18);c.stroke();c.setLineDash([]);c.restore();}
-function drawBridge(c,a,side,b,t,col){const [xa,ya]=blockXY(a);c.save();c.shadowColor=col;c.shadowBlur=16;
-  const plank=(x,y,w,h)=>{const g=c.createLinearGradient(x,y,x,y+h);g.addColorStop(0,'#d09a5a');g.addColorStop(1,'#7a4a24');c.fillStyle=g;rr(c,x,y,w,h,3);c.fill();};
-  if(side==='right'){const x0=xa+BC*3-6,w=BG+12;for(let k=0;k<7;k++)plank(x0,ya+BC*.55+k*BC*.27,w,BC*.2);c.shadowBlur=0;c.strokeStyle=col;c.lineWidth=3;
-    c.beginPath();c.moveTo(x0,ya+BC*.5);c.lineTo(x0+w,ya+BC*.5);c.moveTo(x0,ya+BC*2.5);c.lineTo(x0+w,ya+BC*2.5);c.stroke();}
-  else{const y0=ya+BC*3-6,h=BG+12;for(let k=0;k<7;k++)plank(xa+BC*.55+k*BC*.27,y0,BC*.2,h);c.shadowBlur=0;c.strokeStyle=col;c.lineWidth=3;
-    c.beginPath();c.moveTo(xa+BC*.5,y0);c.lineTo(xa+BC*.5,y0+h);c.moveTo(xa+BC*2.5,y0);c.lineTo(xa+BC*2.5,y0+h);c.stroke();}
+function drawBridge(c,a,side,b,t,col){const [xa,ya]=blockXY(a),hz=side==='right';c.save();
+  // repère local : u le long du passage, v en travers
+  const L0=hz?xa+BC*3-8:ya+BC*3-8,len=BG+16,mid=(hz?ya:xa)+BC*1.5,half=BC*.78;
+  const P=(u,v)=>hz?[L0+u,mid+v]:[mid+v,L0+u];
+  c.shadowColor=col;c.shadowBlur=18;
+  const n=Math.max(5,Math.round(len/(BC*.24))),step=len/n;
+  for(let k=0;k<n;k++){const [x,y]=P(k*step+1,-half),w=hz?step-3:half*2,h=hz?half*2:step-3;
+    const g=hz?c.createLinearGradient(x,0,x+w,0):c.createLinearGradient(0,y,0,y+h);g.addColorStop(0,'#d6a062');g.addColorStop(1,'#7a4a24');
+    c.fillStyle=g;rr(c,x,y,w,h,3);c.fill();if(k===0)c.shadowBlur=0;
+    c.fillStyle='rgba(40,20,5,.4)';const [nx,ny]=P(k*step+step/2,0);c.beginPath();c.arc(nx,ny-half*.8+(hz?0:half*.8),1.6,0,7);c.fill();}
+  // garde-corps : corde qui ondule légèrement, poteaux aux extrémités
+  [-1,1].forEach(sd=>{const sag=BC*.12+Math.sin(t/700+sd)*2;c.strokeStyle=col;c.lineWidth=3.5;c.beginPath();
+    const [x0,y0]=P(0,sd*half),[x1,y1]=P(len,sd*half),[xm,ym]=P(len/2,sd*half+(hz?0:sag));c.moveTo(x0,y0);c.quadraticCurveTo(xm,hz?ym+sag:ym,x1,y1);c.stroke();
+    [[x0,y0],[x1,y1]].forEach(([px,py])=>{c.fillStyle='#3a2210';c.fillRect(px-4,py-10,8,14);c.fillStyle=col;c.fillRect(px-4,py-12,8,3);});});
   c.restore();}
 function drawMedal(c,m,shown,on,t,theme,sup){const col=m.mega?(sup?'#ff6f98':'#ff8c3c'):theme,k=BC/96;c.scale(k,k);
   c.strokeStyle='#6b3f20';c.lineWidth=5;c.lineCap='round';
@@ -1516,11 +1555,12 @@ function drawBonus(c,t){
   drawStormSea(c,t);
   const [tx,ty]=L.bonus.title;c.font='900 52px "Barlow Condensed",Arial';c.textAlign='left';c.lineWidth=7;c.strokeStyle='rgba(0,0,0,.6)';c.strokeText(BONUS_NAME(B.type),tx,ty);c.fillStyle=theme;c.fillText(BONUS_NAME(B.type),tx,ty);
   const live=B.live;
+  drawMoorings(c,t);
   for(let b=0;b<4;b++){const [x,y]=blockXY(b);rope(c,x-7,y-7,BC*3+14,BC*3+14,t,theme,live.on[b]);}
   live.bridges.forEach(([a,sa,b2])=>drawBridge(c,a,sa,b2,t,'#7dff8a'));
   for(let r=0;r<6;r++)for(let col=0;col<6;col++){
     const i=r*6+col,[x,y]=cellXY(i),p=pose(i,t),b=CF.CELLS.find(e=>e.i===i),isC=CF.CENTER.includes(i),v=B.grid[i];
-    const missA=B.miss&&B.miss.i===i?t-B.miss.t0:1e9,jolt=missA<450?Math.sin(missA/40)*6*(1-missA/450):0;
+    const missA=B.miss&&B.miss.i===i?t-B.miss.t0:1e9,ra=t-(B.rattle||-1e9),rat=ra<B.rattleD?Math.sin(t/28+i*1.9)*2.2*Math.min(1,ra/120):0,jolt=(missA<450?Math.sin(missA/40)*6*(1-missA/450):0)+rat;
     c.save();c.translate(x+BC/2,y+BC*.8+p.dy+(B.shake?(Math.random()-.5)*B.shake:0));c.rotate(p.rot+jolt*.02);
     drawRaft(c,BC);
     if(isC){c.translate(0,-BC*.42);const bi=CF.CENTER.indexOf(i);drawMedal(c,B.mults[bi],B.multShown[bi],live.on[bi],t,theme,sup);}
@@ -1534,8 +1574,11 @@ function drawBonus(c,t){
   }
   if(B.stamp){const a=(t-B.stamp.t0)/800;if(a<1){const [x,y]=cellXY(CF.CENTER[B.stamp.b]);c.save();c.translate(x+BC/2,y+BC*.38);const s=(2.2-1.2*easeOutCubic(Math.min(1,a*1.6)))*BC/96;c.scale(s,s);
     c.globalAlpha=a<.7?1:1-(a-.7)/.3;c.font='900 40px "Barlow Condensed",Arial';c.textAlign='center';c.lineWidth=6;c.strokeStyle='rgba(0,0,0,.6)';c.strokeText(B.stamp.txt,0,14);c.fillStyle=B.stamp.col;c.fillText(B.stamp.txt,0,14);c.restore();}}
-  if(B.shots){const [mx,my]=muzzle();B.shots.forEach(s=>{const a=(t-s.t0)/(240*Math.max(.6,sp()));if(a<0||a>1)return;const [cx0,cy0]=cellXY(s.i),tx2=cx0+BC/2,ty2=cy0+BC*.45;
-    const px=mx+(tx2-mx)*a,py=my+(ty2-my)*a-Math.sin(a*Math.PI)*120;c.fillStyle='rgba(255,200,120,.25)';c.beginPath();c.arc(px,py,13,0,7);c.fill();
+  if(B.aim==null)B.aim=-Math.PI/2;
+  {const to=B.aimTo!=null?B.aimTo:-Math.PI/2+Math.sin(t/1500)*1.1;let d=to-B.aim;d=Math.atan2(Math.sin(d),Math.cos(d));B.aim+=d*.2;}
+  if(B.phase!=='resolve')drawTurret(c,POT[0],POT[1],t,B.fireT,turretS(),B.aim);
+  if(B.shots){const [mx,my]=muzzle();B.shots.forEach(s=>{const a=(t-s.t0)/(FLIGHT*sp());if(a<0||a>1)return;const [cx0,cy0]=cellXY(s.i),tx2=cx0+BC/2,ty2=cy0+BC*.45;
+    const px=mx+(tx2-mx)*a,py=my+(ty2-my)*a-Math.sin(a*Math.PI)*Math.hypot(tx2-mx,ty2-my)*.35;c.fillStyle='rgba(255,200,120,.25)';c.beginPath();c.arc(px,py,13,0,7);c.fill();
     c.fillStyle='#111';c.beginPath();c.arc(px,py,8,0,7);c.fill();c.strokeStyle='#666';c.lineWidth=1;c.stroke();});}
   if(B.flyers){for(const f of B.flyers){const a=(t-f.t0)/f.dur;if(a<0)continue;
     if(a>=1){if(!f.done){f.done=true;B.pot+=f.v*f.mult;B.potT=t;sfx.coin(Math.min(8,B.hits++%9));burst(POT[0],POT[1]-10,6);
@@ -1558,6 +1601,7 @@ function drawBonus(c,t){
   c.textAlign='center';const cxs=sd.x+sd.w/2;
   c.font='800 26px "Barlow Condensed",Arial';c.fillStyle=theme;c.fillText(KC.t('cf.shotsLeft'),cxs,sd.y+44);
   for(let i=0;i<3;i++){const x=cxs+(i-1)*62,y=sd.y+88;c.beginPath();c.arc(x,y,20,0,7);c.fillStyle=i<B.left?theme:'#2a3a4a';c.fill();c.strokeStyle='rgba(0,0,0,.4)';c.lineWidth=3;c.stroke();
+    if(i===B.left&&t-(B.tickT||-1e9)<350){c.strokeStyle=`rgba(255,120,90,${1-(t-B.tickT)/350})`;c.lineWidth=4;c.beginPath();c.arc(x,y,20+(t-B.tickT)/18,0,7);c.stroke();}
     if(i<B.left&&t-B.resetT<400){c.strokeStyle=`rgba(255,255,255,${1-(t-B.resetT)/400})`;c.lineWidth=4;c.beginPath();c.arc(x,y,20+(t-B.resetT)/14,0,7);c.stroke();}}
   c.font='800 26px "Barlow Condensed",Arial';c.fillStyle='rgba(243,234,213,.85)';c.fillText(KC.t('cf.coins')+'  '+filled+' / 32',cxs,sd.y+150);
   c.font='800 26px "Barlow Condensed",Arial';c.fillStyle=theme;c.fillText(KC.t(B.phase==='resolve'?'cf.treasure':'cf.curWin'),cxs,sd.y+(land?214:204));
@@ -1566,8 +1610,6 @@ function drawBonus(c,t){
   if(land){c.font='600 20px Inter,Arial';c.fillStyle='rgba(243,234,213,.65)';c.fillText('×'+(Math.round(gv*100)/100).toLocaleString(KC.loc())+KC.t('cf.xBet'),cxs,sd.y+312);
     c.fillText(KC.t('cf.hint1'),cxs,sd.y+346);c.fillText(KC.t('cf.hint2'),cxs,sd.y+370);}
   // canon + capitaine
-  const [cxn,cyn,csn]=L.bonus.cannon;drawCannon(c,cxn,cyn,t,B.fireT,csn);
-  if(B.prompt){const p=.55+.45*Math.sin(t/160);c.textAlign='center';c.font='900 40px "Barlow Condensed",Arial';c.lineWidth=6;c.strokeStyle='rgba(0,0,0,.6)';c.strokeText(KC.t('cf.fireBig'),cxn+10,cyn-70);c.fillStyle=`rgba(255,140,60,${p})`;c.fillText(KC.t('cf.fireBig'),cxn+10,cyn-70);}
   const cp=L.bonus.cap;drawCaptain(c,cp.x,cp.y,cp.s,t);
   if(B.banner){const a=t-B.banner.t0,d=B.banner.d;if(a<d){const al=Math.min(1,a/200,(d-a)/250),sc=a<220?.85+.15*easeOutBack(a/220):1;
     c.save();c.globalAlpha=al;const by=BY0+BC*2.35;c.fillStyle='rgba(4,9,16,.84)';c.fillRect(VX0,by,VX1-VX0,BC*1.35);
@@ -1692,6 +1734,8 @@ function finish(totalX,bet,c,isBonus){
 }
 function waitFire(){return new Promise(r=>{fireResolve=r;upd();});}
 
+// Cadence du bonus (ms à vitesse normale) : visée, vol du boulet, pause après un tir réussi / raté
+const AIM_T=700,FLIGHT=450,REST_HIT=800,REST_MISS=650;
 async function runBonus(B,bet){
   const sup=B.type!=='std',theme=sup?'#c77dff':'#f2c14e';
   const V={bet,type:B.type,mults:B.mults,multShown:[false,false,false,false],grid:new Array(36).fill(null),born:{},boom:{},left:P.RESPINS,resetT:0,shake:0,
@@ -1703,6 +1747,7 @@ async function runBonus(B,bet){
   V.banner={txt:BONUS_NAME(B.type),sub:KC.t('cf.bonusSub'),t0:performance.now(),d:1900*Math.max(.6,sp()),big:true};
   sfx.cannon();shake(6);await wait(1500);
   const cc=i=>{const [x,y]=cellXY(i);return [x+BC/2,y+BC*.45];};
+  V.rattleD=0;
   for(let b=0;b<4;b++){await wait(260);V.multShown[b]=true;sfx.mult(b);const [x,y]=cc(CF.CENTER[b]);ring(x,y,B.mults[b].mega?'#ff8c3c':theme,BC*.7);burst(x,y,B.mults[b].mega?28:10,B.mults[b].mega?'#ff8c3c':null);
     if(B.mults[b].mega){sfx.activate();shake(6);V.banner={txt:'MEGA ×'+B.mults[b].v,sub:KC.t('cf.rare'),t0:performance.now(),d:1200*Math.max(.6,sp()),col:'#ff8c3c'};capSay(KC.t('cf.megaSay'),1600);await wait(900);}}
   for(const {i,v} of B.start){const [x,y]=cc(i);V.boom[i]=performance.now();V.grid[i]=v;V.born[i]=performance.now()+90;debris(x,y);sfx.coin(0);ring(x,y,theme,BC*.45);V.live=CF.resolve(V.grid,B.mults);await wait(200);}
@@ -1712,13 +1757,18 @@ async function runBonus(B,bet){
     if(lv>=2&&!flowSaid){flowSaid=true;capMood('ecstatic',1700);capSay(pickLine('flow'),2000);}};
   level();await wait(400);
   for(const T of B.turns){
-    V.prompt=true;if(V.left===1&&Math.random()<.6){capMood('tense',1400);capSay(pickLine('last'),1500);}
-    await waitFire();V.prompt=false;
-    const now=performance.now(),[mx,my]=muzzle();V.fireT=now;sfx.cannon();smoke(mx,my);shake(4);capMood('fire',700);
+    // 1) départ : le compteur descend, les barils tremblent, la tourelle vise (≈ 0,7 s)
+    V.left=Math.max(0,V.left-1);V.tickT=performance.now();sfx.tick();
+    if(V.left===0&&Math.random()<.6){capMood('tense',1400);capSay(pickLine('last'),1500);}
     const empties=CF.CELLS.map(x=>x.i).filter(i=>V.grid[i]===null);
     const targets=T.nw.length?T.nw.map(n=>n.i):[empties[rint(empties.length)]];
-    V.shots=targets.map((i,k)=>({i,t0:now+k*60*sp()}));
-    V.shake=1.5;await wait(240+Math.min(targets.length,6)*60);V.shake=0;
+    {const [tx,ty]=cc(targets[0]);V.aimTo=Math.atan2(ty-POT[1],tx-POT[0]);}
+    V.rattle=performance.now();V.rattleD=AIM_T*sp();
+    await wait(AIM_T);
+    // 2) tir automatique, boulets en vol (≈ 0,45 s)
+    const now=performance.now(),[mx,my]=muzzle();V.fireT=now;sfx.cannon();smoke(mx,my);shake(4);capMood('fire',700);
+    V.shots=targets.map((i,k)=>({i,t0:now+k*70*sp()}));
+    V.shake=1.5;await wait(FLIGHT+Math.min(targets.length,6)*70);V.shake=0;V.aimTo=null;
     const before=V.live;
     if(T.nw.length){
       for(const {i,v} of T.nw){const [x,y]=cc(i);V.boom[i]=performance.now();sfx.boom();debris(x,y);ring(x,y,'#ffb36b',BC*.55);
@@ -1735,8 +1785,11 @@ async function runBonus(B,bet){
       if(!bridgeSaid){bridgeSaid=true;capMood('ecstatic',1500);capSay(pickLine('bridge'),1600);}await wait(700);}
     else if(newOn.length){sfx.activate();shake(5);}
     level();V.shots=null;upd();
-    await wait(T.nw.length?380:300);
+    // 3) temps de lecture avant le tir suivant (≈ 0,8 s)
+    await wait(T.nw.length?REST_HIT:REST_MISS);
   }
+  // le « 0 » reste affiché un instant avant le décompte, comme dans la référence
+  await wait(900);
   // décompte : chaque bloc envoie ses pièces au trésor, au centre
   V.phase='resolve';V.banner=null;V.flyers=[];capMood('happy');await wait(450);
   for(let b=0;b<4;b++){
