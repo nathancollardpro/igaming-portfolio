@@ -7,6 +7,7 @@
 <meta name="description" content="Nathan Collard, game designer iGaming. Trois jeux de casino originaux jouables dans le navigateur — Ricochet, Candy Monster, Corsair's Fortune — avec leurs maths et leurs GDD.">
 <meta name="theme-color" content="#0f1923">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<script src="i18n.js"></script>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Nathan Collard — Game Designer">
 <meta property="og:title" content="Nathan Collard — Game Designer iGaming">
@@ -198,6 +199,11 @@ footer a{text-decoration:none;color:var(--txt)}
 footer a:hover{color:var(--acc)}
 
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+.subbar{display:flex;align-items:center;gap:.75rem;background:var(--bg2);border-bottom:1px solid var(--bdr);padding-right:var(--pad);--kc-lang-acc:var(--acc)}
+.subbar .tabs-nav{flex:1;min-width:0;border-bottom:0}
+.proj-section.proj-slots{padding-top:0}
+.proj-h1 .h1a{font-weight:inherit;color:inherit}
+@media(max-width:600px){.subbar{gap:.4rem}.subbar .tab-btn{padding:.8rem .3rem .7rem;font-size:.95rem}}
 </style>
 </head>
 <body>
@@ -209,35 +215,38 @@ footer a:hover{color:var(--acc)}
     <span class="logo-role">Game Designer iGaming</span>
   </a>
   <div class="bal-wrap">
-    <div class="live-chip" data-live="online" hidden title="Visiteurs sur le site en ce moment (compteur réel)"><span class="live-dot" aria-hidden="true"></span><b data-n>0</b><span class="lbl-long" data-pl="joueurs en ligne" data-sg="joueur en ligne">joueurs en ligne</span></div>
-    <div class="bal-chip" title="Solde fictif partagé entre les jeux">
+    <div class="live-chip" data-live="online" hidden data-i18n-attr="title:live.title"><span class="live-dot" aria-hidden="true"></span><b data-n>0</b><span class="lbl-long" data-i18n-pl="live.online.pl" data-i18n-sg="live.online.sg">joueurs en ligne</span></div>
+    <div class="bal-chip" data-i18n-attr="title:bal.title">
       <div class="bal-dot" aria-hidden="true"></div>
-      <span class="bal-lbl">Solde</span>
+      <span class="bal-lbl" data-i18n="bal.lbl">Solde</span>
       <span class="bal-val"><b id="balVal">1 000,00</b>&nbsp;&euro;</span>
     </div>
-    <button class="reload" type="button" onclick="reloadBal()">+1&nbsp;000&nbsp;€</button>
-    <button class="reset" type="button" onclick="resetBal()">Reset</button>
+    <button class="reload" type="button" onclick="reloadBal()" id="reloadBtn">+1&nbsp;000&nbsp;€</button>
+    <button class="reset" type="button" onclick="resetBal()" data-i18n="bal.reset">Reset</button>
   </div>
 </header>
 
-<nav class="tabs-nav" role="tablist" aria-label="Sections">
-  <button class="tab-btn" role="tab" id="t-moi" aria-controls="tab-moi" aria-selected="false" onclick="switchTab('moi')">Moi</button>
-  <button class="tab-btn" role="tab" id="t-exp" aria-controls="tab-exp" aria-selected="false" onclick="switchTab('exp')">Exp&eacute;riences</button>
-  <button class="tab-btn" role="tab" id="t-projets" aria-controls="tab-projets" aria-selected="true" onclick="switchTab('projets')">Projets</button>
-</nav>
+<div class="subbar">
+  <nav class="tabs-nav" role="tablist" aria-label="Sections">
+    <button class="tab-btn" role="tab" id="t-moi" aria-controls="tab-moi" aria-selected="false" onclick="switchTab('moi')" data-i18n="tab.moi">Moi</button>
+    <button class="tab-btn" role="tab" id="t-exp" aria-controls="tab-exp" aria-selected="false" onclick="switchTab('exp')" data-i18n="tab.exp">Exp&eacute;riences</button>
+    <button class="tab-btn" role="tab" id="t-projets" aria-controls="tab-projets" aria-selected="true" onclick="switchTab('projets')" data-i18n="tab.projets">Projets</button>
+  </nav>
+  <div data-lang-switch></div>
+</div>
 
 <main>
 <!-- ══ MOI ══════════════════════════════════════ -->
 <section id="tab-moi" class="tab-panel" role="tabpanel" aria-labelledby="t-moi">
   <div class="moi-hero">
     <div class="moi-grid">
-      <img class="moi-photo" src="photo_nathan.jpg" width="120" height="120" alt="Portrait de Nathan Collard">
+      <img class="moi-photo" src="photo_nathan.jpg" width="120" height="120" data-i18n-attr="alt:photo.alt" alt="Portrait de Nathan Collard">
       <div>
         <h2 class="moi-name">Game Designer<br><span>Nathan Collard</span></h2>
-        <p class="moi-title">Paray-le-Monial, France &nbsp;·&nbsp; Permis B</p>
+        <p class="moi-title" data-i18n="moi.place">Paray-le-Monial, France · Permis B</p>
         <div class="moi-contact">
           <a href="mailto:nathancollardpro@hotmail.com"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>nathancollardpro@hotmail.com</a>
-          <a href="tel:+33651281262"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>06 51 28 12 62</a>
+          <a href="tel:+33651281262"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg><span data-i18n="moi.phone">06 51 28 12 62</span></a>
           <a href="https://linkedin.com/in/collard-nathan" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>LinkedIn</a>
         </div>
       </div>
@@ -245,12 +254,12 @@ footer a:hover{color:var(--acc)}
   </div>
 
   <div class="moi-about">
-    <p>Game Designer avec 3 ans d'expérience dans le jeu mobile et iGaming. Passionné par l'économie de jeu, l'équilibrage mathématique et la création de mécaniques engageantes. Je conçois des systèmes qui allient tension, lisibilité et rétention &mdash; du GDD à la calibration RTP.</p>
+    <p data-i18n="moi.about">Game Designer avec 3 ans d'expérience dans le jeu mobile et iGaming. Passionné par l'économie de jeu, l'équilibrage mathématique et la création de mécaniques engageantes. Je conçois des systèmes qui allient tension, lisibilité et rétention — du GDD à la calibration RTP.</p>
   </div>
 
   <div class="moi-new-grid">
     <div class="tag-block">
-      <h2>Expertises</h2>
+      <h2 data-i18n="moi.skills">Expertises</h2>
       <div class="tag-cloud">
         <span class="etag">Game Economy</span>
         <span class="etag">RTP / Math Design</span>
@@ -266,7 +275,7 @@ footer a:hover{color:var(--acc)}
     </div>
     <div>
       <div class="tag-block">
-        <h2>Outils</h2>
+        <h2 data-i18n="moi.tools">Outils</h2>
         <div class="tag-cloud">
           <span class="ttag">Unity</span>
           <span class="ttag">Excel / Sheets</span>
@@ -276,10 +285,10 @@ footer a:hover{color:var(--acc)}
         </div>
       </div>
       <div class="tag-block" style="margin-top:1.2rem">
-        <h2>Langues</h2>
+        <h2 data-i18n="moi.langs">Langues</h2>
         <div class="tag-cloud">
-          <span class="ttag">Fran&ccedil;ais — Natif</span>
-          <span class="ttag">Anglais — C1</span>
+          <span class="ttag" data-i18n="moi.lang.fr">Français — Natif</span>
+          <span class="ttag" data-i18n="moi.lang.en">Anglais — C1</span>
         </div>
       </div>
     </div>
@@ -289,14 +298,14 @@ footer a:hover{color:var(--acc)}
 <!-- ══ EXPÉRIENCES ══════════════════════════════ -->
 <section id="tab-exp" class="tab-panel" role="tabpanel" aria-labelledby="t-exp">
   <div class="exp-section">
-    <h2>Exp&eacute;riences</h2>
+    <h2 data-i18n="tab.exp">Exp&eacute;riences</h2>
     <div class="timeline">
 
       <!-- PLAYRION / PARADOX -->
       <div class="timeline-item">
         <div class="tl-dot-col" aria-hidden="true"><div class="tl-dot"></div><div class="tl-line"></div></div>
         <div>
-          <h3 class="tl-role">Game Designer Principal &mdash; 2025&nbsp;/&nbsp;2026</h3>
+          <h3 class="tl-role" data-i18n="exp.p.role">Game Designer Principal — 2025 / 2026</h3>
           <div class="exp-banner">
             <img src="banner_paradox.jpg" width="900" height="134" alt="Paradox Interactive × Playrion" loading="lazy">
             <div class="exp-banner-footer">
@@ -305,11 +314,11 @@ footer a:hover{color:var(--acc)}
             </div>
           </div>
           <ul class="tl-bullets">
-            <li>Rédaction et maintenance de Game Design Documents complets</li>
-            <li>Modélisation et équilibrage d'économies de jeu complexes</li>
-            <li>Conception de systèmes de récompenses à forte volatilité et de mécaniques de rythme</li>
-            <li>Analyses de données et simulations</li>
-            <li>Collaboration avec des équipes pluridisciplinaires</li>
+            <li data-i18n="exp.p.1">Rédaction et maintenance de Game Design Documents complets</li>
+            <li data-i18n="exp.p.2">Modélisation et équilibrage d'économies de jeu complexes</li>
+            <li data-i18n="exp.p.3">Conception de systèmes de récompenses à forte volatilité et de mécaniques de rythme</li>
+            <li data-i18n="exp.p.4">Analyses de données et simulations</li>
+            <li data-i18n="exp.p.5">Collaboration avec des équipes pluridisciplinaires</li>
           </ul>
         </div>
       </div>
@@ -318,7 +327,7 @@ footer a:hover{color:var(--acc)}
       <div class="timeline-item">
         <div class="tl-dot-col" aria-hidden="true"><div class="tl-dot"></div></div>
         <div>
-          <h3 class="tl-role">Game Designer &mdash; 2023&nbsp;/&nbsp;2024</h3>
+          <h3 class="tl-role" data-i18n="exp.e.role">Game Designer — 2023 / 2024</h3>
           <div class="exp-banner">
             <img src="banner_f1.jpg" width="900" height="92" alt="F1 Mobile Racing" loading="lazy">
             <div class="exp-banner-footer">
@@ -327,32 +336,32 @@ footer a:hover{color:var(--acc)}
             </div>
           </div>
           <ul class="tl-bullets">
-            <li>Refonte de fonctionnalités clés du core gameplay pour améliorer le game feel</li>
-            <li>Suivi et optimisation des indicateurs de rétention</li>
-            <li>Amélioration de l'accessibilité et de l'UX pour élargir l'audience mobile</li>
-            <li>Conception de l'économie complète de la nouvelle saison live-ops</li>
+            <li data-i18n="exp.e.1">Refonte de fonctionnalités clés du core gameplay pour améliorer le game feel</li>
+            <li data-i18n="exp.e.2">Suivi et optimisation des indicateurs de rétention</li>
+            <li data-i18n="exp.e.3">Amélioration de l'accessibilité et de l'UX pour élargir l'audience mobile</li>
+            <li data-i18n="exp.e.4">Conception de l'économie complète de la nouvelle saison live-ops</li>
           </ul>
           <div class="tl-sub">
-            <h3 class="tl-role">Assistant Game Designer &mdash; 2023 <small>(stage)</small></h3>
+            <h3 class="tl-role"><span data-i18n="exp.a.role">Assistant Game Designer — 2023</span> <small data-i18n="exp.a.intern">(stage)</small></h3>
             <ul class="tl-bullets">
-              <li>Intégration des données live-ops pour les mises à jour de contenu</li>
-              <li>Équilibrage des courbes de difficulté des défis pour optimiser la progression</li>
-              <li>Collaboration avec les équipes QA et dev pour le débogage</li>
+              <li data-i18n="exp.a.1">Intégration des données live-ops pour les mises à jour de contenu</li>
+              <li data-i18n="exp.a.2">Équilibrage des courbes de difficulté des défis pour optimiser la progression</li>
+              <li data-i18n="exp.a.3">Collaboration avec les équipes QA et dev pour le débogage</li>
             </ul>
           </div>
         </div>
       </div>
     </div>
 
-    <h2 style="margin-top:.5rem">Formation</h2>
+    <h2 style="margin-top:.5rem" data-i18n="edu.title">Formation</h2>
     <div class="edu-item">
-      <h3 class="edu-degree">Bachelor Game Design &amp; Production</h3>
-      <p class="edu-school">Game Sup &mdash; &Eacute;cole sup&eacute;rieure des m&eacute;tiers du jeu-vid&eacute;o &mdash; 2019&nbsp;/&nbsp;2023</p>
-      <p class="edu-val">Major de promotion</p>
+      <h3 class="edu-degree" data-i18n="edu.ba">Bachelor Game Design &amp; Production</h3>
+      <p class="edu-school" data-i18n="edu.ba.school">Game Sup — École supérieure des métiers du jeu vidéo — 2019 / 2023</p>
+      <p class="edu-val" data-i18n="edu.ba.val">Major de promotion</p>
     </div>
     <div class="edu-item">
-      <h3 class="edu-degree">Baccalaur&eacute;at Scientifique</h3>
-      <p class="edu-school">Lyc&eacute;e la Martinière Duch&egrave;re &mdash; 2016&nbsp;/&nbsp;2017</p>
+      <h3 class="edu-degree" data-i18n="edu.bac">Baccalauréat Scientifique</h3>
+      <p class="edu-school" data-i18n="edu.bac.school">Lycée la Martinière Duchère — 2016 / 2017</p>
     </div>
   </div>
 </section>
@@ -361,37 +370,44 @@ footer a:hover{color:var(--acc)}
 <section id="tab-projets" class="tab-panel active" role="tabpanel" aria-labelledby="t-projets">
   <div class="proj-hero">
     <div>
-    <h1 class="proj-h1">iGaming<br><span>d&eacute;montr&eacute; en direct</span></h1>
-    <p class="proj-p">Game designer spécialisé en économie de jeu et en maths de casino, je cherche un poste de game designer dans un studio iGaming. Chaque mini-jeu ci-dessous illustre des m&eacute;caniques iGaming r&eacute;elles &mdash; RTP, house edge, cash-out, courbes de risque.</p>
+    <h1 class="proj-h1"><b class="h1a" data-i18n="hero.h1a">iGaming</b><br><span data-i18n="hero.h1b">démontré en direct</span></h1>
+    <p class="proj-p" data-i18n="hero.p">Game designer spécialisé en économie de jeu et en maths de casino, je cherche un poste de game designer dans un studio iGaming. Chaque jeu ci-dessous illustre des mécaniques iGaming réelles — RTP, house edge, cash-out, courbes de risque.</p>
     <div class="proj-cta">
-      <a class="btn btn-primary" href="mailto:nathancollardpro@hotmail.com?subject=Contact%20depuis%20votre%20portfolio"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Me contacter</a>
+      <a class="btn btn-primary" id="ctaMail" href="mailto:nathancollardpro@hotmail.com?subject=Contact%20depuis%20votre%20portfolio"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span data-i18n="cta.mail">Me contacter</span></a>
       <a class="btn btn-ghost" href="https://linkedin.com/in/collard-nathan" target="_blank" rel="noopener">LinkedIn</a>
-      <a class="btn btn-ghost" href="#experiences" onclick="switchTab('exp');return false;">Mon parcours</a>
+      <a class="btn btn-ghost" href="#experiences" onclick="switchTab('exp');return false;" data-i18n="cta.path">Mon parcours</a>
     </div>
     </div>
-    <aside class="who" aria-label="En bref">
-      <img src="photo_nathan.jpg" width="84" height="84" alt="Portrait de Nathan Collard">
-      <div><div class="who-name">Nathan Collard</div><div class="who-role">Game Designer · 3 ans d'expérience</div></div>
+    <aside class="who" data-i18n-attr="aria-label:who.aria" aria-label="En bref">
+      <img src="photo_nathan.jpg" width="84" height="84" data-i18n-attr="alt:photo.alt" alt="Portrait de Nathan Collard">
+      <div><div class="who-name">Nathan Collard</div><div class="who-role" data-i18n="who.role">Game Designer · 3 ans d'expérience</div></div>
       <ul>
         <li><b>Playrion × Paradox Interactive</b><span>2025 – 2026</span></li>
         <li><b>Eden Games × EA / Codemasters</b><span>2023 – 2024</span></li>
-        <li><b>Game Sup, major de promotion</b><span>2019 – 2023</span></li>
+        <li><b data-i18n="who.school">Game Sup, major de promotion</b><span>2019 – 2023</span></li>
       </ul>
     </aside>
   </div>
   <div class="proj-section">
     <div class="sec-head">
-      <h2 class="sec-title">Mini-jeux</h2>
-      <span class="sec-note">Solde fictif de 1&nbsp;000&nbsp;€ partagé entre les jeux<span data-live="total" hidden> · <b data-n></b>&nbsp;<span data-pl="parties jouées" data-sg="partie jouée">parties jouées</span> sur le site</span></span>
+      <h2 class="sec-title" data-i18n="sec.mini">Mini-jeux</h2>
+      <span class="sec-note"><span data-i18n="sec.note">Solde fictif de 1 000 € partagé entre les jeux</span><span data-live="total" hidden> · <b data-n></b>&nbsp;<span data-i18n-pl="live.played.pl" data-i18n-sg="live.played.sg">parties jouées</span> <span data-i18n="live.onsite">sur le site</span></span></span>
     </div>
-    <div class="game-grid" id="gameGrid"></div>
+    <div class="game-grid" id="gridMini"></div>
+  </div>
+  <div class="proj-section proj-slots">
+    <div class="sec-head">
+      <h2 class="sec-title" data-i18n="sec.slots">Machines à sous</h2>
+      <span class="sec-note" data-i18n="sec.slots.note">Slots vidéo : rouleaux, ways, bonus Hold &amp; Win</span>
+    </div>
+    <div class="game-grid" id="gridSlots"></div>
   </div>
 </section>
 </main>
 
 <footer>
   <span>Nathan Collard &nbsp;·&nbsp; Game Designer &nbsp;·&nbsp; 2026</span>
-  <nav aria-label="Contact">
+  <nav data-i18n-attr="aria-label:foot.aria" aria-label="Contact">
     <a href="mailto:nathancollardpro@hotmail.com">nathancollardpro@hotmail.com</a>
     <a href="https://linkedin.com/in/collard-nathan" target="_blank" rel="noopener">LinkedIn</a>
   </nav>
@@ -399,17 +415,107 @@ footer a:hover{color:var(--acc)}
 
 <script src="live.js" defer></script>
 <script>
+// ── TEXTES FR / EN ──
+KC.add({
+  'meta.title':{fr:'Nathan Collard — Game Designer iGaming',en:'Nathan Collard — iGaming Game Designer'},
+  'meta.desc':{fr:"Nathan Collard, game designer iGaming. Trois jeux de casino originaux jouables dans le navigateur — Ricochet, Candy Monster, Corsair's Fortune — avec leurs maths et leurs GDD.",
+               en:"Nathan Collard, iGaming game designer. Three original casino games playable in the browser — Ricochet, Candy Monster, Corsair's Fortune — with their maths and GDDs."},
+  'live.title':{fr:'Visiteurs sur le site en ce moment (compteur réel)',en:'Visitors on the site right now (real count)'},
+  'live.online.pl':{fr:'joueurs en ligne',en:'players online'},
+  'live.online.sg':{fr:'joueur en ligne',en:'player online'},
+  'live.played.pl':{fr:'parties jouées',en:'rounds played'},
+  'live.played.sg':{fr:'partie jouée',en:'round played'},
+  'live.onsite':{fr:'sur le site',en:'on the site'},
+  'live.ingame':{fr:'en jeu',en:'playing now'},
+  'bal.title':{fr:'Solde fictif partagé entre les jeux',en:'Play-money balance shared by every game'},
+  'bal.lbl':{fr:'Solde',en:'Balance'},
+  'bal.reset':{fr:'Reset',en:'Reset'},
+  'bal.reloaded':{fr:'+1 000 € chargés — Solde : {v} €',en:'+1,000 € added — Balance: {v} €'},
+  'bal.wasreset':{fr:'Solde réinitialisé à 1 000 €',en:'Balance reset to 1,000 €'},
+  'bal.back':{fr:'Solde récupéré : {v} €',en:'Balance carried over: {v} €'},
+  'tab.moi':{fr:'Moi',en:'About'},
+  'tab.exp':{fr:'Expériences',en:'Experience'},
+  'tab.projets':{fr:'Projets',en:'Projects'},
+  'photo.alt':{fr:'Portrait de Nathan Collard',en:'Portrait of Nathan Collard'},
+  'moi.place':{fr:'Paray-le-Monial, France · Permis B',en:"Paray-le-Monial, France · Driving licence"},
+  'moi.phone':{fr:'06 51 28 12 62',en:'+33 6 51 28 12 62'},
+  'moi.about':{fr:"Game Designer avec 3 ans d'expérience dans le jeu mobile et iGaming. Passionné par l'économie de jeu, l'équilibrage mathématique et la création de mécaniques engageantes. Je conçois des systèmes qui allient tension, lisibilité et rétention — du GDD à la calibration RTP.",
+               en:"Game Designer with 3 years of experience in mobile games and iGaming. Passionate about game economies, mathematical balancing and building engaging mechanics. I design systems that combine tension, readability and retention — from the GDD to RTP calibration."},
+  'moi.skills':{fr:'Expertises',en:'Expertise'},
+  'moi.tools':{fr:'Outils',en:'Tools'},
+  'moi.langs':{fr:'Langues',en:'Languages'},
+  'moi.lang.fr':{fr:'Français — Natif',en:'French — Native'},
+  'moi.lang.en':{fr:'Anglais — C1',en:'English — C1'},
+  'exp.p.role':{fr:'Game Designer Principal — 2025 / 2026',en:'Lead Game Designer — 2025 / 2026'},
+  'exp.p.1':{fr:'Rédaction et maintenance de Game Design Documents complets',en:'Wrote and maintained complete Game Design Documents'},
+  'exp.p.2':{fr:"Modélisation et équilibrage d'économies de jeu complexes",en:'Modelled and balanced complex game economies'},
+  'exp.p.3':{fr:'Conception de systèmes de récompenses à forte volatilité et de mécaniques de rythme',en:'Designed high-volatility reward systems and pacing mechanics'},
+  'exp.p.4':{fr:'Analyses de données et simulations',en:'Data analysis and simulations'},
+  'exp.p.5':{fr:'Collaboration avec des équipes pluridisciplinaires',en:'Worked with cross-disciplinary teams'},
+  'exp.e.role':{fr:'Game Designer — 2023 / 2024',en:'Game Designer — 2023 / 2024'},
+  'exp.e.1':{fr:'Refonte de fonctionnalités clés du core gameplay pour améliorer le game feel',en:'Reworked key core-gameplay features to improve game feel'},
+  'exp.e.2':{fr:'Suivi et optimisation des indicateurs de rétention',en:'Tracked and improved retention KPIs'},
+  'exp.e.3':{fr:"Amélioration de l'accessibilité et de l'UX pour élargir l'audience mobile",en:'Improved accessibility and UX to widen the mobile audience'},
+  'exp.e.4':{fr:"Conception de l'économie complète de la nouvelle saison live-ops",en:'Designed the full economy of the new live-ops season'},
+  'exp.a.role':{fr:'Assistant Game Designer — 2023',en:'Assistant Game Designer — 2023'},
+  'exp.a.intern':{fr:'(stage)',en:'(internship)'},
+  'exp.a.1':{fr:'Intégration des données live-ops pour les mises à jour de contenu',en:'Integrated live-ops data for content updates'},
+  'exp.a.2':{fr:'Équilibrage des courbes de difficulté des défis pour optimiser la progression',en:'Balanced challenge difficulty curves to improve progression'},
+  'exp.a.3':{fr:'Collaboration avec les équipes QA et dev pour le débogage',en:'Worked with QA and dev teams on debugging'},
+  'edu.title':{fr:'Formation',en:'Education'},
+  'edu.ba':{fr:'Bachelor Game Design & Production',en:"Bachelor's in Game Design & Production"},
+  'edu.ba.school':{fr:'Game Sup — École supérieure des métiers du jeu vidéo — 2019 / 2023',en:'Game Sup — Video game school, France — 2019 / 2023'},
+  'edu.ba.val':{fr:'Major de promotion',en:'Valedictorian'},
+  'edu.bac':{fr:'Baccalauréat Scientifique',en:'French Baccalauréat, Science track'},
+  'edu.bac.school':{fr:'Lycée la Martinière Duchère — 2016 / 2017',en:'Lycée la Martinière Duchère, Lyon — 2016 / 2017'},
+  'hero.h1a':{fr:'iGaming',en:'iGaming'},
+  'hero.h1b':{fr:'démontré en direct',en:'shown, not told'},
+  'hero.p':{fr:"Game designer spécialisé en économie de jeu et en maths de casino, je cherche un poste de game designer dans un studio iGaming. Chaque jeu ci-dessous illustre des mécaniques iGaming réelles — RTP, house edge, cash-out, courbes de risque.",
+            en:"Game designer specialised in game economies and casino maths, I'm looking for a game designer role at an iGaming studio. Every game below demonstrates real iGaming mechanics — RTP, house edge, cash-out, risk curves."},
+  'cta.mail':{fr:'Me contacter',en:'Contact me'},
+  'cta.subject':{fr:'Contact depuis votre portfolio',en:'Contact from your portfolio'},
+  'cta.path':{fr:'Mon parcours',en:'My background'},
+  'who.aria':{fr:'En bref',en:'At a glance'},
+  'who.role':{fr:"Game Designer · 3 ans d'expérience",en:'Game Designer · 3 years of experience'},
+  'who.school':{fr:'Game Sup, major de promotion',en:'Game Sup, valedictorian'},
+  'sec.mini':{fr:'Mini-jeux',en:'Mini-games'},
+  'sec.note':{fr:'Solde fictif de 1 000 € partagé entre les jeux',en:'1,000 € play-money balance shared by every game'},
+  'sec.slots':{fr:'Machines à sous',en:'Slots'},
+  'sec.slots.note':{fr:'Slots vidéo : rouleaux, ways, bonus Hold & Win',en:'Video slots: reels, ways, Hold & Win bonuses'},
+  'foot.aria':{fr:'Contact',en:'Contact'},
+  'card.play':{fr:'Jouer',en:'Play'},
+  'card.playAria':{fr:'Jouer à {n}',en:'Play {n}'},
+  'card.gdd':{fr:'GDD (PDF)',en:'GDD (PDF)'},
+  'card.soon':{fr:'Bientôt',en:'Coming soon'},
+  'f.mech':{fr:'Mécanique',en:'Mechanic'},
+  'f.max':{fr:'Gain max',en:'Max win'},
+  'f.vol':{fr:'Volatilité',en:'Volatility'},
+  'g.ricochet.desc':{fr:"Un galet ricoche sur le lac : chaque rebond fait grimper le multiplicateur. Quatre modes de risque, du ×4,44 au ×207, tous calibrés autour de 98 % de RTP.",
+                     en:'A stone skips across the lake: every bounce raises the multiplier. Four risk modes, from ×4.44 to ×207, all calibrated around 98% RTP.'},
+  'g.ricochet.mech':{fr:'Multiplicateur à rebonds',en:'Bounce multiplier'},
+  'g.candy.desc':{fr:"Nourris le monstre bonbon après bonbon pour faire monter le multiplicateur, et encaisse avant qu'il ne recrache tout. Un cash-out à risque croissant en quatre modes.",
+                  en:'Feed the monster one sweet at a time to push the multiplier up, and cash out before he spits it all back. A rising-risk cash-out game in four modes.'},
+  'g.candy.mech':{fr:'Cash-out progressif',en:'Progressive cash-out'},
+  'g.corsair.desc':{fr:"Machine à sous 243 ways dans la cale d'un navire pirate, avec un capitaine qui réagit à chaque tirage. Les bonus Simple Treasure et Incredible Treasure se jouent au canon.",
+                    en:"A 243-ways slot in the hold of a pirate ship, with a captain who reacts to every spin. The Simple Treasure and Incredible Treasure bonuses are played with a cannon."},
+  'g.corsair.mech':{fr:'Slot + Hold & Win',en:'Slot + Hold & Win'},
+  'g.soon.name':{fr:'Prochain jeu',en:'Next game'},
+  'g.soon.desc':{fr:'En conception.',en:'In design.'},
+  'vol.lowext':{fr:'Faible à extrême',en:'Low to extreme'},
+  'vol.high':{fr:'Élevée',en:'High'}
+});
+
 // ── BALANCE ──
 const NC_KEY='nc_portfolio_balance',INIT=1000;
 function getBal(){try{const v=parseFloat(localStorage.getItem(NC_KEY));return isNaN(v)?INIT:v;}catch(e){return INIT;}}
-var fmtBal=function(v){return Number(v).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});};
+var fmtBal=function(v){return KC.num(v,2);};
 function setBal(v){try{localStorage.setItem(NC_KEY,v);}catch(e){}document.getElementById('balVal').textContent=fmtBal(v);}
-function reloadBal(){var v=getBal()+INIT;setBal(v);showToast('+1 000 € chargés — Solde : '+fmtBal(v)+' €');}
-function resetBal(){setBal(INIT);showToast('Solde réinitialisé à 1 000 €');}
+function reloadBal(){var v=getBal()+INIT;setBal(v);showToast(KC.t('bal.reloaded',{v:fmtBal(v)}));}
+function resetBal(){setBal(INIT);showToast(KC.t('bal.wasreset'));}
 let toastT;
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2500);}
 setBal(getBal());
-try{if(sessionStorage.getItem('nc_came_from_game')){showToast('Solde récupéré : '+fmtBal(getBal())+' €');sessionStorage.removeItem('nc_came_from_game');}}catch(e){}
+try{if(sessionStorage.getItem('nc_came_from_game')){showToast(KC.t('bal.back',{v:fmtBal(getBal())}));sessionStorage.removeItem('nc_came_from_game');}}catch(e){}
 
 // ── TABS (avec URL : #moi, #experiences, #projets) ──
 const HASH={moi:'moi',exp:'experiences',projets:'projets'};
@@ -417,7 +523,7 @@ function switchTab(id,fromHash){
   if(!HASH[id])id='projets';
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+id));
   document.querySelectorAll('.tab-btn').forEach(b=>b.setAttribute('aria-selected',b.id==='t-'+id?'true':'false'));
-  if(!fromHash){try{history.replaceState(null,'','#'+HASH[id]);}catch(e){}window.scrollTo({top:0});}
+  if(!fromHash){try{history.replaceState(null,'',location.pathname+location.search+'#'+HASH[id]);}catch(e){}window.scrollTo({top:0});}
 }
 function tabFromHash(){const h=location.hash.replace('#','');const id=Object.keys(HASH).find(k=>HASH[k]===h);switchTab(id||'projets',true);}
 window.addEventListener('hashchange',tabFromHash);
@@ -428,40 +534,41 @@ document.querySelector('.tabs-nav').addEventListener('keydown',e=>{
   const n=tabs[(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length];n.focus();n.click();
 });
 
-// ── JEUX ──
+// ── JEUX : deux catégories, mini-jeux et machines à sous ──
 const GAMES=[
-  {id:'ricochet',url:'ricochet.html',name:'Ricochet',rtp:'98',img:'vitrine_ricochet.jpg',
-   desc:"Un galet ricoche sur le lac : chaque rebond fait grimper le multiplicateur. Quatre modes de risque, du ×4,44 au ×207, tous calibrés autour de 98 % de RTP.",
-   facts:[['Mécanique','Multiplicateur à rebonds'],['Gain max','×207'],['Volatilité','Faible à extrême']],gdd:'GDD_Ricochet.pdf'},
-  {id:'candy',url:'candy_monster.html',name:'Candy Monster',rtp:'98',img:'vitrine_candy.jpg',
-   desc:"Nourris le monstre bonbon après bonbon pour faire monter le multiplicateur, et encaisse avant qu'il ne recrache tout. Un cash-out à risque croissant en quatre modes.",
-   facts:[['Mécanique','Cash-out progressif'],['Gain max','×181 060'],['Volatilité','Faible à extrême']],gdd:'GDD_CandyMonster.pdf'},
-  {id:'corsair',url:'corsairs_fortune.html',name:"Corsair's Fortune",rtp:'96',img:'vitrine_corsair.jpg',
-   desc:"Machine à sous 243 ways dans la cale d'un navire pirate, avec un capitaine qui réagit à chaque tirage. Les bonus Simple Treasure et Incredible Treasure se jouent au canon.",
-   facts:[['Mécanique','Slot + Hold & Win'],['Gain max','×15 000'],['Volatilité','Élevée']],gdd:null},
-  {id:'soon',url:null,name:'Prochain jeu',rtp:null,img:null,desc:'En conception.',facts:[],gdd:null},
+  {id:'ricochet',cat:'mini',url:'ricochet.html',name:'Ricochet',rtp:'98',img:'vitrine_ricochet.jpg',
+   facts:[['f.mech','g.ricochet.mech'],['f.max','×207'],['f.vol','vol.lowext']],gdd:'GDD_Ricochet.pdf'},
+  {id:'candy',cat:'mini',url:'candy_monster.html',name:'Candy Monster',rtp:'98',img:'vitrine_candy.jpg',
+   facts:[['f.mech','g.candy.mech'],['f.max',['×181 060','×181,060']],['f.vol','vol.lowext']],gdd:'GDD_CandyMonster.pdf'},
+  {id:'soon',cat:'mini',url:null,name:null,rtp:null,img:null,facts:[],gdd:null},
+  {id:'corsair',cat:'slot',url:'corsairs_fortune.html',name:"Corsair's Fortune",rtp:'96',img:'vitrine_corsair.jpg',
+   facts:[['f.mech','g.corsair.mech'],['f.max',['×15 000','×15,000']],['f.vol','vol.high']],gdd:null},
 ];
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+// une valeur de fiche est une clé de traduction, un texte fixe, ou une paire [fr, en]
+const val=v=>Array.isArray(v)?v[KC.lang==='fr'?0:1]:KC.t(v);
+function cardHTML(g){
+  const avail=!!g.url,t=KC.t,name=g.name||t('g.'+g.id+'.name');
+  const media=g.img
+    ?'<img src="'+g.img+'" alt="" width="600" height="800" loading="lazy">'
+    :'<canvas id="cv_'+g.id+'" width="288" height="384" aria-hidden="true"></canvas>';
+  const badge=(g.rtp?'<span class="card-rtp">RTP <b>'+g.rtp+(KC.lang==='fr'?'\u00a0%':'%')+'</b></span>':'')+(!avail?'<span class="badge-soon"><span>'+t('card.soon')+'</span></span>':'');
+  const card=avail
+    ?'<a class="game-card" href="'+g.url+'" aria-label="'+esc(t('card.playAria',{n:name}))+'">'+media+badge+'</a>'
+    :'<div class="game-card" aria-hidden="true">'+media+badge+'</div>';
+  const facts=g.facts.length?'<dl class="game-facts">'+g.facts.map(f=>'<div><dt>'+t(f[0])+'</dt><dd>'+esc(val(f[1]))+'</dd></div>').join('')+'</dl>':'';
+  const links=avail?'<div class="game-links"><a class="btn btn-primary" href="'+g.url+'">'+t('card.play')+'</a>'+(g.gdd?'<a class="btn btn-ghost" href="'+g.gdd+'" target="_blank" rel="noopener">'+t('card.gdd')+'</a>':'')+'</div>':'';
+  return '<article class="game'+(avail?'':' locked')+'">'+card+
+    '<div class="game-body"><h3 class="game-name">'+(avail?'<a href="'+g.url+'">'+esc(name)+'</a>':esc(name))+'</h3>'+
+    '<p class="game-desc">'+esc(t('g.'+g.id+'.desc'))+'</p>'+
+    (avail?'<p class="game-live" data-live="total:'+g.id+'" hidden><span class="live-dot" aria-hidden="true"></span><span><b data-n></b>&nbsp;<span data-pl="'+esc(t('live.played.pl'))+'" data-sg="'+esc(t('live.played.sg'))+'">'+t('live.played.pl')+'</span><span data-live="playing:'+g.id+'" data-hide-zero hidden> · <b data-n></b>&nbsp;'+t('live.ingame')+'</span></span></p>':'')+
+    facts+links+'</div></article>';
+}
 function buildCards(){
-  const grid=document.getElementById('gameGrid');
-  grid.innerHTML=GAMES.map(g=>{
-    const avail=!!g.url;
-    const media=g.img
-      ?'<img src="'+g.img+'" alt="" width="600" height="800" loading="lazy">'
-      :'<canvas id="cv_'+g.id+'" width="288" height="384" aria-hidden="true"></canvas>';
-    const badge=(g.rtp?'<span class="card-rtp">RTP <b>'+g.rtp+' %</b></span>':'')+(!avail?'<span class="badge-soon"><span>Bientôt</span></span>':'');
-    const card=avail
-      ?'<a class="game-card" href="'+g.url+'" aria-label="Jouer à '+esc(g.name)+'">'+media+badge+'</a>'
-      :'<div class="game-card" aria-hidden="true">'+media+badge+'</div>';
-    const facts=g.facts.length?'<dl class="game-facts">'+g.facts.map(f=>'<div><dt>'+f[0]+'</dt><dd>'+esc(f[1])+'</dd></div>').join('')+'</dl>':'';
-    const links=avail?'<div class="game-links"><a class="btn btn-primary" href="'+g.url+'">Jouer</a>'+(g.gdd?'<a class="btn btn-ghost" href="'+g.gdd+'" target="_blank" rel="noopener">GDD (PDF)</a>':'')+'</div>':'';
-    return '<article class="game'+(avail?'':' locked')+'">'+card+
-      '<div class="game-body"><h3 class="game-name">'+(avail?'<a href="'+g.url+'">'+esc(g.name)+'</a>':esc(g.name))+'</h3>'+
-      '<p class="game-desc">'+esc(g.desc)+'</p>'+
-      (avail?'<p class="game-live" data-live="total:'+g.id+'" hidden><span class="live-dot" aria-hidden="true"></span><span><b data-n></b>&nbsp;<span data-pl="parties jouées" data-sg="partie jouée">parties jouées</span><span data-live="playing:'+g.id+'" data-hide-zero hidden> · <b data-n></b>&nbsp;en jeu</span></span></p>':'')+
-      facts+links+'</div></article>';
-  }).join('');
+  document.getElementById('gridMini').innerHTML=GAMES.filter(g=>g.cat==='mini').map(cardHTML).join('');
+  document.getElementById('gridSlots').innerHTML=GAMES.filter(g=>g.cat==='slot').map(cardHTML).join('');
   const cv=document.getElementById('cv_soon');if(cv)drawSoon(cv);
+  if(window.KCLive&&KCLive.refresh)KCLive.refresh();
 }
 function drawSoon(cv){
   const c=cv.getContext('2d'),W=cv.width,H=cv.height;
@@ -472,7 +579,14 @@ function drawSoon(cv){
   c.fillStyle='rgba(255,255,255,.1)';c.font='bold '+Math.round(W*.44)+'px Arial';c.textAlign='center';
   c.fillText('?',W*.5,H*.62);
 }
-buildCards();
+function relang(){
+  buildCards();
+  setBal(getBal());
+  document.getElementById('reloadBtn').textContent=KC.lang==='fr'?'+1\u00a0000\u00a0€':'+1,000\u00a0€';
+  document.getElementById('ctaMail').href='mailto:nathancollardpro@hotmail.com?subject='+encodeURIComponent(KC.t('cta.subject'));
+}
+relang();
+KC.on(relang);
 </script>
 </body>
 </html>

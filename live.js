@@ -5,7 +5,7 @@
   try{id=localStorage.getItem(KEY);if(!id){id=Math.random().toString(36).slice(2,12)+Date.now().toString(36);localStorage.setItem(KEY,id);}}
   catch(e){id=Math.random().toString(36).slice(2,12)+Date.now().toString(36);}
   var game=document.documentElement.getAttribute('data-game')||null,pending=0,last=null,subs=[];
-  var nf=function(n){return Number(n||0).toLocaleString('fr-FR');};
+  var nf=function(n){return Number(n||0).toLocaleString(window.KC?KC.loc():'fr-FR');};
   function render(d){last=d;
     document.querySelectorAll('[data-live]').forEach(function(el){
       var k=el.getAttribute('data-live'),v=null;
@@ -22,7 +22,7 @@
     if(leave&&navigator.sendBeacon){navigator.sendBeacon(API,new Blob([body],{type:'text/plain'}));return;}
     fetch(API,{method:'POST',headers:{'content-type':'text/plain'},body:body,keepalive:true,cache:'no-store'})
       .then(function(r){if(!r.ok)throw 0;return r.json();}).then(render).catch(function(){pending+=s;});}
-  window.KCLive={spin:function(n){pending+=(n||1);},on:function(f){subs.push(f);if(last)f(last);}};
+  window.KCLive={spin:function(n){pending+=(n||1);},on:function(f){subs.push(f);if(last)f(last);},refresh:function(){if(last)render(last);}};
   if(location.protocol==='file:')return;
   send();setInterval(function(){if(!document.hidden)send();},25000);
   document.addEventListener('visibilitychange',function(){if(!document.hidden)send();});

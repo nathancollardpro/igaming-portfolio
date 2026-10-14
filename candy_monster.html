@@ -7,6 +7,7 @@
 <meta name="description" content="Candy Monster : nourris le monstre bonbon après bonbon pour faire monter le multiplicateur, et encaisse avant qu'il ne recrache tout. RTP 98 %.">
 <meta name="theme-color" content="#0b1622">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<script src="i18n.js"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Candy Monster — un jeu de Nathan Collard">
 <meta property="og:description" content="Candy Monster : nourris le monstre bonbon après bonbon pour faire monter le multiplicateur, et encaisse avant qu'il ne recrache tout. RTP 98 %.">
@@ -146,31 +147,32 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
 </head>
 <body>
 <nav class="gnav" aria-label="Navigation">
-  <a id="backBtn" href="index.html#projets" onclick="saveAndBack(event)">← Tous les jeux</a>
-  <span class="glive" data-live="online" hidden title="Visiteurs sur le site en ce moment (compteur réel)"><i class="ldot" aria-hidden="true"></i><b data-n>0</b> <em data-pl="joueurs en ligne" data-sg="joueur en ligne">joueurs en ligne</em></span>
+  <a id="backBtn" href="index.html#projets" onclick="saveAndBack(event)" data-i18n="nav.back">← Tous les jeux</a>
+  <span class="glive" data-live="online" hidden data-i18n-attr="title:live.title"><i class="ldot" aria-hidden="true"></i><b data-n>0</b> <em data-i18n-pl="live.online.pl" data-i18n-sg="live.online.sg">joueurs en ligne</em></span>
   <span>Nathan Collard · Game Designer</span>
+  <div data-lang-switch></div>
 </nav>
 <main class="gpage">
 <header class="ghead">
   <img class="gposter" src="vitrine_candy.jpg" alt="" width="600" height="800">
-  <div class="gtitle"><h1>Candy Monster</h1><p>Nourris le monstre pour faire monter le multiplicateur, et encaisse avant qu'il ne recrache tout.</p></div>
+  <div class="gtitle"><h1>Candy Monster</h1><p data-i18n="g.tag">Nourris le monstre pour faire monter le multiplicateur, et encaisse avant qu'il ne recrache tout.</p></div>
 </header>
 <div id="tt" class="tt"></div>
 <div class="shell">
   <div class="topbar">
     <div class="balgrp">
-      <span class="ballbl">Balance</span>
+      <span class="ballbl" data-i18n="ui.balance">Balance</span>
       <span class="balval"><span id="bal">1 000</span> €</span>
     </div>
-    <button class="snd" id="sndBtn" onclick="toggleSnd()">Son ON</button>
+    <button class="snd" id="sndBtn" onclick="toggleSnd()" data-i18n="ui.sndOn">Son ON</button>
   </div>
   <div class="cvarea">
-    <canvas id="gc" role="img" aria-label="Le monstre de Candy Monster, le multiplicateur et les paliers"></canvas>
+    <canvas id="gc" role="img" aria-label="Le monstre de Candy Monster, le multiplicateur et les paliers" data-i18n-attr="aria-label:g.cvAria"></canvas>
   </div>
   <div class="ctrls">
     <div class="crow">
       <div class="cblk">
-        <div class="clbl">Mise</div>
+        <div class="clbl" data-i18n="ui.bet">Mise</div>
         <div class="bwrap"><span class="cur">€</span><input type="number" id="bi" value="10" min="1"></div>
         <div class="bbtns">
           <button class="bbtn" onclick="adj(.5)">½</button>
@@ -180,12 +182,12 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
         </div>
       </div>
       <div class="cblk">
-        <div class="clbl">Difficulté</div>
+        <div class="clbl" data-i18n="ui.diff">Difficulté</div>
         <div class="dgrid" id="dg"></div>
       </div>
     </div>
     <div class="lrow">
-      <button class="lbtn" id="feedBtn" onclick="onFeedClick()">🍬 Nourrir</button>
+      <button class="lbtn" id="feedBtn" onclick="onFeedClick()" data-i18n="ui.feed">🍬 Nourrir</button>
       <div style="display:flex;flex-direction:column;gap:3px;align-items:stretch">
         <button class="cobtn" id="coBtn" onclick="cashout()" disabled>💰 Cash Out</button>
         <div id="gainPot" style="font-size:11px;font-weight:700;color:#f5a623;text-align:center;opacity:0;transition:opacity .2s;letter-spacing:.02em">+0.00 €</div>
@@ -193,24 +195,71 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
     </div>
   </div>
   <div class="srow">
-    <div class="stat"><div class="slbl">Parties</div><div class="sval" id="sg">0</div></div>
-    <div class="stat"><div class="slbl">Victoires</div><div class="sval g" id="sw">0</div></div>
-    <div class="stat"><div class="slbl">Meilleur gain</div><div class="sval" id="smx">—</div></div>
+    <div class="stat"><div class="slbl" data-i18n="ui.games">Parties</div><div class="sval" id="sg">0</div></div>
+    <div class="stat"><div class="slbl" data-i18n="ui.wins">Victoires</div><div class="sval g" id="sw">0</div></div>
+    <div class="stat"><div class="slbl" data-i18n="ui.best">Meilleur gain</div><div class="sval" id="smx">—</div></div>
   </div>
-  <div class="hist"><div class="hlbl">Historique</div><div class="hlist" id="hl"></div></div>
+  <div class="hist"><div class="hlbl" data-i18n="ui.hist">Historique</div><div class="hlist" id="hl"></div></div>
 </div>
-<section class="grules" aria-label="Règles et chiffres">
-<dl class="gfacts"><div><dt>RTP</dt><dd>98 %</dd></div><div><dt>Gain max</dt><dd>×181 060</dd></div><div><dt>Volatilité</dt><dd>Faible à extrême</dd></div><div><dt>Modes</dt><dd>4</dd></div></dl>
-<div><h2>Comment jouer</h2>
-<p>Choisis ta mise et un mode, puis nourris le monstre. Chaque bonbon avalé fait monter le multiplicateur ; s'il en refuse un, la manche est perdue. Encaisse quand tu veux avec <b>Cash Out</b>. Au dernier palier, le gain est encaissé automatiquement.</p>
-<p>Raccourcis : <kbd>Espace</kbd> pour nourrir, <kbd>Entrée</kbd> pour encaisser.</p></div>
-<div><h2>Paliers · mode <span id="oddsMode">Facile</span></h2>
+<section class="grules" aria-label="Règles et chiffres" data-i18n-attr="aria-label:r.aria">
+<dl class="gfacts"><div><dt>RTP</dt><dd data-i18n="r.rtpv">98 %</dd></div><div><dt data-i18n="r.max">Gain max</dt><dd data-i18n="r.maxv">×181 060</dd></div><div><dt data-i18n="r.vol">Volatilité</dt><dd data-i18n="r.volv">Faible à extrême</dd></div><div><dt data-i18n="r.modes">Modes</dt><dd>4</dd></div></dl>
+<div><h2 data-i18n="r.how">Comment jouer</h2>
+<p data-i18n-html="r.p1">Choisis ta mise et un mode, puis nourris le monstre. Chaque bonbon avalé fait monter le multiplicateur ; s'il en refuse un, la manche est perdue. Encaisse quand tu veux avec <b>Cash Out</b>. Au dernier palier, le gain est encaissé automatiquement.</p>
+<p data-i18n-html="r.p2">Raccourcis : <kbd>Espace</kbd> pour nourrir, <kbd>Entrée</kbd> pour encaisser.</p></div>
+<div><h2><span data-i18n="r.odds">Paliers · mode</span> <span id="oddsMode">Facile</span></h2>
 <div class="odds-wrap"><table class="odds" id="odds"></table></div>
-<p class="odds-meta">Chaque multiplicateur vaut 0,98 ÷ la chance d'y arriver : le RTP reste d'environ <b>98 %</b>, quel que soit le moment où tu encaisses.</p></div>
-<a class="glink" href="GDD_CandyMonster.pdf" target="_blank" rel="noopener">Lire le GDD (PDF)</a>
+<p class="odds-meta" data-i18n-html="r.meta">Chaque multiplicateur vaut 0,98 ÷ la chance d'y arriver : le RTP reste d'environ <b>98 %</b>, quel que soit le moment où tu encaisses.</p></div>
+<a class="glink" href="GDD_CandyMonster.pdf" target="_blank" rel="noopener" data-i18n="r.gdd">Lire le GDD (PDF)</a>
 </section>
 </main>
 <script>
+// ── TEXTES FR / EN ──
+KC.add({
+  'meta.title':{fr:'Candy Monster — jeu iGaming de Nathan Collard',en:'Candy Monster — an iGaming game by Nathan Collard'},
+  'meta.desc':{fr:"Candy Monster : nourris le monstre bonbon après bonbon pour faire monter le multiplicateur, et encaisse avant qu'il ne recrache tout. RTP 98 %.",en:'Candy Monster: feed the monster one sweet at a time to push the multiplier up, and cash out before he spits it all back. 98% RTP.'},
+  'nav.back':{fr:'← Tous les jeux',en:'← All games'},
+  'live.title':{fr:'Visiteurs sur le site en ce moment (compteur réel)',en:'Visitors on the site right now (real count)'},
+  'live.online.pl':{fr:'joueurs en ligne',en:'players online'},
+  'live.online.sg':{fr:'joueur en ligne',en:'player online'},
+  'g.tag':{fr:"Nourris le monstre pour faire monter le multiplicateur, et encaisse avant qu'il ne recrache tout.",en:'Feed the monster to push the multiplier up, and cash out before he spits it all back.'},
+  'g.cvAria':{fr:'Le monstre de Candy Monster, le multiplicateur et les paliers',en:'The Candy Monster, the multiplier and the steps'},
+  'ui.balance':{fr:'Balance',en:'Balance'},
+  'ui.sndOn':{fr:'Son ON',en:'Sound ON'},
+  'ui.sndOff':{fr:'Son OFF',en:'Sound OFF'},
+  'ui.bet':{fr:'Mise',en:'Bet'},
+  'ui.diff':{fr:'Difficulté',en:'Difficulty'},
+  'ui.feed':{fr:'🍬 Nourrir',en:'🍬 Feed'},
+  'ui.feedMore':{fr:'🍬 Nourrir encore',en:'🍬 Feed again'},
+  'ui.replay':{fr:'🍬 Rejouer',en:'🍬 Play again'},
+  'ui.games':{fr:'Parties',en:'Rounds'},
+  'ui.wins':{fr:'Victoires',en:'Wins'},
+  'ui.best':{fr:'Meilleur gain',en:'Best win'},
+  'ui.hist':{fr:'Historique',en:'History'},
+  'mode.facile':{fr:'Facile',en:'Easy'},'mode.moyen':{fr:'Moyen',en:'Medium'},'mode.difficile':{fr:'Difficile',en:'Hard'},'mode.extreme':{fr:'Expert',en:'Expert'},
+  'pct':{fr:' %',en:'%'},
+  'c.feedMe':{fr:'Nourris le monstre !',en:'Feed the monster!'},
+  'c.lostBig':{fr:'PERDU',en:'LOST'},
+  'c.lost':{fr:'Perdu {v} €',en:'Lost {v} €'},
+  'c.histLost':{fr:'perdu',en:'lost'},
+  'c.ttStep':{fr:'Chance depuis le départ : <b>{a} %</b><br>Chance de passer ce palier : {b} %',en:'Chance from the start: <b>{a}%</b><br>Chance to clear this step: {b}%'},
+  'c.ttRisk':{fr:'Risque au 1er bonbon : {p} %',en:'Risk on the 1st sweet: {p}%'},
+  'r.aria':{fr:'Règles et chiffres',en:'Rules and numbers'},
+  'r.rtpv':{fr:'98 %',en:'98%'},
+  'r.max':{fr:'Gain max',en:'Max win'},
+  'r.maxv':{fr:'×181 060',en:'×181,060'},
+  'r.vol':{fr:'Volatilité',en:'Volatility'},
+  'r.volv':{fr:'Faible à extrême',en:'Low to extreme'},
+  'r.modes':{fr:'Modes',en:'Modes'},
+  'r.how':{fr:'Comment jouer',en:'How to play'},
+  'r.p1':{fr:"Choisis ta mise et un mode, puis nourris le monstre. Chaque bonbon avalé fait monter le multiplicateur ; s'il en refuse un, la manche est perdue. Encaisse quand tu veux avec <b>Cash Out</b>. Au dernier palier, le gain est encaissé automatiquement.",
+          en:'Pick your bet and a mode, then feed the monster. Every sweet he swallows raises the multiplier; if he refuses one, the round is lost. Cash out whenever you like with <b>Cash Out</b>. At the last step, the win is cashed out automatically.'},
+  'r.p2':{fr:'Raccourcis : <kbd>Espace</kbd> pour nourrir, <kbd>Entrée</kbd> pour encaisser.',en:'Shortcuts: <kbd>Space</kbd> to feed, <kbd>Enter</kbd> to cash out.'},
+  'r.odds':{fr:'Paliers · mode',en:'Steps · mode'},
+  'r.meta':{fr:"Chaque multiplicateur vaut 0,98 ÷ la chance d'y arriver : le RTP reste d'environ <b>98 %</b>, quel que soit le moment où tu encaisses.",en:'Each multiplier equals 0.98 ÷ the chance of reaching it: RTP stays around <b>98%</b> whenever you cash out.'},
+  'r.gdd':{fr:'Lire le GDD (PDF)',en:'Read the GDD (PDF)'},
+  'o.candies':{fr:'Bonbons',en:'Sweets'},'o.mult':{fr:'Multiplicateur',en:'Multiplier'},'o.reach':{fr:"Chance d'y arriver",en:'Chance to reach'}
+});
+
 /* ── CONFIG ────────────────────────────────────────────────── */
 const MODES={
   facile:{label:'😄 Facile',color:'#00e701',bg:'rgba(0,231,1,.10)',
@@ -236,7 +285,7 @@ const MODES={
 };
 
 /* ── STATE ─────────────────────────────────────────────────── */
-const fmtEur=v=>v.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmtEur=v=>KC.num(v,2);
 let bal=1000,mod='facile',sndOn=true,busy=false;
 let phase='idle'; // idle|active|busted|cashedout
 let step=0,currentMult=1.0,currentBet=10;
@@ -683,7 +732,7 @@ function drawHungerBar(){
     // Mult label
     ctx.globalAlpha=isDone?.5:1;
     const mult=mults[i];
-    const multStr=mult>=1000?`×${(mult/1000).toFixed(1)}k`:mult>=100?`×${Math.round(mult)}`:mult>=10?`×${mult.toFixed(1)}`:`×${mult.toFixed(2)}`;
+    const multStr='×'+KC.dec(mult>=1000?(mult/1000).toFixed(1)+'k':mult>=100?String(Math.round(mult)):mult>=10?mult.toFixed(1):mult.toFixed(2));
     ctx.fillStyle=isDone?'#00e701':isCurrent?'#ffffff':modeCol;
     ctx.font=`bold ${slotW*.155}px Arial`;
     ctx.fillText(multStr,cx2,rowY-pillH*.06);
@@ -706,16 +755,16 @@ function drawMultiplierOverlay(){
   const pulseFactor=phase==='active'?(1+Math.sin(wt*.09)*.028):1;
 
   if(phase==='idle'){
-    multTxt='×1.00';multCol='rgba(255,255,255,.6)';subTxt='Nourris le monstre !';subCol='rgba(255,220,240,.85)';
+    multTxt='×'+KC.dec('1.00');multCol='rgba(255,255,255,.6)';subTxt=KC.t('c.feedMe');subCol='rgba(255,220,240,.85)';
   } else if(phase==='active'){
-    multTxt=`×${currentMult.toFixed(2)}`;multCol=modeCol;
+    multTxt='×'+KC.dec(currentMult.toFixed(2));multCol=modeCol;
     multPulse++;
     subTxt='';subCol='transparent';
   } else if(phase==='busted'){
-    multTxt='PERDU';multCol='#e74c3c';subTxt=`Perdu ${currentBet.toFixed(2)} €`;subCol='rgba(231,76,60,.6)';
+    multTxt=KC.t('c.lostBig');multCol='#e74c3c';subTxt=KC.t('c.lost',{v:fmtEur(currentBet)});subCol='rgba(231,76,60,.6)';
   } else {
-    multTxt=`×${currentMult.toFixed(2)}`;multCol='#00e701';
-    subTxt=`+${(currentBet*(currentMult-1)).toFixed(2)} €  Cash Out !`;subCol='rgba(0,231,1,.7)';
+    multTxt='×'+KC.dec(currentMult.toFixed(2));multCol='#00e701';
+    subTxt='+'+fmtEur(currentBet*(currentMult-1))+' €  Cash Out !';subCol='rgba(0,231,1,.7)';
   }
 
   const fs=H*.108*pulseFactor;
@@ -867,7 +916,7 @@ function onFeedClick(){
     if(resetTid){clearTimeout(resetTid);resetTid=null;}
     phase='idle';step=0;currentMult=1.0;
     monState='idle';vomParts=[];confParts=[];
-    document.getElementById('feedBtn').textContent='🍬 Nourrir';
+    document.getElementById('feedBtn').textContent=KC.t('ui.feed');
     document.getElementById('coBtn').disabled=true;
   }
 
@@ -878,7 +927,7 @@ function onFeedClick(){
     bal-=currentBet;upd();window.KCLive&&KCLive.spin();
     phase='active';step=0;currentMult=1.0;
     document.getElementById('coBtn').disabled=false;
-    document.getElementById('feedBtn').textContent='🍬 Nourrir encore';
+    document.getElementById('feedBtn').textContent=KC.t('ui.feedMore');
   }
 
   if(phase!=='active')return; // safety guard
@@ -919,7 +968,7 @@ function finishFeed(){
       resetTid=null;
       phase='idle';step=0;currentMult=1.0;
       monState='idle';confParts=[];
-      document.getElementById('feedBtn').textContent='🍬 Nourrir';
+      document.getElementById('feedBtn').textContent=KC.t('ui.feed');
       document.getElementById('feedBtn').disabled=false;
       document.getElementById('bi').disabled=false;
       document.getElementById('coBtn').disabled=true;
@@ -938,14 +987,14 @@ function endBust(){
   st.games++;
   addHist(0,false);upd();
   busy=false;setUI(true);
-  document.getElementById('feedBtn').textContent='🍬 Rejouer';
+  document.getElementById('feedBtn').textContent=KC.t('ui.replay');
   document.getElementById('coBtn').disabled=true;
   // Auto-reset after delay — but can be cancelled if user clicks faster
   resetTid=setTimeout(()=>{
     resetTid=null;
     phase='idle';step=0;currentMult=1.0;
     monState='idle';vomParts=[];
-    document.getElementById('feedBtn').textContent='🍬 Nourrir';
+    document.getElementById('feedBtn').textContent=KC.t('ui.feed');
     document.getElementById('coBtn').disabled=true;
     upd();
   },2200);
@@ -966,7 +1015,7 @@ function cashout(){
     resetTid=null;
     phase='idle';step=0;currentMult=1.0;
     monState='idle';confParts=[];
-    document.getElementById('feedBtn').textContent='🍬 Nourrir';
+    document.getElementById('feedBtn').textContent=KC.t('ui.feed');
     document.getElementById('feedBtn').disabled=false;
     document.getElementById('bi').disabled=false;
     upd();
@@ -983,7 +1032,7 @@ function upd(){
   const gp=document.getElementById('gainPot');
   if(phase==='active'&&step>0){
     const gain=(currentBet*(currentMult-1));
-    gp.textContent=`+${gain.toFixed(2)} €`;
+    gp.textContent='+'+fmtEur(gain)+' €';
     gp.style.opacity='1';
   } else {
     gp.style.opacity='0';
@@ -1013,8 +1062,8 @@ cv.addEventListener('mousemove',e=>{
     const cx2=startX+ix*slotW;
     if(mx>=cx2-pillW/2&&mx<=cx2+pillW/2&&my>=rowY-pillH*.82&&my<=rowY+pillH*.20){
       const cumPct=pcS(survPct(m,i));
-      const condPct=+(100*(1-m.busts[i])).toFixed(1);
-      tt.innerHTML=`Chance depuis le départ : <b>${cumPct} %</b><br>Chance de passer ce palier : ${condPct}%`;
+      const condPct=KC.dec(+(100*(1-m.busts[i])).toFixed(1));
+      tt.innerHTML=KC.t('c.ttStep',{a:cumPct,b:condPct});
       tt.style.left=(e.clientX+14)+'px';
       tt.style.top=(e.clientY-48)+'px';
       tt.classList.add('show');
@@ -1027,20 +1076,20 @@ cv.addEventListener('mouseleave',()=>tt.classList.remove('show'));
 function addHist(mult,win){
   hist.unshift({mult,win});if(hist.length>16)hist.pop();
   document.getElementById('hl').innerHTML=hist.map(h=>
-    `<span class="hp ${h.win?'w':'l'}">${h.win?'×'+h.mult.toFixed(2):'perdu'}</span>`).join('');
+    `<span class="hp ${h.win?'w':'l'}">${h.win?'×'+KC.dec(h.mult.toFixed(2)):KC.t('c.histLost')}</span>`).join('');
 }
-function toggleSnd(){sndOn=!sndOn;document.getElementById('sndBtn').textContent=sndOn?'Son ON':'Son OFF';}
+function toggleSnd(){sndOn=!sndOn;document.getElementById('sndBtn').textContent=KC.t(sndOn?'ui.sndOn':'ui.sndOff');}
 
 function buildModes(){
   const g=document.getElementById('dg');g.innerHTML='';
   const tt=document.getElementById('tt');
   Object.entries(MODES).forEach(([key,m],i)=>{
     const d=document.createElement('button');d.type='button';d.setAttribute('aria-pressed',key===mod?'true':'false');d.className='dbtn'+(key===mod?' act':'');
-    d.innerHTML=`<span class="dname">${m.label}</span>`;
+    d.innerHTML=`<span class="dname">${m.label.split(' ')[0]} ${KC.t('mode.'+key)}</span>`;
     d.style.setProperty('--mode-c',m.color);d.style.setProperty('--mode-bg',m.bg);
     d.onclick=()=>{if(phase!=='idle')return;mod=key;buildModes();};
     const bp=Math.round(m.busts[0]*100);
-    d.onmouseenter=()=>{tt.textContent=`Risque au 1er bonbon : ${bp}%`;tt.classList.add('show');};
+    d.onmouseenter=()=>{tt.textContent=KC.t('c.ttRisk',{p:bp});tt.classList.add('show');};
     d.onmousemove=(e)=>{tt.style.left=(e.clientX+14)+'px';tt.style.top=(e.clientY-38)+'px';};
     d.onmouseleave=()=>tt.classList.remove('show');
     g.appendChild(d);
@@ -1062,14 +1111,21 @@ window.addEventListener('beforeunload',saveBal);
 // ── Tableau des paliers du mode choisi ──
 // Chance d'atteindre le palier i, calculée depuis busts (les tirages réels), pas depuis cumWin arrondi
 function survPct(m,i){let s=100;for(let k=0;k<=i;k++)s*=1-m.busts[k];return s;}
-function pcS(v){return (v>=10?v.toFixed(1):v>=1?v.toFixed(2):Number(v.toPrecision(3)).toString()).replace('.',',');}
+function pcS(v){return KC.dec(v>=10?v.toFixed(1):v>=1?v.toFixed(2):Number(v.toPrecision(3)).toString());}
 function renderOdds(){
   const m=MODES[mod],el=document.getElementById('odds');if(!el)return;
-  document.getElementById('oddsMode').textContent=m.label.replace(/^\S+\s/,'');
-  const pc=v=>pcS(v)+'\u00a0%';
-  el.innerHTML='<thead><tr><th>Bonbons</th><th>Multiplicateur</th><th>Chance d\'y arriver</th></tr></thead><tbody>'+
-    m.mults.map((x,i)=>'<tr><td>'+(i+1)+'</td><td>×'+x.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+'</td><td>'+pc(survPct(m,i))+'</td></tr>').join('')+'</tbody>';
+  document.getElementById('oddsMode').textContent=KC.t('mode.'+mod);
+  const pc=v=>pcS(v)+KC.t('pct');
+  el.innerHTML='<thead><tr><th>'+KC.t('o.candies')+'</th><th>'+KC.t('o.mult')+'</th><th>'+KC.t('o.reach')+'</th></tr></thead><tbody>'+
+    m.mults.map((x,i)=>'<tr><td>'+(i+1)+'</td><td>×'+KC.num(x,2)+'</td><td>'+pc(survPct(m,i))+'</td></tr>').join('')+'</tbody>';
 }
+// ── Changement de langue sans recharger la page ──
+function feedLabel(){return KC.t(phase==='active'?'ui.feedMore':phase==='busted'?'ui.replay':'ui.feed');}
+KC.on(()=>{buildModes();upd();
+  document.getElementById('feedBtn').textContent=feedLabel();
+  document.getElementById('sndBtn').textContent=KC.t(sndOn?'ui.sndOn':'ui.sndOff');
+  document.getElementById('hl').innerHTML=hist.map(h=>`<span class="hp ${h.win?'w':'l'}">${h.win?'×'+KC.dec(h.mult.toFixed(2)):KC.t('c.histLost')}</span>`).join('');
+});
 renderOdds();
 // ── Raccourcis clavier : Espace = nourrir, Entrée = encaisser ──
 document.addEventListener('keydown',e=>{

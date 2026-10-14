@@ -7,6 +7,7 @@
 <meta name="description" content="Corsair's Fortune : machine à sous 243 ways dans la cale d'un navire pirate, avec les bonus Simple Treasure et Incredible Treasure. RTP 96 %, gain max ×15 000.">
 <meta name="theme-color" content="#1a0e06">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<script src="i18n.js"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Corsair's Fortune — un jeu de Nathan Collard">
 <meta property="og:description" content="Machine à sous 243 ways dans la cale d'un navire pirate. RTP 96 %, gain max ×15 000.">
@@ -217,24 +218,24 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:4px solid #ffe0
 </head>
 <body>
 <div id="game">
-  <canvas id="gc" role="img" aria-label="Corsair's Fortune : rouleaux dans la cale du navire, capitaine pirate et bonus au canon"></canvas>
+  <canvas id="gc" role="img" aria-label="Corsair's Fortune : rouleaux dans la cale du navire, capitaine pirate et bonus au canon" data-i18n-attr="aria-label:h.cv"></canvas>
   <div id="stage" class="land">
     <h1 class="sr-only">Corsair's Fortune</h1>
-    <div id="liveTag" data-live="online" hidden title="Visiteurs sur le site en ce moment (compteur réel)"><i aria-hidden="true"></i><b data-n>0</b><span data-pl="joueurs en ligne" data-sg="joueur en ligne">joueurs en ligne</span></div>
-    <div id="tap">Touchez l'écran pour activer la musique</div>
+    <div id="liveTag" data-live="online" hidden data-i18n-attr="title:live.title"><i aria-hidden="true"></i><b data-n>0</b><span data-i18n-pl="live.online.pl" data-i18n-sg="live.online.sg">joueurs en ligne</span></div>
+    <div id="tap" data-i18n="h.tapTouch">Touchez l'écran pour activer la musique</div>
 
-    <button class="buy-plaque" id="buyBtn" type="button" aria-haspopup="dialog" aria-label="Ouvrir le menu bonus"><span class="t1">BUY</span><span class="t2">BONUS</span></button>
-    <div class="boost-tag" id="boostTag" role="button" tabindex="0" aria-label="Scatter augmenté actif, ouvrir le menu bonus">⚡ SCATTER AUGMENTÉ ACTIF</div>
+    <button class="buy-plaque" id="buyBtn" type="button" aria-haspopup="dialog" aria-label="Ouvrir le menu bonus" data-i18n-attr="aria-label:h.buyAria"><span class="t1">BUY</span><span class="t2">BONUS</span></button>
+    <div class="boost-tag" id="boostTag" role="button" tabindex="0" data-i18n-attr="aria-label:h.boostAria" aria-label="Scatter augmenté actif, ouvrir le menu bonus" data-i18n="h.boostTag">⚡ SCATTER AUGMENTÉ ACTIF</div>
 
     <div id="hud">
       <div class="hud-grp g-left">
-        <a class="rbtn" id="lobbyBtn" href="index.html#projets" aria-label="Retour au portfolio"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></a>
-        <button class="rbtn" id="optBtn" type="button" aria-haspopup="dialog" aria-label="Options son et vitesse"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-        <button class="rbtn" id="infoBtn" type="button" aria-haspopup="dialog" aria-label="Règles et table des gains"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg></button>
+        <a class="rbtn" id="lobbyBtn" href="index.html#projets" aria-label="Retour au portfolio" data-i18n-attr="aria-label:h.lobby"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></a>
+        <button class="rbtn" id="optBtn" type="button" aria-haspopup="dialog" aria-label="Options son et vitesse" data-i18n-attr="aria-label:h.optAria"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+        <button class="rbtn" id="infoBtn" type="button" aria-haspopup="dialog" aria-label="Règles et table des gains" data-i18n-attr="aria-label:h.infoAria"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg></button>
       </div>
-      <div class="field f-bal"><span class="lbl">Solde</span><span class="val" id="balV">1 000,00 €</span></div>
-      <div class="field f-bet"><span class="lbl">Mise</span><div class="betctl"><button type="button" id="betDn" aria-label="Baisser la mise">−</button><span class="val" id="betV">1,00 €</span><button type="button" id="betUp" aria-label="Augmenter la mise">+</button></div></div>
-      <div class="field f-win"><span class="lbl">Gain</span><span class="val win" id="winV">—</span></div>
+      <div class="field f-bal"><span class="lbl" data-i18n="h.bal">Solde</span><span class="val" id="balV">1 000,00 €</span></div>
+      <div class="field f-bet"><span class="lbl" data-i18n="h.bet">Mise</span><div class="betctl"><button type="button" id="betDn" aria-label="Baisser la mise" data-i18n-attr="aria-label:h.betDn">−</button><span class="val" id="betV">1,00 €</span><button type="button" id="betUp" aria-label="Augmenter la mise" data-i18n-attr="aria-label:h.betUp">+</button></div></div>
+      <div class="field f-win"><span class="lbl" data-i18n="h.win">Gain</span><span class="val win" id="winV">—</span></div>
       <div class="spacer"></div>
       <div class="hud-grp g-right">
         <button class="rbtn speed" id="speedBtn" type="button" aria-label="Vitesse : normale"><svg viewBox="0 0 36 24"><path class="chev on" d="M4 4l8 8-8 8"/><path class="chev" d="M14 4l8 8-8 8"/><path class="chev" d="M24 4l8 8-8 8"/></svg></button>
@@ -247,67 +248,68 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:4px solid #ffe0
     <div id="veil"></div>
     <!-- MENU BONUS -->
     <div class="panel" id="buyPanel" role="dialog" aria-modal="true" aria-labelledby="buyTitle">
-      <div class="phead"><div class="ptitle" id="buyTitle">Menu bonus</div><button class="pclose" type="button" data-close aria-label="Fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <div class="phead"><div class="ptitle" id="buyTitle" data-i18n="b.title">Menu bonus</div><button class="pclose" type="button" data-close aria-label="Fermer" data-i18n-attr="aria-label:p.close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
       <div class="pbody">
         <div class="buybar">
-          <div class="betctl"><button type="button" class="bdn" aria-label="Baisser la mise">−</button><span class="val" id="buyBet">1,00 €</span><button type="button" class="bup" aria-label="Augmenter la mise">+</button></div>
-          <span class="note">Prix calculés sur la mise de base · RTP 96 % sur les trois options</span>
+          <div class="betctl"><button type="button" class="bdn" aria-label="Baisser la mise" data-i18n-attr="aria-label:h.betDn">−</button><span class="val" id="buyBet">1,00 €</span><button type="button" class="bup" aria-label="Augmenter la mise" data-i18n-attr="aria-label:h.betUp">+</button></div>
+          <span class="note" data-i18n="b.note">Prix calculés sur la mise de base · RTP 96 % sur les trois options</span>
         </div>
         <div class="feats">
           <div class="feat boost">
             <canvas id="artBoost" width="400" height="280" aria-hidden="true"></canvas>
-            <div class="fname">Scatter augmenté<span class="fsub">Scatter Boost</span></div>
+            <div class="fname"><span data-i18n="b.boost">Scatter augmenté</span><span class="fsub">Scatter Boost</span></div>
             <div class="fvol" id="volBoost"></div>
-            <p class="fdesc">Le bonus arrive 1,6 fois plus souvent. Chaque spin coûte 25 % de plus.</p>
+            <p class="fdesc" data-i18n="b.boostD">Le bonus arrive 1,6 fois plus souvent. Chaque spin coûte 25 % de plus.</p>
             <button class="fbuy" type="button" id="fBoost">ACTIVER<small id="fBoostP">1,25 € / spin</small></button>
           </div>
           <div class="feat simple">
             <canvas id="artSimple" width="400" height="280" aria-hidden="true"></canvas>
-            <div class="fname">Simple Treasure<span class="fsub">Bonus simple · 3 barils</span></div>
+            <div class="fname">Simple Treasure<span class="fsub" data-i18n="b.simpleS">Bonus simple · 3 barils</span></div>
             <div class="fvol" id="volSimple"></div>
-            <p class="fdesc">Multiplicateurs ×2 à ×4, MEGA jusqu'à ×20.</p>
-            <button class="fbuy" type="button" id="fSimple">ACHETER<small id="fSimpleP">85,00 €</small></button>
+            <p class="fdesc" data-i18n="b.simpleD">Multiplicateurs ×2 à ×4, MEGA jusqu'à ×20.</p>
+            <button class="fbuy" type="button" id="fSimple"><span data-i18n="b.buy">ACHETER</span><small id="fSimpleP">85,00 €</small></button>
           </div>
           <div class="feat incred">
             <canvas id="artIncred" width="400" height="280" aria-hidden="true"></canvas>
-            <div class="fname">Incredible Treasure<span class="fsub">Super bonus · 4 barils</span></div>
+            <div class="fname">Incredible Treasure<span class="fsub" data-i18n="b.incredS">Super bonus · 4 barils</span></div>
             <div class="fvol" id="volIncred"></div>
-            <p class="fdesc">Pièces plus fortes, multiplicateurs ×3 à ×6, MEGA jusqu'à ×40.</p>
-            <button class="fbuy" type="button" id="fIncred">ACHETER<small id="fIncredP">430,00 €</small></button>
+            <p class="fdesc" data-i18n="b.incredD">Pièces plus fortes, multiplicateurs ×3 à ×6, MEGA jusqu'à ×40.</p>
+            <button class="fbuy" type="button" id="fIncred"><span data-i18n="b.buy">ACHETER</span><small id="fIncredP">430,00 €</small></button>
           </div>
         </div>
-        <button class="demo" type="button" id="demoMega">Démo : forcer 5 barils, Mega Start (hors RTP)</button>
+        <button class="demo" type="button" id="demoMega" data-i18n="b.demo">Démo : forcer 5 barils, Mega Start (hors RTP)</button>
       </div>
     </div>
 
     <!-- CONFIRMATION D'ACHAT -->
     <div class="panel small" id="confirmPanel" role="dialog" aria-modal="true" aria-labelledby="cfTitle">
-      <div class="phead"><div class="ptitle" id="cfTitle">Confirmer</div><button class="pclose" type="button" data-close aria-label="Fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-      <div class="cbody"><p id="cfText"></p><div class="cbtns"><button type="button" class="no" data-close>Annuler</button><button type="button" class="yes" id="cfYes">Acheter</button></div></div>
+      <div class="phead"><div class="ptitle" id="cfTitle" data-i18n="c.title">Confirmer</div><button class="pclose" type="button" data-close aria-label="Fermer" data-i18n-attr="aria-label:p.close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <div class="cbody"><p id="cfText"></p><div class="cbtns"><button type="button" class="no" data-close data-i18n="c.no">Annuler</button><button type="button" class="yes" id="cfYes" data-i18n="c.yes">Acheter</button></div></div>
     </div>
 
     <!-- OPTIONS -->
     <div class="panel small" id="optPanel" role="dialog" aria-modal="true" aria-labelledby="optTitle">
-      <div class="phead"><div class="ptitle" id="optTitle">Options</div><button class="pclose" type="button" data-close aria-label="Fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <div class="phead"><div class="ptitle" id="optTitle">Options</div><button class="pclose" type="button" data-close aria-label="Fermer" data-i18n-attr="aria-label:p.close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
       <div class="pbody">
-        <div class="opt"><label for="volMus">Musique</label><input type="range" id="volMus" min="0" max="100" step="1" value="60"><output id="volMusO" for="volMus">60 %</output></div>
-        <div class="opt"><label for="volSfx">Sons</label><input type="range" id="volSfx" min="0" max="100" step="1" value="80"><output id="volSfxO" for="volSfx">80 %</output></div>
-        <div class="opt" style="grid-template-columns:200px 1fr"><label>Vitesse</label>
-          <div class="segs" role="group" aria-label="Vitesse"><button type="button" data-sp="0" aria-pressed="true">&gt;</button><button type="button" data-sp="1" aria-pressed="false">&gt;&gt;</button><button type="button" data-sp="2" aria-pressed="false">&gt;&gt;&gt;</button></div></div>
+        <div class="opt"><label for="volMus" data-i18n="o.music">Musique</label><input type="range" id="volMus" min="0" max="100" step="1" value="60"><output id="volMusO" for="volMus">60 %</output></div>
+        <div class="opt"><label for="volSfx" data-i18n="o.sfx">Sons</label><input type="range" id="volSfx" min="0" max="100" step="1" value="80"><output id="volSfxO" for="volSfx">80 %</output></div>
+        <div class="opt" style="grid-template-columns:200px 1fr"><label data-i18n="o.speed">Vitesse</label>
+          <div class="segs" role="group" aria-label="Vitesse" data-i18n-attr="aria-label:o.speed"><button type="button" data-sp="0" aria-pressed="true">&gt;</button><button type="button" data-sp="1" aria-pressed="false">&gt;&gt;</button><button type="button" data-sp="2" aria-pressed="false">&gt;&gt;&gt;</button></div></div>
+        <div class="opt" style="grid-template-columns:200px 1fr"><label data-i18n="o.lang">Langue</label><div data-lang-switch class="kc-lg"></div></div>
         <button class="mute" type="button" id="muteBtn">Couper tout le son</button>
       </div>
     </div>
 
     <!-- INFO -->
     <div class="panel" id="infoPanel" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
-      <div class="phead"><div class="ptitle" id="infoTitle">Corsair's Fortune</div><button class="pclose" type="button" data-close aria-label="Fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <div class="phead"><div class="ptitle" id="infoTitle">Corsair's Fortune</div><button class="pclose" type="button" data-close aria-label="Fermer" data-i18n-attr="aria-label:p.close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
       <div class="tabs" role="tablist">
-        <button type="button" role="tab" aria-selected="true" data-tab="tRules">Règles</button>
-        <button type="button" role="tab" aria-selected="false" data-tab="tPay">Gains</button>
-        <button type="button" role="tab" aria-selected="false" data-tab="tNum">Chiffres</button>
+        <button type="button" role="tab" aria-selected="true" data-tab="tRules" data-i18n="i.rules">Règles</button>
+        <button type="button" role="tab" aria-selected="false" data-tab="tPay" data-i18n="i.pay">Gains</button>
+        <button type="button" role="tab" aria-selected="false" data-tab="tNum" data-i18n="i.num">Chiffres</button>
       </div>
       <div class="pbody" style="border-top:3px solid var(--gold2)">
-        <div class="tabpane on" id="tRules" role="tabpanel">
+        <div class="tabpane on" id="tRules" role="tabpanel"><div data-i18n-html="i.rulesHtml">
           <h3>243 ways</h3>
           <p>Un gain se forme avec le même symbole sur des rouleaux consécutifs depuis la gauche, quelle que soit sa ligne. Le gain est multiplié par le nombre de combinaisons. Le <b>Wild</b> remplace les symboles sur les rouleaux 2 à 5.</p>
           <h3>Barils de poudre</h3>
@@ -323,21 +325,22 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:4px solid #ffe0
           <p><b>Espace</b> lance le tirage, tire au canon pendant le bonus et arrête les rouleaux en cours. Le bouton vitesse passe de &gt; à &gt;&gt;&gt;.</p>
           <p><b>Provably fair</b> : le résultat de chaque spin et de chaque bonus est entièrement tiré avant l'animation.</p>
         </div>
+        </div>
         <div class="tabpane" id="tPay" role="tabpanel">
-          <p>Gain par way pour 3, 4 et 5 rouleaux, à la mise actuelle.</p>
+          <p data-i18n="i.payNote">Gain par way pour 3, 4 et 5 rouleaux, à la mise actuelle.</p>
           <div class="ptab" id="ptab"></div>
         </div>
         <div class="tabpane" id="tNum" role="tabpanel">
           <div class="kv">
-            <div><span>RTP</span><strong>96,0 %</strong></div>
-            <div><span>Gain max</span><strong>×15 000</strong></div>
-            <div><span>Volatilité</span><strong>Élevée</strong></div>
+            <div><span>RTP</span><strong data-i18n="n.rtpv">96,0 %</strong></div>
+            <div><span data-i18n="n.max">Gain max</span><strong data-i18n="n.maxv">×15 000</strong></div>
+            <div><span data-i18n="n.vol">Volatilité</span><strong data-i18n="n.volv">Élevée</strong></div>
             <div><span>Bonus</span><strong>1 / 266 spins</strong></div>
-            <div><span>Avec scatter augmenté</span><strong>1 / 163 spins</strong></div>
-            <div><span>RTP de la session</span><strong id="sRtp">—</strong></div>
+            <div><span data-i18n="n.withBoost">Avec scatter augmenté</span><strong>1 / 163 spins</strong></div>
+            <div><span data-i18n="n.session">RTP de la session</span><strong id="sRtp">—</strong></div>
           </div>
-          <p style="margin-top:16px">Volatilité affichée en éclairs : écart-type des gains rapporté à la mise de base. Le RTP du jeu de base est calculé exactement ; ceux des bonus sont mesurés sur 1 million de simulations par type.</p>
-          <a class="back" href="index.html#projets">← Retour au portfolio de Nathan Collard</a>
+          <p style="margin-top:16px" data-i18n="n.foot">Volatilité affichée en éclairs : écart-type des gains rapporté à la mise de base. Le RTP du jeu de base est calculé exactement ; ceux des bonus sont mesurés sur 1 million de simulations par type.</p>
+          <a class="back" href="index.html#projets" data-i18n="n.back">← Retour au portfolio de Nathan Collard</a>
         </div>
       </div>
     </div>
@@ -481,6 +484,148 @@ return {SYM,NAMES,RC,P,PAY,W,S,rebuild,get STRIPS_B(){return STRIPS_B},get STRIP
   evalWays,exactWays,scatDist,spin,bonus,resolve,BLOCKS,CELLS,CENTER,BRIDGES,edge,blockCells,mulberry,hasScat};
 })();
 
+// ═════════════════════════ TEXTES FR / EN ═════════════════════════
+const SYM_EN=['10','J','Q','K','A','Hook','Hat','Helm','Chest','Wild','Powder keg'];
+const symName=s=>KC.lang==='fr'?CF.NAMES[s]:SYM_EN[s];
+KC.add({
+  'meta.title':{fr:"Corsair's Fortune — jeu iGaming de Nathan Collard",en:"Corsair's Fortune — an iGaming game by Nathan Collard"},
+  'meta.desc':{fr:"Corsair's Fortune : machine à sous 243 ways dans la cale d'un navire pirate, avec les bonus Simple Treasure et Incredible Treasure. RTP 96 %, gain max ×15 000.",
+               en:"Corsair's Fortune: a 243-ways slot in the hold of a pirate ship, with the Simple Treasure and Incredible Treasure bonuses. 96% RTP, max win ×15,000."},
+  'live.title':{fr:'Visiteurs sur le site en ce moment (compteur réel)',en:'Visitors on the site right now (real count)'},
+  'live.online.pl':{fr:'joueurs en ligne',en:'players online'},
+  'live.online.sg':{fr:'joueur en ligne',en:'player online'},
+  'pct':{fr:' %',en:'%'},
+  'colon':{fr:' : ',en:': '},
+  'h.cv':{fr:"Corsair's Fortune : rouleaux dans la cale du navire, capitaine pirate et bonus au canon",en:"Corsair's Fortune: reels in the ship's hold, a pirate captain and a cannon bonus"},
+  'h.tapTouch':{fr:"Touchez l'écran pour activer la musique",en:'Tap the screen to turn on the music'},
+  'h.tapClick':{fr:"Cliquez n'importe où pour lancer la musique",en:'Click anywhere to start the music'},
+  'h.buyAria':{fr:'Ouvrir le menu bonus',en:'Open the bonus menu'},
+  'h.boostAria':{fr:'Scatter augmenté actif, ouvrir le menu bonus',en:'Scatter Boost active, open the bonus menu'},
+  'h.boostTag':{fr:'⚡ SCATTER AUGMENTÉ ACTIF',en:'⚡ SCATTER BOOST ACTIVE'},
+  'h.lobby':{fr:'Retour au portfolio',en:'Back to the portfolio'},
+  'h.optAria':{fr:'Options : son, vitesse, langue',en:'Options: sound, speed, language'},
+  'h.infoAria':{fr:'Règles et table des gains',en:'Rules and paytable'},
+  'h.bal':{fr:'Solde',en:'Balance'},
+  'h.bet':{fr:'Mise',en:'Bet'},
+  'h.win':{fr:'Gain',en:'Win'},
+  'h.betDn':{fr:'Baisser la mise',en:'Lower the bet'},
+  'h.betUp':{fr:'Augmenter la mise',en:'Raise the bet'},
+  'p.close':{fr:'Fermer',en:'Close'},
+  'b.title':{fr:'Menu bonus',en:'Bonus menu'},
+  'b.note':{fr:'Prix calculés sur la mise de base · RTP 96 % sur les trois options',en:'Prices based on the base bet · 96% RTP on all three options'},
+  'b.boost':{fr:'Scatter augmenté',en:'Scatter Boost'},
+  'b.boostD':{fr:'Le bonus arrive 1,6 fois plus souvent. Chaque spin coûte 25 % de plus.',en:'The bonus lands 1.6 times more often. Each spin costs 25% more.'},
+  'b.simpleS':{fr:'Bonus simple · 3 barils',en:'Standard bonus · 3 barrels'},
+  'b.simpleD':{fr:"Multiplicateurs ×2 à ×4, MEGA jusqu'à ×20.",en:'Multipliers ×2 to ×4, MEGA up to ×20.'},
+  'b.incredS':{fr:'Super bonus · 4 barils',en:'Super bonus · 4 barrels'},
+  'b.incredD':{fr:"Pièces plus fortes, multiplicateurs ×3 à ×6, MEGA jusqu'à ×40.",en:'Bigger coins, multipliers ×3 to ×6, MEGA up to ×40.'},
+  'b.buy':{fr:'ACHETER',en:'BUY'},
+  'b.demo':{fr:'Démo : forcer 5 barils, Mega Start (hors RTP)',en:'Demo: force 5 barrels, Mega Start (outside RTP)'},
+  'c.title':{fr:'Confirmer',en:'Confirm'},
+  'c.no':{fr:'Annuler',en:'Cancel'},
+  'c.yes':{fr:'Acheter',en:'Buy'},
+  'o.music':{fr:'Musique',en:'Music'},
+  'o.sfx':{fr:'Sons',en:'Sounds'},
+  'o.speed':{fr:'Vitesse',en:'Speed'},
+  'o.lang':{fr:'Langue',en:'Language'},
+  'i.rules':{fr:'Règles',en:'Rules'},
+  'i.pay':{fr:'Gains',en:'Paytable'},
+  'i.num':{fr:'Chiffres',en:'Numbers'},
+  'i.rulesHtml':{fr:`
+          <h3>243 ways</h3>
+          <p>Un gain se forme avec le même symbole sur des rouleaux consécutifs depuis la gauche, quelle que soit sa ligne. Le gain est multiplié par le nombre de combinaisons. Le <b>Wild</b> remplace les symboles sur les rouleaux 2 à 5.</p>
+          <h3>Barils de poudre</h3>
+          <p>3, 4 ou 5 barils paient ×2, ×10 ou ×100 la mise et lancent un bonus : <b>Simple Treasure</b> (3), <b>Incredible Treasure</b> (4) ou <b>Mega Start</b> (5). Dès que 2 barils sont posés, les rouleaux suivants ralentissent.</p>
+          <h3>Le bonus au canon</h3>
+          <p>Le plateau compte 4 blocs de 3×3. Le centre de chaque bloc est un multiplicateur, les 32 autres cases sont des tonneaux. Appuie sur <b>FEU</b> : chaque tonneau a 5 % de chances de révéler une pièce, et chaque pièce remet le compteur à 3 tirs.</p>
+          <p><b>Activation</b> : un bloc active son multiplicateur quand sa ligne du bas ou sa colonne de droite est remplie. Sans activation, ses pièces paient ×1.</p>
+          <p><b>Ponts</b> : quand les bords qui se font face entre deux blocs voisins sont remplis, les blocs se relient et leurs multiplicateurs s'additionnent. 4 blocs reliés = <b>Grand Chelem</b>.</p>
+          <p><b>Simple Treasure</b> : multiplicateurs ×2 à ×4 (MEGA ×8 / ×12 / ×20). <b>Incredible Treasure</b> : pièces plus fortes, multiplicateurs ×3 à ×6 (MEGA ×15 / ×25 / ×40). <b>Mega Start</b> : Incredible Treasure avec 4 pièces déjà révélées et un multiplicateur MEGA garanti.</p>
+          <h3>Menu bonus</h3>
+          <p><b>Scatter augmenté</b> : +25 % de mise, bonus 1,6 fois plus fréquent, même RTP. <b>Simple Treasure</b> s'achète 85× la mise, <b>Incredible Treasure</b> 430×.</p>
+          <h3>Commandes</h3>
+          <p><b>Espace</b> lance le tirage, tire au canon pendant le bonus et arrête les rouleaux en cours. Le bouton vitesse passe de &gt; à &gt;&gt;&gt;.</p>
+          <p><b>Provably fair</b> : le résultat de chaque spin et de chaque bonus est entièrement tiré avant l'animation.</p>
+        `,en:`
+          <h3>243 ways</h3>
+          <p>A win forms with the same symbol on consecutive reels from the left, on any row. The win is multiplied by the number of combinations. The <b>Wild</b> substitutes for symbols on reels 2 to 5.</p>
+          <h3>Powder kegs</h3>
+          <p>3, 4 or 5 kegs pay ×2, ×10 or ×100 the bet and trigger a bonus: <b>Simple Treasure</b> (3), <b>Incredible Treasure</b> (4) or <b>Mega Start</b> (5). Once 2 kegs have landed, the remaining reels slow down.</p>
+          <h3>The cannon bonus</h3>
+          <p>The board has 4 blocks of 3×3. The centre of each block is a multiplier; the other 32 cells are barrels. Press <b>FIRE</b>: each barrel has a 5% chance to reveal a coin, and every coin resets the counter to 3 shots.</p>
+          <p><b>Activation</b>: a block activates its multiplier when its bottom row or right column is full. Without activation, its coins pay ×1.</p>
+          <p><b>Bridges</b>: when the facing edges of two neighbouring blocks are full, the blocks link up and their multipliers add together. 4 linked blocks = <b>Grand Slam</b>.</p>
+          <p><b>Simple Treasure</b>: multipliers ×2 to ×4 (MEGA ×8 / ×12 / ×20). <b>Incredible Treasure</b>: bigger coins, multipliers ×3 to ×6 (MEGA ×15 / ×25 / ×40). <b>Mega Start</b>: Incredible Treasure with 4 coins already revealed and a guaranteed MEGA multiplier.</p>
+          <h3>Bonus menu</h3>
+          <p><b>Scatter Boost</b>: +25% bet, bonus 1.6 times more frequent, same RTP. <b>Simple Treasure</b> costs 85× the bet, <b>Incredible Treasure</b> 430×.</p>
+          <h3>Controls</h3>
+          <p><b>Space</b> spins, fires the cannon during the bonus and stops spinning reels. The speed button cycles from &gt; to &gt;&gt;&gt;.</p>
+          <p><b>Provably fair</b>: the outcome of every spin and every bonus is fully drawn before the animation.</p>
+        `},
+  'i.payNote':{fr:'Gain par way pour 3, 4 et 5 rouleaux, à la mise actuelle.',en:'Win per way for 3, 4 and 5 reels, at the current bet.'},
+  'n.rtpv':{fr:'96,0 %',en:'96.0%'},
+  'n.max':{fr:'Gain max',en:'Max win'},
+  'n.maxv':{fr:'×15 000',en:'×15,000'},
+  'n.vol':{fr:'Volatilité',en:'Volatility'},
+  'n.volv':{fr:'Élevée',en:'High'},
+  'n.withBoost':{fr:'Avec scatter augmenté',en:'With Scatter Boost'},
+  'n.session':{fr:'RTP de la session',en:'Session RTP'},
+  'n.foot':{fr:'Volatilité affichée en éclairs : écart-type des gains rapporté à la mise de base. Le RTP du jeu de base est calculé exactement ; ceux des bonus sont mesurés sur 1 million de simulations par type.',
+            en:'Volatility shown as lightning bolts: standard deviation of wins relative to the base bet. The base game RTP is calculated exactly; bonus RTPs are measured over 1 million simulations per type.'},
+  'n.back':{fr:'← Retour au portfolio de Nathan Collard',en:"← Back to Nathan Collard's portfolio"},
+  // canvas et messages
+  'cf.powder':{fr:'POUDRE',en:'POWDER'},
+  'cf.splash':{fr:'PLOUF',en:'SPLASH'},
+  'cf.logoSub':{fr:'KACHING ORIGINALS · 243 WAYS · RTP 96 %',en:'KACHING ORIGINALS · 243 WAYS · 96% RTP'},
+  'cf.maxWin':{fr:'GAIN MAX',en:'MAX WIN'},
+  'cf.maxv':{fr:'×15 000',en:'×15,000'},
+  'cf.winBig':{fr:'GAIN',en:'WIN'},
+  'cf.scatLine':{fr:'{n} barils de poudre · {v} €',en:'{n} powder kegs · {v} €'},
+  'cf.treasure':{fr:'TRÉSOR',en:'TREASURE'},
+  'cf.curWin':{fr:'GAIN ACTUEL',en:'CURRENT WIN'},
+  'cf.xBet':{fr:' la mise',en:' the bet'},
+  'cf.shotsLeft':{fr:'TIRS RESTANTS',en:'SHOTS LEFT'},
+  'cf.coins':{fr:'PIÈCES',en:'COINS'},
+  'cf.hint1':{fr:'Ligne du bas ou colonne de droite',en:'Bottom row or right column'},
+  'cf.hint2':{fr:'= multiplicateur activé',en:'= multiplier activated'},
+  'cf.fireBig':{fr:'FEU !',en:'FIRE!'},
+  'cf.fireBtn':{fr:'FEU',en:'FIRE'},
+  'cf.tapCont':{fr:'Touchez pour continuer',en:'Tap to continue'},
+  'cf.noFunds':{fr:'Caisse vide ! Recharge depuis le portfolio.',en:'The chest is empty! Top up from the portfolio.'},
+  'cf.trig5':{fr:'5 BARILS · MEGA START !',en:'5 KEGS · MEGA START!'},
+  'cf.trig4':{fr:'4 BARILS · INCREDIBLE TREASURE !',en:'4 KEGS · INCREDIBLE TREASURE!'},
+  'cf.trig3':{fr:'3 BARILS · SIMPLE TREASURE !',en:'3 KEGS · SIMPLE TREASURE!'},
+  'cf.bonusSub':{fr:'Appuie sur FEU · chaque pièce relance le compteur',en:'Press FIRE · every coin resets the counter'},
+  'cf.rare':{fr:'Multiplicateur rare',en:'Rare multiplier'},
+  'cf.megaSay':{fr:'Un MEGA ! Mille sabords !',en:'A MEGA! Shiver me timbers!'},
+  'cf.3shots':{fr:'3 TIRS !',en:'3 SHOTS!'},
+  'cf.hit':{fr:'Touché !',en:'Hit!'},
+  'cf.bull':{fr:'Dans le mille !',en:'Bullseye!'},
+  'cf.activated':{fr:'ACTIVÉ',en:'ACTIVE'},
+  'cf.slamBang':{fr:'GRAND CHELEM !',en:'GRAND SLAM!'},
+  'cf.slam':{fr:'GRAND CHELEM',en:'GRAND SLAM'},
+  'cf.bridge':{fr:'PONT !',en:'BRIDGE!'},
+  'cf.added':{fr:'Multiplicateurs additionnés',en:'Multipliers added together'},
+  'cf.linked':{fr:'4 blocs reliés',en:'4 blocks linked'},
+  'cf.cap':{fr:'Plafond atteint',en:'Cap reached'},
+  'cf.ariaFire':{fr:'Tirer au canon',en:'Fire the cannon'},
+  'cf.ariaStop':{fr:'Arrêter les rouleaux',en:'Stop the reels'},
+  'cf.ariaSpin':{fr:'Lancer le tirage, mise {v} euros',en:'Spin, bet {v} euros'},
+  'cf.activate':{fr:'ACTIVER',en:'ACTIVATE'},
+  'cf.deactivate':{fr:'DÉSACTIVER',en:'DEACTIVATE'},
+  'cf.sp0':{fr:'normale',en:'normal'},'cf.sp1':{fr:'rapide',en:'fast'},'cf.sp2':{fr:'turbo',en:'turbo'},
+  'cf.speedAria':{fr:'Vitesse : {s}',en:'Speed: {s}'},
+  'cf.morePowder':{fr:'Plus de poudre dans les barils !',en:'More powder in the kegs!'},
+  'cf.confirm':{fr:'Acheter <b>{n}</b> pour <b>{v} €</b> ?',en:'Buy <b>{n}</b> for <b>{v} €</b>?'},
+  'cf.mute':{fr:'Couper tout le son',en:'Mute all sound'},
+  'cf.unmute':{fr:'Rétablir le son',en:'Restore sound'},
+  'cf.scatName':{fr:'Baril de poudre',en:'Powder keg'},
+  'cf.vol':{fr:'Volatilité',en:'Volatility'},
+  'cf.volAria':{fr:'Volatilité {l}, {n} sur 5',en:'Volatility {l}, {n} out of 5'},
+  'cf.volHigh':{fr:'élevée',en:'high'},
+  'cf.volVHigh':{fr:'très élevée',en:'very high'}
+});
+
 // ═════════════════════════ ÉTAT ═════════════════════════
 const P=CF.P;
 function rnd(){if(window.crypto&&crypto.getRandomValues){const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]/4294967296;}return Math.random();}
@@ -488,7 +633,7 @@ const rint=n=>Math.floor(rnd()*n);
 const BETS=[0.2,0.4,0.6,0.8,1,1.2,1.6,2,2.4,3,4,5,6,8,10,12,15,20,25,30,40,50,60,80,100];
 let bal=1000,ante=false,busy=false,betIdx=4,speedLvl=0;
 let stats={spins:0,bonus:0,wag:0,won:0};
-const fmt=v=>v.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmt=v=>KC.num(v,2);
 const getBet=()=>BETS[betIdx];
 const cost=()=>Math.round(getBet()*(ante?P.ANTE_COST:1)*100)/100;
 // vitesse : (>) normal, (>>) rapide, (>>>) turbo
@@ -799,7 +944,7 @@ const DRAW=[
   function SCAT(c,w,h){tile(c,w,h,'#5a2a10','#200c05','rgba(255,140,60,.9)');
     const gl=c.createRadialGradient(w/2,h/2,4,w/2,h/2,56);gl.addColorStop(0,'rgba(255,140,60,.35)');gl.addColorStop(1,'rgba(255,100,40,0)');c.fillStyle=gl;c.fillRect(0,0,w,h);
     drawBarrelShape(c,w/2,h/2-2,.95,'#2a1a10','#5a3a22');
-    c.fillStyle='#f3ead5';rr(c,w/2-24,h/2-10,48,18,3);c.fill();c.fillStyle='#16110d';c.font='900 11px "Barlow Condensed",Arial';c.textAlign='center';c.fillText('POUDRE',w/2,h/2+3);
+    c.fillStyle='#f3ead5';rr(c,w/2-24,h/2-10,48,18,3);c.fill();c.fillStyle='#16110d';c.font='900 11px "Barlow Condensed",Arial';c.textAlign='center';c.fillText(KC.t('cf.powder'),w/2,h/2+3);
     c.strokeStyle='#c8a26a';c.lineWidth=2;c.beginPath();c.moveTo(w/2+4,h/2-34);c.quadraticCurveTo(w/2+16,h/2-46,w/2+22,h/2-40);c.stroke();
     c.fillStyle='#fff3a0';c.beginPath();c.arc(w/2+23,h/2-41,4,0,7);c.fill();c.fillStyle='rgba(255,140,40,.7)';c.beginPath();c.arc(w/2+23,h/2-41,8,0,7);c.fill();
     c.font='800 14px "Barlow Condensed",Arial';c.fillStyle='#ffb36b';c.fillText('BONUS',w/2,h/2+46);},
@@ -820,7 +965,7 @@ function prerender(){const q=DPR*SCALE;
   for(let k=0;k<11;k++){const cv=document.createElement('canvas');cv.width=Math.ceil(CW*q);cv.height=Math.ceil(CH*q);const c=cv.getContext('2d');
     c.scale(cv.width/128,cv.height/112);DRAW[k](c,128,112);IMG[k]=cv;}}
 function payImages(){if(PAYIMG)return PAYIMG;PAYIMG=[];for(let k=0;k<11;k++){const cv=document.createElement('canvas');cv.width=256;cv.height=224;const c=cv.getContext('2d');c.scale(2,2);DRAW[k](c,128,112);PAYIMG[k]=cv.toDataURL();}return PAYIMG;}
-function shortEur(v){if(v>=1000)return (v/1000).toLocaleString('fr-FR',{maximumFractionDigits:1})+'k €';return (Math.round(v*100)/100).toLocaleString('fr-FR',{maximumFractionDigits:2})+' €';}
+function shortEur(v){if(v>=1000)return (v/1000).toLocaleString(KC.loc(),{maximumFractionDigits:1})+'k €';return (Math.round(v*100)/100).toLocaleString(KC.loc(),{maximumFractionDigits:2})+' €';}
 function drawCoin(c,x,y,w,h,v,bet,glow=0,scale=1,dim=false){
   c.save();c.translate(x+w/2,y+h/2);c.scale(scale,scale);const R=h*.38;
   if(glow>0){const gg=c.createRadialGradient(0,0,R*.5,0,0,R*2);gg.addColorStop(0,`rgba(255,215,90,${.55*glow})`);gg.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=gg;c.fillRect(-w,-h,w*2,h*2);}
@@ -965,7 +1110,7 @@ function drawLogo(c,t){const {x,y,w}=L.logo,h=96,sw=Math.sin(t/2900+.6)*.012;
   let fs=66;c.font='900 '+fs+'px "Barlow Condensed",Arial';while(c.measureText("CORSAIR'S FORTUNE").width>w-90&&fs>30){fs-=2;c.font='900 '+fs+'px "Barlow Condensed",Arial';}
   c.textAlign='center';c.textBaseline='middle';const tg=c.createLinearGradient(0,-fs/2,0,fs/2);tg.addColorStop(0,'#fff6c8');tg.addColorStop(.5,'#f2c14e');tg.addColorStop(1,'#b8801e');
   c.lineWidth=8;c.strokeStyle='#2a1206';c.strokeText("CORSAIR'S FORTUNE",0,-4);c.fillStyle=tg;c.fillText("CORSAIR'S FORTUNE",0,-4);
-  c.font='800 17px "Barlow Condensed",Arial';c.fillStyle='rgba(243,234,213,.75)';c.fillText('KACHING ORIGINALS · 243 WAYS · RTP 96 %',0,h/2-14);
+  c.font='800 17px "Barlow Condensed",Arial';c.fillStyle='rgba(243,234,213,.75)';c.fillText(KC.t('cf.logoSub'),0,h/2-14);
   c.textBaseline='alphabetic';c.restore();
 }
 function plaque(c,x,y,w,lab,val,col){const h=78;rr(c,x,y,w,h,14);const g=c.createLinearGradient(0,y,0,y+h);g.addColorStop(0,'rgba(60,32,12,.92)');g.addColorStop(1,'rgba(26,13,5,.92)');c.fillStyle=g;c.fill();
@@ -1006,7 +1151,22 @@ const LINES={
   endMeh:['Mieux que rien.','On remet ça ?'],
   buy:['Tu as le sens des affaires !','Bon investissement, matelot !'],
 };
-const pickLine=k=>{const a=LINES[k];return a[Math.floor(Math.random()*a.length)];};
+const LINES_EN={
+  idle:['Raise the stakes, matey!','Smells like gunpowder…',"That treasure won't find itself.",'One more spin for the road?'],
+  small:['Not bad!','Yo ho!','Filling up the hold.'],
+  big:['BLOW ME DOWN!','What a haul!','Shiver me timbers!'],
+  tease:['One more barrel…','Come on, come on!','I can feel it!'],
+  teaseFail:['Arrr… so close!','Blast it!','Next time…'],
+  trigger:['PREPARE TO BOARD!','To the cannons!'],
+  fire:['FIRE!','Fire at will!'],
+  flow:['The treasure is ours!',"We're onto something!"],
+  bridge:['Boarding successful!','All aboard!'],
+  last:['Last cannonball!','Aim true…'],
+  endGood:['What a feast!','Share the loot!'],
+  endMeh:['Better than nothing.','Go again?'],
+  buy:['A shrewd deal!','Good investment, sailor!'],
+};
+const pickLine=k=>{const a=(KC.lang==='fr'?LINES:LINES_EN)[k];return a[Math.floor(Math.random()*a.length)];};
 function capUpdate(t,dt){
   if(CAP.until&&t>CAP.until){CAP.until=0;CAP.mood=busy?'watch':'idle';}
   const m=MOODS[CAP.mood],c=CAP.cur,k=1-Math.exp(-dt/110),k2=1-Math.exp(-dt/170);
@@ -1135,7 +1295,7 @@ function drawFeatArt(){
     const g=c.createRadialGradient(200,150,10,200,150,220);fn(c,g);};
   mk('artBoost',(c,g)=>{g.addColorStop(0,'rgba(255,140,60,.55)');g.addColorStop(1,'rgba(255,100,40,0)');c.fillStyle=g;c.fillRect(0,0,400,280);
     [[120,170,1.6],[280,170,1.6],[200,140,2]].forEach(([x,y,s])=>drawBarrelShape(c,x,y,s,'#2a1a10','#6a4226'));
-    c.fillStyle='#f3ead5';rr(c,160,124,80,26,4);c.fill();c.fillStyle='#16110d';c.font='900 19px "Barlow Condensed",Arial';c.textAlign='center';c.fillText('POUDRE',200,144);
+    c.fillStyle='#f3ead5';rr(c,160,124,80,26,4);c.fill();c.fillStyle='#16110d';c.font='900 19px "Barlow Condensed",Arial';c.textAlign='center';c.fillText(KC.t('cf.powder'),200,144);
     c.fillStyle='#ffd34d';c.strokeStyle='#7a4a08';c.lineWidth=3;c.beginPath();c.moveTo(214,30);c.lineTo(180,104);c.lineTo(204,104);c.lineTo(188,160);c.lineTo(236,82);c.lineTo(210,82);c.closePath();c.fill();c.stroke();});
   mk('artSimple',(c,g)=>{g.addColorStop(0,'rgba(255,215,90,.55)');g.addColorStop(1,'rgba(255,200,80,0)');c.fillStyle=g;c.fillRect(0,0,400,280);chest(c,200,190,3.2);});
   mk('artIncred',(c,g)=>{g.addColorStop(0,'rgba(200,130,255,.6)');g.addColorStop(1,'rgba(160,80,255,0)');c.fillStyle=g;c.fillRect(0,0,400,280);chest(c,200,196,3.4);
@@ -1237,16 +1397,16 @@ function drawReels(c,t){
   const [ly1,ly2]=L.winY;c.textAlign='center';
   if(winMsg&&winMsg.force){c.font='900 46px "Barlow Condensed",Arial';c.lineWidth=7;c.strokeStyle='rgba(20,8,2,.8)';c.strokeText(winMsg.txt,SW/2,ly1+6);c.fillStyle=winMsg.col||'#f2c14e';c.shadowColor=c.fillStyle;c.shadowBlur=14;c.fillText(winMsg.txt,SW/2,ly1+6);c.shadowBlur=0;return;}
   if(winCount){const k=Math.min(1,(t-winCount.t0)/winCount.d),v=winCount.x*easeOutCubic(k),pop=k<1?1:1+.08*Math.max(0,1-(t-winCount.t0-winCount.d)/300);
-    c.save();c.translate(SW/2,ly1);c.scale(pop,pop);c.font='900 54px "Barlow Condensed",Arial';const s='GAIN '+fmt(v*winCount.bet)+' €';
+    c.save();c.translate(SW/2,ly1);c.scale(pop,pop);c.font='900 54px "Barlow Condensed",Arial';const s=KC.t('cf.winBig')+' '+fmt(v*winCount.bet)+' €';
     c.lineWidth=8;c.strokeStyle='rgba(20,8,2,.85)';c.strokeText(s,0,8);c.fillStyle='#ffd34d';c.shadowColor='#f2c14e';c.shadowBlur=k<1?20:8;c.fillText(s,0,8);c.restore();c.shadowBlur=0;}
   if(cur){c.font='700 22px Inter,Arial';c.lineWidth=5;c.strokeStyle='rgba(20,8,2,.75)';
-    const s=cur.type==='scat'?`${cur.ns} barils de poudre · ${fmt(cur.x*showWins.bet)} €`:`${cur.k} × ${CF.NAMES[cur.s]} · ${cur.ways} way${cur.ways>1?'s':''} · ${fmt(cur.x*showWins.bet)} €`;
+    const s=cur.type==='scat'?KC.t('cf.scatLine',{n:cur.ns,v:fmt(cur.x*showWins.bet)}):`${cur.k} × ${symName(cur.s)} · ${cur.ways} way${cur.ways>1?'s':''} · ${fmt(cur.x*showWins.bet)} €`;
     c.strokeText(s,SW/2,ly2+8);c.fillStyle='rgba(255,255,255,.92)';c.fillText(s,SW/2,ly2+8);}
 }
 function drawBaseScene(c,t){
   drawHold(c,t);drawLogo(c,t);
-  const g=L.gmax;if(L===LAYOUTS.land){plaque(c,g.x,g.y,g.w,'GAIN MAX','×15 000','#f2c14e');plaque(c,g.x,g.y+92,g.w,'BONUS',ante?'1 / 163 SPINS':'1 / 266 SPINS','#ffb36b');}
-  else plaque(c,g.x,g.y,g.w,'GAIN MAX · BONUS',ante?'×15 000 · 1/163':'×15 000 · 1/266','#f2c14e');
+  const g=L.gmax;if(L===LAYOUTS.land){plaque(c,g.x,g.y,g.w,KC.t('cf.maxWin'),KC.t('cf.maxv'),'#f2c14e');plaque(c,g.x,g.y+92,g.w,'BONUS',ante?'1 / 163 SPINS':'1 / 266 SPINS','#ffb36b');}
+  else plaque(c,g.x,g.y,g.w,KC.t('cf.maxWin')+' · BONUS',KC.t('cf.maxv')+(ante?' · 1/163':' · 1/266'),'#f2c14e');
   // zoom léger pendant le tease
   const tz=teaseOn?easeOutCubic(Math.min(1,(t-teaseT0)/600)):0,zs=1+.025*tz;
   c.save();const cx=GX+CW*2.5,cy=GY+CH*1.5;c.translate(cx,cy);c.scale(zs,zs);c.translate(-cx,-cy);
@@ -1331,25 +1491,25 @@ function drawBonus(c,t){
     const pop=1+.14*Math.max(0,1-(t-B.potT)/260),ps=BC/96;c.save();c.translate(POT[0],POT[1]);c.scale(pop*ps,pop*ps);
     c.shadowColor=theme;c.shadowBlur=30;const g=c.createLinearGradient(0,-54,0,54);g.addColorStop(0,'#8a5428');g.addColorStop(1,'#4a2810');rr(c,-160,-54,320,108,16);c.fillStyle=g;c.fill();c.shadowBlur=0;
     c.lineWidth=3;c.strokeStyle=theme;c.stroke();chest(c,-112,10,.62);
-    c.textAlign='center';c.font='800 14px "Barlow Condensed",Arial';c.fillStyle=theme;c.fillText('TRÉSOR',24,-22);
+    c.textAlign='center';c.font='800 14px "Barlow Condensed",Arial';c.fillStyle=theme;c.fillText(KC.t('cf.treasure'),24,-22);
     const s=fmt(Math.min(B.potShown,P.MAX_WIN)*bet)+' €';c.font='900 '+(s.length>12?30:38)+'px "Barlow Condensed",Arial';c.fillStyle='#fff';c.fillText(s,24,18);
-    c.font='600 11px Inter,Arial';c.fillStyle='rgba(255,255,255,.65)';c.fillText('×'+(Math.round(Math.min(B.potShown,P.MAX_WIN)*100)/100).toLocaleString('fr-FR')+' la mise',24,38);c.restore();}
+    c.font='600 11px Inter,Arial';c.fillStyle='rgba(255,255,255,.65)';c.fillText('×'+(Math.round(Math.min(B.potShown,P.MAX_WIN)*100)/100).toLocaleString(KC.loc())+KC.t('cf.xBet'),24,38);c.restore();}
   // panneau latéral : tirs, pièces, gain
   const sd=L.bonus.side,filled=CF.CELLS.filter(x=>B.grid[x.i]!==null).length,h=land?380:300;
   rr(c,sd.x,sd.y,sd.w,h,20);const pg=c.createLinearGradient(0,sd.y,0,sd.y+h);pg.addColorStop(0,'rgba(40,22,8,.9)');pg.addColorStop(1,'rgba(16,8,3,.9)');c.fillStyle=pg;c.fill();c.strokeStyle=theme;c.lineWidth=3;c.stroke();
   c.textAlign='center';const cxs=sd.x+sd.w/2;
-  c.font='800 26px "Barlow Condensed",Arial';c.fillStyle=theme;c.fillText('TIRS RESTANTS',cxs,sd.y+44);
+  c.font='800 26px "Barlow Condensed",Arial';c.fillStyle=theme;c.fillText(KC.t('cf.shotsLeft'),cxs,sd.y+44);
   for(let i=0;i<3;i++){const x=cxs+(i-1)*62,y=sd.y+88;c.beginPath();c.arc(x,y,20,0,7);c.fillStyle=i<B.left?theme:'#2a3a4a';c.fill();c.strokeStyle='rgba(0,0,0,.4)';c.lineWidth=3;c.stroke();
     if(i<B.left&&t-B.resetT<400){c.strokeStyle=`rgba(255,255,255,${1-(t-B.resetT)/400})`;c.lineWidth=4;c.beginPath();c.arc(x,y,20+(t-B.resetT)/14,0,7);c.stroke();}}
-  c.font='800 26px "Barlow Condensed",Arial';c.fillStyle='rgba(243,234,213,.85)';c.fillText('PIÈCES  '+filled+' / 32',cxs,sd.y+150);
-  c.font='800 26px "Barlow Condensed",Arial';c.fillStyle=theme;c.fillText(B.phase==='resolve'?'TRÉSOR':'GAIN ACTUEL',cxs,sd.y+(land?214:204));
+  c.font='800 26px "Barlow Condensed",Arial';c.fillStyle='rgba(243,234,213,.85)';c.fillText(KC.t('cf.coins')+'  '+filled+' / 32',cxs,sd.y+150);
+  c.font='800 26px "Barlow Condensed",Arial';c.fillStyle=theme;c.fillText(KC.t(B.phase==='resolve'?'cf.treasure':'cf.curWin'),cxs,sd.y+(land?214:204));
   const gv=B.phase==='resolve'?Math.min(B.potShown,P.MAX_WIN):Math.min(live.x,P.MAX_WIN);
   c.font='900 '+(land?60:54)+'px "Barlow Condensed",Arial';c.fillStyle='#fff';c.fillText(fmt(gv*bet)+' €',cxs,sd.y+(land?276:262));
-  if(land){c.font='600 20px Inter,Arial';c.fillStyle='rgba(243,234,213,.65)';c.fillText('×'+(Math.round(gv*100)/100).toLocaleString('fr-FR')+' la mise',cxs,sd.y+312);
-    c.fillText('Ligne du bas ou colonne de droite',cxs,sd.y+346);c.fillText('= multiplicateur activé',cxs,sd.y+370);}
+  if(land){c.font='600 20px Inter,Arial';c.fillStyle='rgba(243,234,213,.65)';c.fillText('×'+(Math.round(gv*100)/100).toLocaleString(KC.loc())+KC.t('cf.xBet'),cxs,sd.y+312);
+    c.fillText(KC.t('cf.hint1'),cxs,sd.y+346);c.fillText(KC.t('cf.hint2'),cxs,sd.y+370);}
   // canon + capitaine
   const [cxn,cyn,csn]=L.bonus.cannon;drawCannon(c,cxn,cyn,t,B.fireT,csn);
-  if(B.prompt){const p=.55+.45*Math.sin(t/160);c.textAlign='center';c.font='900 40px "Barlow Condensed",Arial';c.lineWidth=6;c.strokeStyle='rgba(0,0,0,.6)';c.strokeText('FEU !',cxn+10,cyn-70);c.fillStyle=`rgba(255,140,60,${p})`;c.fillText('FEU !',cxn+10,cyn-70);}
+  if(B.prompt){const p=.55+.45*Math.sin(t/160);c.textAlign='center';c.font='900 40px "Barlow Condensed",Arial';c.lineWidth=6;c.strokeStyle='rgba(0,0,0,.6)';c.strokeText(KC.t('cf.fireBig'),cxn+10,cyn-70);c.fillStyle=`rgba(255,140,60,${p})`;c.fillText(KC.t('cf.fireBig'),cxn+10,cyn-70);}
   const cp=L.bonus.cap;drawCaptain(c,cp.x,cp.y,cp.s,t);
   if(B.banner){const a=t-B.banner.t0,d=B.banner.d;if(a<d){const al=Math.min(1,a/200,(d-a)/250),sc=a<220?.85+.15*easeOutBack(a/220):1;
     c.save();c.globalAlpha=al;const by=BY0+BC*2.35;c.fillStyle='rgba(4,9,16,.84)';c.fillRect(VX0,by,VX1-VX0,BC*1.35);
@@ -1363,8 +1523,8 @@ function drawBigWin(c,t){
   c.textAlign='center';c.font='900 120px "Barlow Condensed",Arial';c.lineWidth=12;c.strokeStyle='rgba(20,8,2,.9)';c.strokeText(bigWin.label,0,-30);
   c.fillStyle=bigWin.col;c.shadowColor=bigWin.col;c.shadowBlur=34;c.fillText(bigWin.label,0,-30);c.shadowBlur=0;
   c.font='900 76px "Barlow Condensed",Arial';c.fillStyle='#fff';c.fillText(fmt(v*bigWin.bet)+' €',0,64);
-  c.font='600 24px Inter,Arial';c.fillStyle='rgba(255,255,255,.6)';c.fillText('×'+v.toLocaleString('fr-FR',{maximumFractionDigits:2})+' la mise',0,104);
-  if(k>=1){c.fillStyle='rgba(255,255,255,.55)';c.font='500 22px Inter,Arial';c.fillText('Touchez pour continuer',0,160);}
+  c.font='600 24px Inter,Arial';c.fillStyle='rgba(255,255,255,.6)';c.fillText('×'+v.toLocaleString(KC.loc(),{maximumFractionDigits:2})+KC.t('cf.xBet'),0,104);
+  if(k>=1){c.fillStyle='rgba(255,255,255,.55)';c.font='500 22px Inter,Arial';c.fillText(KC.t('cf.tapCont'),0,160);}
   c.restore();if(Math.random()<.45)burst(cx+(Math.random()-.5)*SW*.6,cy-60,3);
 }
 // Transition : les volets du sabord se ferment, le titre apparaît, puis ils s'ouvrent sur la nouvelle scène
@@ -1414,7 +1574,7 @@ function startTease(){if(teaseOn)return;teaseOn=true;teaseT0=performance.now();c
 function endTease(){if(!teaseOn)return;teaseOn=false;clearInterval(hbTimer);hbTimer=null;Music.unduck();}
 function slamStop(){if(!spinPhase)return;slammed=true;const now=performance.now();endTease();
   reels.forEach((R,i)=>{if(R.spinning&&!R.dur){R.stopAt=Math.min(R.stopAt,now+i*35);R.antic=false;}});}
-function noFunds(){capMood('sad',1600);capSay('Caisse vide ! Recharge depuis le portfolio.',2800);const el=document.getElementById('balV');el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}
+function noFunds(){capMood('sad',1600);capSay(KC.t('cf.noFunds'),2800);const el=document.getElementById('balV');el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}
 
 async function play(force){
   if(busy)return;closePanels();const bet=getBet(),c=cost();if(bal<c){noFunds();return;}
@@ -1449,7 +1609,7 @@ async function play(force){
   if(totalX>=15)await showBig(totalX,bet);
   if(res.bonus){
     stats.bonus++;upd();
-    winMsg={txt:res.ns===5?'5 BARILS · MEGA START !':res.ns===4?'4 BARILS · INCREDIBLE TREASURE !':'3 BARILS · SIMPLE TREASURE !',col:'#ff8c3c',force:true};
+    winMsg={txt:KC.t('cf.trig'+(res.ns===5?5:res.ns===4?4:3)),col:'#ff8c3c',force:true};
     capMood('attack',2400);capSay(pickLine('trigger'),2200);sfx.roar();
     await wait(1700);
     await runBonus(res.bonus,bet);totalX+=res.bonus.x;
@@ -1481,11 +1641,11 @@ async function runBonus(B,bet){
   Music.toBonus();
   await doWipe(BONUS_NAME(B.type),theme,()=>{scene='bonus';bonusView=V;winMsg=null;showWins=null;winCount=null;});
   capMood('sabre');
-  V.banner={txt:BONUS_NAME(B.type),sub:'Appuie sur FEU · chaque pièce relance le compteur',t0:performance.now(),d:1900*Math.max(.6,sp()),big:true};
+  V.banner={txt:BONUS_NAME(B.type),sub:KC.t('cf.bonusSub'),t0:performance.now(),d:1900*Math.max(.6,sp()),big:true};
   sfx.cannon();shake(6);await wait(1500);
   const cc=i=>{const [x,y]=cellXY(i);return [x+BC/2,y+BC*.45];};
   for(let b=0;b<4;b++){await wait(260);V.multShown[b]=true;sfx.mult(b);const [x,y]=cc(CF.CENTER[b]);ring(x,y,B.mults[b].mega?'#ff8c3c':theme,BC*.7);burst(x,y,B.mults[b].mega?28:10,B.mults[b].mega?'#ff8c3c':null);
-    if(B.mults[b].mega){sfx.activate();shake(6);V.banner={txt:'MEGA ×'+B.mults[b].v,sub:'Multiplicateur rare',t0:performance.now(),d:1200*Math.max(.6,sp()),col:'#ff8c3c'};capSay('Un MEGA ! Mille sabords !',1600);await wait(900);}}
+    if(B.mults[b].mega){sfx.activate();shake(6);V.banner={txt:'MEGA ×'+B.mults[b].v,sub:KC.t('cf.rare'),t0:performance.now(),d:1200*Math.max(.6,sp()),col:'#ff8c3c'};capSay(KC.t('cf.megaSay'),1600);await wait(900);}}
   for(const {i,v} of B.start){const [x,y]=cc(i);V.boom[i]=performance.now();V.grid[i]=v;V.born[i]=performance.now()+90;debris(x,y);sfx.coin(0);ring(x,y,theme,BC*.45);V.live=CF.resolve(V.grid,B.mults);await wait(200);}
   let lvl=0,flowSaid=false,bridgeSaid=false;
   const level=()=>{const filled=CF.CELLS.filter(x=>V.grid[x.i]!==null).length,lv=V.live.bridges.length?3:V.live.on.some(x=>x)?2:(filled>=5||(sup&&filled>=3))?1:0;
@@ -1505,14 +1665,14 @@ async function runBonus(B,bet){
       for(const {i,v} of T.nw){const [x,y]=cc(i);V.boom[i]=performance.now();sfx.boom();debris(x,y);ring(x,y,'#ffb36b',BC*.55);
         V.grid[i]=v;V.born[i]=performance.now()+90;sfx.coin(1);burst(x,y,v>=25?24:10);floatTxt(x,y-30,'+'+fmt(v*bet)+' €',v>=25?'#ffe08a':'#fff2b8',v>=25?32:26);
         if(v>=25)shake(5);await wait(110);}
-      V.left=P.RESPINS;V.resetT=performance.now();const sd=L.bonus.side;floatTxt(sd.x+sd.w/2,sd.y+130,'3 TIRS !','#7dff8a',30,900);
-      if(T.nw.length>=2&&Math.random()<.5)capSay(Math.random()<.5?'Touché !':'Dans le mille !',1200);
+      V.left=P.RESPINS;V.resetT=performance.now();const sd=L.bonus.side;floatTxt(sd.x+sd.w/2,sd.y+130,KC.t('cf.3shots'),'#7dff8a',30,900);
+      if(T.nw.length>=2&&Math.random()<.5)capSay(KC.t(Math.random()<.5?'cf.hit':'cf.bull'),1200);
     }else{const i=targets[0],[x,y]=cc(i);V.miss={i,t0:performance.now()};splash(x,y+BC*.35);ring(x,y+BC*.35,'rgba(200,235,255,.8)',BC*.5);sfx.splash();
-      floatTxt(x,y-26,'PLOUF',T.left===0?'#ff6b6b':'rgba(214,236,255,.9)',26,800);V.left=T.left;if(T.left===0)capMood('sad',900);}
+      floatTxt(x,y-26,KC.t('cf.splash'),T.left===0?'#ff6b6b':'rgba(214,236,255,.9)',26,800);V.left=T.left;if(T.left===0)capMood('sad',900);}
     V.live=CF.resolve(V.grid,B.mults);
     const newOn=[0,1,2,3].filter(b=>V.live.on[b]&&!before.on[b]),newBr=V.live.bridges.length>before.bridges.length;
-    newOn.forEach(b=>{const [x,y]=cc(CF.CENTER[b]);ring(x,y,theme,BC*1.6,800);burst(x,y,24,theme);floatTxt(x,y-BC*.5,'×'+B.mults[b].v+' ACTIVÉ',theme,32,1200);});
-    if(newBr){sfx.bridge();shake(7);V.banner={txt:V.live.slam?'GRAND CHELEM !':'PONT !',sub:'Multiplicateurs additionnés',t0:performance.now(),d:1200*Math.max(.6,sp()),col:'#7dff8a'};
+    newOn.forEach(b=>{const [x,y]=cc(CF.CENTER[b]);ring(x,y,theme,BC*1.6,800);burst(x,y,24,theme);floatTxt(x,y-BC*.5,'×'+B.mults[b].v+' '+KC.t('cf.activated'),theme,32,1200);});
+    if(newBr){sfx.bridge();shake(7);V.banner={txt:KC.t(V.live.slam?'cf.slamBang':'cf.bridge'),sub:KC.t('cf.added'),t0:performance.now(),d:1200*Math.max(.6,sp()),col:'#7dff8a'};
       if(!bridgeSaid){bridgeSaid=true;capMood('ecstatic',1500);capSay(pickLine('bridge'),1600);}await wait(700);}
     else if(newOn.length){sfx.activate();shake(5);}
     level();V.shots=null;upd();
@@ -1530,14 +1690,14 @@ async function runBonus(B,bet){
     await wait(cells.length?560:120);
   }
   V.focus=null;V.stamp=null;await wait(300);
-  if(B.res.slam){sfx.slam();shake(10);V.banner={txt:'GRAND CHELEM',sub:'4 blocs reliés · ×'+B.res.applied[0],t0:performance.now(),d:2200,big:true,col:'#7dff8a'};for(let k=0;k<8;k++)burst(SW/2+(Math.random()-.5)*500,BY0+BC*3,20);await wait(2000);}
+  if(B.res.slam){sfx.slam();shake(10);V.banner={txt:KC.t('cf.slam'),sub:KC.t('cf.linked')+' · ×'+B.res.applied[0],t0:performance.now(),d:2200,big:true,col:'#7dff8a'};for(let k=0;k<8;k++)burst(SW/2+(Math.random()-.5)*500,BY0+BC*3,20);await wait(2000);}
   const x=B.x,ref=B.type==='std'?P.BUY_STD:P.BUY_SUP;
-  if(B.capped){V.banner={txt:'GAIN MAX ×15 000',sub:'Plafond atteint',t0:performance.now(),d:2000,big:true};await wait(1800);}
+  if(B.capped){V.banner={txt:KC.t('cf.maxWin')+' '+KC.t('cf.maxv'),sub:KC.t('cf.cap'),t0:performance.now(),d:2000,big:true};await wait(1800);}
   Music.toBase();
   if(x>=15)await showBig(x,bet);
   else{sfx.win(x);await wait(1300);}
   if(x>=ref){capMood('happy',2200);capSay(pickLine('endGood'),2200);}else{capMood('sad',1800);capSay(pickLine('endMeh'),1800);}
-  await doWipe(null,null,()=>{scene='base';bonusView=null;winMsg={txt:BONUS_NAME(B.type)+' : '+fmt(x*bet)+' €',force:true};});
+  await doWipe(null,null,()=>{scene='base';bonusView=null;winMsg={txt:BONUS_NAME(B.type)+KC.t('colon')+fmt(x*bet)+' €',force:true};});
 }
 
 // ═════════════════════════ INTERFACE INTÉGRÉE ═════════════════════════
@@ -1554,33 +1714,34 @@ function upd(){
   $('balV').textContent=fmt(bal)+' €';
   const bet=getBet();$('betV').textContent=fmt(cost())+' €';$('buyBet').textContent=fmt(bet)+' €';
   const sb=$('spinBtn');
-  if(fireResolve){setSpinIcon('fire','FEU');sb.className='spin fire';sb.disabled=false;sb.setAttribute('aria-label','Tirer au canon');}
-  else if(spinPhase){setSpinIcon('stop');sb.className='spin stop';sb.disabled=false;sb.setAttribute('aria-label','Arrêter les rouleaux');}
-  else{setSpinIcon('spin');sb.className='spin'+(busy?' busy':'');sb.disabled=false;sb.setAttribute('aria-label','Lancer le tirage, mise '+fmt(cost())+' euros');}
+  if(fireResolve){setSpinIcon('fire',KC.t('cf.fireBtn'));sb.className='spin fire';sb.disabled=false;sb.setAttribute('aria-label',KC.t('cf.ariaFire'));}
+  else if(spinPhase){setSpinIcon('stop');sb.className='spin stop';sb.disabled=false;sb.setAttribute('aria-label',KC.t('cf.ariaStop'));}
+  else{setSpinIcon('spin');sb.className='spin'+(busy?' busy':'');sb.disabled=false;sb.setAttribute('aria-label',KC.t('cf.ariaSpin',{v:fmt(cost())}));}
   $('betDn').disabled=busy||betIdx===0;$('betUp').disabled=busy||betIdx===BETS.length-1;
   document.querySelectorAll('.bdn').forEach(b=>b.disabled=busy||betIdx===0);document.querySelectorAll('.bup').forEach(b=>b.disabled=busy||betIdx===BETS.length-1);
   $('buyBtn').disabled=busy;$('boostTag').classList.toggle('on',ante);
   $('fBoostP').textContent=fmt(bet*P.ANTE_COST)+' € / spin';
-  const fb=$('fBoost');fb.firstChild.nodeValue=ante?'DÉSACTIVER':'ACTIVER';fb.classList.toggle('on',ante);fb.disabled=busy;
+  const fb=$('fBoost');fb.firstChild.nodeValue=KC.t(ante?'cf.deactivate':'cf.activate');fb.classList.toggle('on',ante);fb.disabled=busy;
   $('fSimpleP').textContent=fmt(bet*P.BUY_STD)+' €';$('fIncredP').textContent=fmt(bet*P.BUY_SUP)+' €';
   $('fSimple').disabled=busy||bal<bet*P.BUY_STD;$('fIncred').disabled=busy||bal<bet*P.BUY_SUP;$('demoMega').disabled=busy||bal<cost();
-  $('sRtp').textContent=stats.wag?(stats.won/stats.wag*100).toFixed(1).replace('.',',')+' %':'—';
+  $('sRtp').textContent=stats.wag?KC.dec((stats.won/stats.wag*100).toFixed(1))+KC.t('pct'):'—';
 }
-function setWin(v,flash){const el=$('winV');el.textContent=v?fmt(v)+' €':'—';if(flash){el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');
+let lastWinShown=0;
+function setWin(v,flash){lastWinShown=v;const el=$('winV');el.textContent=v?fmt(v)+' €':'—';if(flash){el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');
   const b=$('balV');b.classList.remove('flash');void b.offsetWidth;b.classList.add('flash');}}
 function setBetIdx(i){if(busy)return;betIdx=Math.max(0,Math.min(BETS.length-1,i));sfx.click();upd();buildPaytable();}
 ['betDn'].forEach(id=>$(id).addEventListener('click',()=>setBetIdx(betIdx-1)));
 ['betUp'].forEach(id=>$(id).addEventListener('click',()=>setBetIdx(betIdx+1)));
 document.querySelectorAll('.bdn').forEach(b=>b.addEventListener('click',()=>setBetIdx(betIdx-1)));
 document.querySelectorAll('.bup').forEach(b=>b.addEventListener('click',()=>setBetIdx(betIdx+1)));
-function setSpeed(l){speedLvl=l;saveOpts();const names=['normale','rapide','turbo'];
-  document.querySelectorAll('#speedBtn .chev').forEach((p,i)=>p.classList.toggle('on',i<=l));$('speedBtn').setAttribute('aria-label','Vitesse : '+names[l]);
+function setSpeed(l){speedLvl=l;saveOpts();const names=[KC.t('cf.sp0'),KC.t('cf.sp1'),KC.t('cf.sp2')];
+  document.querySelectorAll('#speedBtn .chev').forEach((p,i)=>p.classList.toggle('on',i<=l));$('speedBtn').setAttribute('aria-label',KC.t('cf.speedAria',{s:names[l]}));
   document.querySelectorAll('.segs button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.sp===l?'true':'false'));}
 $('speedBtn').addEventListener('click',()=>{setSpeed((speedLvl+1)%3);sfx.click();});
 document.querySelectorAll('.segs button').forEach(b=>b.addEventListener('click',()=>{setSpeed(+b.dataset.sp);sfx.click();}));
 function toggleAnte(){if(busy)return;ante=!ante;sfx.click();
   for(let c=0;c<5;c++){reels[c].strip=(ante?CF.STRIPS_A:CF.STRIPS_B)[c];reels[c].y=Math.floor(reels[c].y)%reels[c].strip.length;}
-  if(ante){capSay('Plus de poudre dans les barils !',1800);capMood('happy',1200);}upd();}
+  if(ante){capSay(KC.t('cf.morePowder'),1800);capMood('happy',1200);}upd();}
 
 // ── panneaux ──
 let openPanel=null,lastFocus=null;
@@ -1598,14 +1759,14 @@ $('infoBtn').addEventListener('click',()=>{buildPaytable();openP('infoPanel');})
 $('fBoost').addEventListener('click',()=>{toggleAnte();});
 let pendingBuy=null;
 function askBuy(type){if(busy)return;const bet=getBet(),c=bet*(type==='std'?P.BUY_STD:P.BUY_SUP);pendingBuy=type;
-  $('cfText').innerHTML='Acheter <b>'+(type==='std'?'SIMPLE TREASURE':'INCREDIBLE TREASURE')+'</b> pour <b>'+fmt(c)+' €</b> ?';openP('confirmPanel');}
+  $('cfText').innerHTML=KC.t('cf.confirm',{n:type==='std'?'SIMPLE TREASURE':'INCREDIBLE TREASURE',v:fmt(c)});openP('confirmPanel');}
 $('fSimple').addEventListener('click',()=>askBuy('std'));
 $('fIncred').addEventListener('click',()=>askBuy('sup'));
 $('cfYes').addEventListener('click',()=>{const t=pendingBuy;pendingBuy=null;closePanels(true);if(t)buyBonus(t);});
 $('demoMega').addEventListener('click',()=>{closePanels(true);play(5);});
 // options son
-function bindVol(id,key){const r=$(id),o=$(id+'O');const set=()=>{OPTS[key]=+r.value;o.textContent=r.value+' %';r.style.setProperty('--p',r.value+'%');applyVol();saveOpts();
-  $('muteBtn').textContent=OPTS.music+OPTS.sfx===0?'Rétablir le son':'Couper tout le son';};
+function bindVol(id,key){const r=$(id),o=$(id+'O');const set=()=>{OPTS[key]=+r.value;o.textContent=r.value+KC.t('pct');r.style.setProperty('--p',r.value+'%');applyVol();saveOpts();
+  $('muteBtn').textContent=KC.t(OPTS.music+OPTS.sfx===0?'cf.unmute':'cf.mute');};
   r.value=OPTS[key];set();r.addEventListener('input',set);r.addEventListener('change',()=>{ac();if(key==='sfx')sfx.coin(2);});}
 bindVol('volMus','music');bindVol('volSfx','sfx');
 let savedVol=null;
@@ -1616,12 +1777,13 @@ document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',
   document.querySelectorAll('.tabpane').forEach(p=>p.classList.toggle('on',p.id===b.dataset.tab));sfx.click();}));
 function buildPaytable(){const el=$('ptab');if(!el)return;const bet=getBet(),im=payImages();el.innerHTML='';
   [9,8,7,6,5,4,3,2,1,0].forEach(s=>{const d=document.createElement('div');d.className='pcell';
-    d.innerHTML=`<img src="${im[s]}" alt=""><div><b>${CF.NAMES[s]}</b><br>${[3,4,5].map(k=>fmt(CF.PAY(s,k)*bet)).join(' · ')}\u00a0€</div>`;el.appendChild(d);});
-  const d=document.createElement('div');d.className='pcell';d.innerHTML=`<img src="${im[10]}" alt=""><div><b>Baril de poudre</b><br>${P.SCAT_PAY.map(v=>fmt(v*bet)).join(' · ')}\u00a0€ + bonus</div>`;el.appendChild(d);}
+    d.innerHTML=`<img src="${im[s]}" alt=""><div><b>${symName(s)}</b><br>${[3,4,5].map(k=>fmt(CF.PAY(s,k)*bet)).join(' · ')}\u00a0€</div>`;el.appendChild(d);});
+  const d=document.createElement('div');d.className='pcell';d.innerHTML=`<img src="${im[10]}" alt=""><div><b>${KC.t('cf.scatName')}</b><br>${P.SCAT_PAY.map(v=>fmt(v*bet)).join(' · ')}\u00a0€ + bonus</div>`;el.appendChild(d);}
 // éclairs de volatilité
 function bolts(id,n,label){const el=$(id);if(!el)return;let h='';for(let i=0;i<5;i++)h+=`<svg viewBox="0 0 20 24" aria-hidden="true"><path class="${i<n?'b':'o'}" d="M12 1L3 14h6l-2 9 10-14h-6z"/></svg>`;
-  el.innerHTML='<span>Volatilité</span>'+h;el.setAttribute('aria-label','Volatilité '+label+', '+n+' sur 5');el.setAttribute('role','img');}
-bolts('volBoost',4,'élevée');bolts('volSimple',4,'élevée');bolts('volIncred',5,'très élevée');
+  el.innerHTML='<span>'+KC.t('cf.vol')+'</span>'+h;el.setAttribute('aria-label',KC.t('cf.volAria',{l:label,n:n}));el.setAttribute('role','img');}
+function buildBolts(){bolts('volBoost',4,KC.t('cf.volHigh'));bolts('volSimple',4,KC.t('cf.volHigh'));bolts('volIncred',5,KC.t('cf.volVHigh'));}
+buildBolts();
 
 // ── commandes ──
 function spinAction(){
@@ -1639,7 +1801,14 @@ document.addEventListener('keydown',e=>{
 });
 window.addEventListener('resize',()=>{layoutKey='';layout();});
 
-function init(){try{if(!matchMedia('(pointer:coarse)').matches)$('tap').textContent='Cliquez n\'importe où pour lancer la musique';}catch(e){}layout();drawFeatArt();setSpeed(speedLvl);upd();buildPaytable();loop();}
+// ── Changement de langue sans recharger la page ──
+KC.on(()=>{prerender();PAYIMG=null;buildPaytable();drawFeatArt();buildBolts();
+  spinIcoKey=null;setSpeed(speedLvl);
+  $('muteBtn').textContent=KC.t(OPTS.music+OPTS.sfx===0?'cf.unmute':'cf.mute');
+  $('volMusO').textContent=$('volMus').value+KC.t('pct');$('volSfxO').textContent=$('volSfx').value+KC.t('pct');
+  if(pendingBuy)$('cfText').innerHTML=KC.t('cf.confirm',{n:pendingBuy==='std'?'SIMPLE TREASURE':'INCREDIBLE TREASURE',v:fmt(getBet()*(pendingBuy==='std'?P.BUY_STD:P.BUY_SUP))});
+  upd();setWin(lastWinShown,false);});
+function init(){try{if(!matchMedia('(pointer:coarse)').matches){$('tap').setAttribute('data-i18n','h.tapClick');$('tap').textContent=KC.t('h.tapClick');}}catch(e){}layout();drawFeatArt();setSpeed(speedLvl);upd();buildPaytable();loop();}
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(init);else init();
 
 </script>

@@ -7,6 +7,7 @@
 <meta name="description" content="Ricochet : un galet ricoche sur le lac et chaque rebond fait grimper le multiplicateur. Quatre modes de risque, jusqu'à ×207, RTP 98 %.">
 <meta name="theme-color" content="#0b1622">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<script src="i18n.js"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ricochet — un jeu de Nathan Collard">
 <meta property="og:description" content="Ricochet : un galet ricoche sur le lac et chaque rebond fait grimper le multiplicateur. Quatre modes de risque, jusqu'à ×207, RTP 98 %.">
@@ -153,26 +154,27 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
 </head>
 <body>
 <nav class="gnav" aria-label="Navigation">
-  <a id="backBtn" href="index.html#projets" onclick="saveAndBack(event)">← Tous les jeux</a>
-  <span class="glive" data-live="online" hidden title="Visiteurs sur le site en ce moment (compteur réel)"><i class="ldot" aria-hidden="true"></i><b data-n>0</b> <em data-pl="joueurs en ligne" data-sg="joueur en ligne">joueurs en ligne</em></span>
+  <a id="backBtn" href="index.html#projets" onclick="saveAndBack(event)" data-i18n="nav.back">← Tous les jeux</a>
+  <span class="glive" data-live="online" hidden data-i18n-attr="title:live.title"><i class="ldot" aria-hidden="true"></i><b data-n>0</b> <em data-i18n-pl="live.online.pl" data-i18n-sg="live.online.sg">joueurs en ligne</em></span>
   <span>Nathan Collard · Game Designer</span>
+  <div data-lang-switch></div>
 </nav>
 <main class="gpage">
 <header class="ghead">
   <img class="gposter" src="vitrine_ricochet.jpg" alt="" width="600" height="800">
-  <div class="gtitle"><h1>Ricochet</h1><p>Un galet ricoche sur le lac : chaque rebond fait grimper le multiplicateur.</p></div>
+  <div class="gtitle"><h1>Ricochet</h1><p data-i18n="g.tag">Un galet ricoche sur le lac : chaque rebond fait grimper le multiplicateur.</p></div>
 </header>
 <div id="tt" class="tt"></div>
 <div class="shell">
   <div class="topbar">
     <div class="balgrp">
-      <span class="ballbl">Balance</span>
+      <span class="ballbl" data-i18n="ui.balance">Balance</span>
       <span class="balval"><span id="bal">1 000,00</span> €</span>
     </div>
-    <button class="snd" id="sndBtn" onclick="toggleSnd()">Son ON</button>
+    <button class="snd" id="sndBtn" onclick="toggleSnd()" data-i18n="ui.sndOn">Son ON</button>
   </div>
   <div class="cvarea">
-    <canvas id="gc" role="img" aria-label="Le lac de Ricochet : le galet, ses rebonds et le résultat"></canvas>
+    <canvas id="gc" role="img" aria-label="Le lac de Ricochet : le galet, ses rebonds et le résultat" data-i18n-attr="aria-label:g.cvAria"></canvas>
     <div class="ro" id="ro">
       <div class="rmult" id="rm"></div>
       <div class="rsub"  id="rs"></div>
@@ -181,7 +183,7 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
   <div class="ctrls">
     <div class="crow">
       <div class="cblk">
-        <div class="clbl">Mise</div>
+        <div class="clbl" data-i18n="ui.bet">Mise</div>
         <div class="bwrap"><span class="cur">€</span><input type="number" id="bi" value="10" min="1" step="1"></div>
         <div class="bbtns">
           <button class="bbtn" onclick="adj(.5)">½</button>
@@ -191,43 +193,85 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
         </div>
       </div>
       <div class="cblk">
-        <div class="clbl">Difficulté</div>
+        <div class="clbl" data-i18n="ui.diff">Difficulté</div>
         <div class="dgrid" id="dg"></div>
       </div>
     </div>
     <div class="lrow">
-      <button class="lbtn" id="lb" onclick="launch()">Lancer le pari</button>
-      <button class="fbtn" id="fb" onclick="toggleFast()">Pari rapide</button>
+      <button class="lbtn" id="lb" onclick="launch()" data-i18n="ui.launch">Lancer le pari</button>
+      <button class="fbtn" id="fb" onclick="toggleFast()" data-i18n="ui.fast">Pari rapide</button>
     </div>
   </div>
   <div class="srow">
-    <div class="stat"><div class="slbl">Parties</div><div class="sval" id="sg">0</div></div>
-    <div class="stat"><div class="slbl">Victoires</div><div class="sval g" id="sw">0</div></div>
+    <div class="stat"><div class="slbl" data-i18n="ui.games">Parties</div><div class="sval" id="sg">0</div></div>
+    <div class="stat"><div class="slbl" data-i18n="ui.wins">Victoires</div><div class="sval g" id="sw">0</div></div>
   </div>
   <div class="hist">
-    <div class="hlbl">Historique</div>
+    <div class="hlbl" data-i18n="ui.hist">Historique</div>
     <div class="hlist" id="hl"></div>
   </div>
 </div>
-<section class="grules" aria-label="Règles et chiffres">
-<dl class="gfacts"><div><dt>RTP</dt><dd>98 %</dd></div><div><dt>Gain max</dt><dd>×207</dd></div><div><dt>Volatilité</dt><dd>Faible à extrême</dd></div><div><dt>Modes</dt><dd>4</dd></div></dl>
-<div><h2>Comment jouer</h2>
-<p>Choisis ta mise et un mode de risque, puis lance le galet. Le nombre de rebonds est tiré avant le lancer, et l'animation ne fait que le montrer. Chaque rebond correspond au multiplicateur du tableau ; si le galet coule sans rebondir, la mise est perdue.</p>
-<p><b>Pari rapide</b> accélère l'animation. Raccourci : <kbd>Espace</kbd> pour lancer.</p></div>
-<div><h2>Probabilités · mode <span id="oddsMode">Facile</span></h2>
+<section class="grules" aria-label="Règles et chiffres" data-i18n-attr="aria-label:r.aria">
+<dl class="gfacts"><div><dt>RTP</dt><dd data-i18n="r.rtpv">98 %</dd></div><div><dt data-i18n="r.max">Gain max</dt><dd>×207</dd></div><div><dt data-i18n="r.vol">Volatilité</dt><dd data-i18n="r.volv">Faible à extrême</dd></div><div><dt data-i18n="r.modes">Modes</dt><dd>4</dd></div></dl>
+<div><h2 data-i18n="r.how">Comment jouer</h2>
+<p data-i18n="r.p1">Choisis ta mise et un mode de risque, puis lance le galet. Le nombre de rebonds est tiré avant le lancer, et l'animation ne fait que le montrer. Chaque rebond correspond au multiplicateur du tableau ; si le galet coule sans rebondir, la mise est perdue.</p>
+<p data-i18n-html="r.p2"><b>Pari rapide</b> accélère l'animation. Raccourci : <kbd>Espace</kbd> pour lancer.</p></div>
+<div><h2><span data-i18n="r.odds">Probabilités · mode</span> <span id="oddsMode">Facile</span></h2>
 <div class="odds-wrap"><table class="odds" id="odds"></table></div>
-<p class="odds-meta">RTP du mode : <b id="oddsRtp">—</b> · chance de gain : <b id="oddsHit">—</b></p></div>
-<a class="glink" href="GDD_Ricochet.pdf" target="_blank" rel="noopener">Lire le GDD (PDF)</a>
+<p class="odds-meta"><span data-i18n="r.mrtp">RTP du mode :</span> <b id="oddsRtp">—</b> · <span data-i18n="r.hit">chance de gain :</span> <b id="oddsHit">—</b></p></div>
+<a class="glink" href="GDD_Ricochet.pdf" target="_blank" rel="noopener" data-i18n="r.gdd">Lire le GDD (PDF)</a>
 </section>
 </main>
 <script>
+// ── TEXTES FR / EN ──
+KC.add({
+  'meta.title':{fr:'Ricochet — jeu iGaming de Nathan Collard',en:'Ricochet — an iGaming game by Nathan Collard'},
+  'meta.desc':{fr:"Ricochet : un galet ricoche sur le lac et chaque rebond fait grimper le multiplicateur. Quatre modes de risque, jusqu'à ×207, RTP 98 %.",en:'Ricochet: a stone skips across the lake and every bounce raises the multiplier. Four risk modes, up to ×207, 98% RTP.'},
+  'nav.back':{fr:'← Tous les jeux',en:'← All games'},
+  'live.title':{fr:'Visiteurs sur le site en ce moment (compteur réel)',en:'Visitors on the site right now (real count)'},
+  'live.online.pl':{fr:'joueurs en ligne',en:'players online'},
+  'live.online.sg':{fr:'joueur en ligne',en:'player online'},
+  'g.tag':{fr:'Un galet ricoche sur le lac : chaque rebond fait grimper le multiplicateur.',en:'A stone skips across the lake: every bounce raises the multiplier.'},
+  'g.cvAria':{fr:'Le lac de Ricochet : le galet, ses rebonds et le résultat',en:'The Ricochet lake: the stone, its bounces and the result'},
+  'ui.balance':{fr:'Balance',en:'Balance'},
+  'ui.sndOn':{fr:'Son ON',en:'Sound ON'},
+  'ui.sndOff':{fr:'Son OFF',en:'Sound OFF'},
+  'ui.bet':{fr:'Mise',en:'Bet'},
+  'ui.diff':{fr:'Difficulté',en:'Difficulty'},
+  'ui.launch':{fr:'Lancer le pari',en:'Place bet'},
+  'ui.fast':{fr:'Pari rapide',en:'Quick bet'},
+  'ui.fastOn':{fr:'Rapide ON',en:'Quick ON'},
+  'ui.games':{fr:'Parties',en:'Rounds'},
+  'ui.wins':{fr:'Victoires',en:'Wins'},
+  'ui.hist':{fr:'Historique',en:'History'},
+  'ui.winChance':{fr:'Chance de gain : {p} %',en:'Chance to win: {p}%'},
+  'mode.0':{fr:'Facile',en:'Easy'},'mode.1':{fr:'Moyen',en:'Medium'},'mode.2':{fr:'Difficile',en:'Hard'},'mode.3':{fr:'Expert',en:'Expert'},
+  'pct':{fr:' %',en:'%'},
+  'r.aria':{fr:'Règles et chiffres',en:'Rules and numbers'},
+  'r.rtpv':{fr:'98 %',en:'98%'},
+  'r.max':{fr:'Gain max',en:'Max win'},
+  'r.vol':{fr:'Volatilité',en:'Volatility'},
+  'r.volv':{fr:'Faible à extrême',en:'Low to extreme'},
+  'r.modes':{fr:'Modes',en:'Modes'},
+  'r.how':{fr:'Comment jouer',en:'How to play'},
+  'r.p1':{fr:"Choisis ta mise et un mode de risque, puis lance le galet. Le nombre de rebonds est tiré avant le lancer, et l'animation ne fait que le montrer. Chaque rebond correspond au multiplicateur du tableau ; si le galet coule sans rebondir, la mise est perdue.",
+          en:"Pick your bet and a risk mode, then throw the stone. The number of bounces is drawn before the throw; the animation only reveals it. Each bounce count pays the multiplier in the table; if the stone sinks without bouncing, the bet is lost."},
+  'r.p2':{fr:"<b>Pari rapide</b> accélère l'animation. Raccourci : <kbd>Espace</kbd> pour lancer.",en:'<b>Quick bet</b> speeds up the animation. Shortcut: <kbd>Space</kbd> to throw.'},
+  'r.odds':{fr:'Probabilités · mode',en:'Odds · mode'},
+  'r.mrtp':{fr:'RTP du mode :',en:'Mode RTP:'},
+  'r.hit':{fr:'chance de gain :',en:'hit rate:'},
+  'r.gdd':{fr:'Lire le GDD (PDF)',en:'Read the GDD (PDF)'},
+  'o.bounces':{fr:'Rebonds',en:'Bounces'},'o.win':{fr:'Gain',en:'Win'},'o.prob':{fr:'Probabilité',en:'Probability'},
+  'o.none':{fr:'Aucun',en:'None'},'o.lost':{fr:'Perdu',en:'Lost'}
+});
+
 const MODES=[
   {n:'Facile',   i:'Perte 40%',mx:'Max x4.44', p:[.40,.32,.16,.08,.03,.01],             m:[0,1.24,1.65,2.27,3.10,4.44]},
   {n:'Moyen',    i:'Perte 55%',mx:'Max x25',   p:[.55,.22,.12,.06,.03,.015,.004,.001],   m:[0,1.35,1.80,2.65,4.20,7.00,14.00,25.00]},
   {n:'Difficile',i:'Perte 70%',mx:'Max x75',   p:[.70,.15,.08,.04,.02,.007,.002,.001],   m:[0,1.88,2.75,4.15,6.50,10.00,20.00,75.00]},
   {n:'Expert',   i:'Perte 85%',mx:'Max x207',  p:[.85,.08,.04,.015,.008,.004,.002,.0005,.0003,.0002],m:[0,3.63,5.18,8.29,12.43,20.72,36.26,62.16,103.59,207.19]}
 ];
-const fmtEur=v=>v.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmtEur=v=>KC.num(v,2);
 let bal=1000,mod=0,busy=false,fast=false,sndOn=true;
 let st={games:0,wins:0},hist=[];
 let activeRips=[];
@@ -961,8 +1005,9 @@ function addHist(mult,win){
   hist.unshift({mult,win});if(hist.length>16)hist.pop();
   document.getElementById('hl').innerHTML=hist.map(h=>`<span class="hp ${h.win?'w':'l'}">${h.win?'×'+h.mult.toFixed(2):'×0'}</span>`).join('');
 }
-function toggleFast(){fast=!fast;const fb=document.getElementById('fb');fb.classList.toggle('on',fast);fb.textContent=fast?'Rapide ON':'Pari rapide';}
-function toggleSnd(){sndOn=!sndOn;document.getElementById('sndBtn').textContent=sndOn?'Son ON':'Son OFF';}
+let lastRes=null;
+function toggleFast(){fast=!fast;const fb=document.getElementById('fb');fb.classList.toggle('on',fast);fb.textContent=KC.t(fast?'ui.fastOn':'ui.fast');}
+function toggleSnd(){sndOn=!sndOn;document.getElementById('sndBtn').textContent=KC.t(sndOn?'ui.sndOn':'ui.sndOff');}
 
 function launch(){
   if(busy)return;
@@ -976,7 +1021,7 @@ function launch(){
     const rm=document.getElementById('rm'),rs=document.getElementById('rs'),ro=document.getElementById('ro');
     rm.textContent=win?'×'+mult.toFixed(2):'×0';
     rm.className='rmult '+(win?'w':'l');
-    rs.textContent=win?'+'+(pay-bet).toFixed(2)+' €':'−'+bet.toFixed(2)+' €';
+    lastRes={win,pay,bet};rs.textContent=win?'+'+fmtEur(pay-bet)+' €':'−'+fmtEur(bet)+' €';
     rs.className='rsub '+(win?'w':'l');
     ro.classList.add('show');
     if(win){bal+=pay;winSound(mult);}
@@ -993,10 +1038,10 @@ function buildDiff(){
   MODES.forEach((m,i)=>{
     const d=document.createElement('button');d.type='button';d.setAttribute('aria-pressed',i===mod?'true':'false');
     d.className='dbtn'+(i===mod?' act':'');
-    d.innerHTML=`<span class="dname">${m.n}</span><span class="dinfo">${m.mx}</span>`;
+    d.innerHTML=`<span class="dname">${KC.t('mode.'+i)}</span><span class="dinfo">${KC.dec(m.mx)}</span>`;
     d.onclick=()=>{mod=i;buildDiff();};
     const winPct=Math.round((1-m.p[0])*100);
-    d.onmouseenter=()=>{tt.textContent=`Chance de gain : ${winPct}%`;tt.classList.add('show');};
+    d.onmouseenter=()=>{tt.textContent=KC.t('ui.winChance',{p:winPct});tt.classList.add('show');};
     d.onmousemove=(e)=>{tt.style.left=(e.clientX+14)+'px';tt.style.top=(e.clientY-38)+'px';};
     d.onmouseleave=()=>tt.classList.remove('show');
     g.appendChild(d);
@@ -1016,16 +1061,22 @@ function saveAndBack(e){e.preventDefault();saveBal();window.location.href='index
 window.addEventListener('beforeunload',saveBal);
 
 // ── Tableau des probabilités du mode choisi ──
-function fmtPct(p){const v=p*100;return (v>=1?v.toFixed(1):v>=0.1?v.toFixed(2):v.toFixed(3)).replace('.',',')+'\u00a0%';}
+function fmtPct(p){const v=p*100;return KC.dec(v>=1?v.toFixed(1):v>=0.1?v.toFixed(2):v.toFixed(3))+KC.t('pct');}
 function renderOdds(){
   const m=MODES[mod],el=document.getElementById('odds');if(!el)return;
   const rtp=m.p.reduce((s,p,i)=>s+p*m.m[i],0);
-  document.getElementById('oddsMode').textContent=m.n;
-  document.getElementById('oddsRtp').textContent=(rtp*100).toFixed(2).replace('.',',')+'\u00a0%';
-  document.getElementById('oddsHit').textContent=Math.round((1-m.p[0])*100)+'\u00a0%';
-  el.innerHTML='<thead><tr><th>Rebonds</th><th>Gain</th><th>Probabilité</th></tr></thead><tbody>'+
-    m.p.map((p,i)=>'<tr'+(i===0?' class="lose"':'')+'><td>'+(i===0?'Aucun':i)+'</td><td>'+(i===0?'Perdu':'×'+m.m[i].toFixed(2).replace('.',','))+'</td><td>'+fmtPct(p)+'</td></tr>').join('')+'</tbody>';
+  document.getElementById('oddsMode').textContent=KC.t('mode.'+mod);
+  document.getElementById('oddsRtp').textContent=KC.dec((rtp*100).toFixed(2))+KC.t('pct');
+  document.getElementById('oddsHit').textContent=Math.round((1-m.p[0])*100)+KC.t('pct');
+  el.innerHTML='<thead><tr><th>'+KC.t('o.bounces')+'</th><th>'+KC.t('o.win')+'</th><th>'+KC.t('o.prob')+'</th></tr></thead><tbody>'+
+    m.p.map((p,i)=>'<tr'+(i===0?' class="lose"':'')+'><td>'+(i===0?KC.t('o.none'):i)+'</td><td>'+(i===0?KC.t('o.lost'):'×'+KC.dec(m.m[i].toFixed(2)))+'</td><td>'+fmtPct(p)+'</td></tr>').join('')+'</tbody>';
 }
+// ── Changement de langue sans recharger la page ──
+KC.on(()=>{buildDiff();upd();
+  document.getElementById('fb').textContent=KC.t(fast?'ui.fastOn':'ui.fast');
+  document.getElementById('sndBtn').textContent=KC.t(sndOn?'ui.sndOn':'ui.sndOff');
+  if(lastRes)document.getElementById('rs').textContent=lastRes.win?'+'+fmtEur(lastRes.pay-lastRes.bet)+' €':'−'+fmtEur(lastRes.bet)+' €';
+});
 renderOdds();
 // ── Raccourci clavier : Espace = lancer ──
 document.addEventListener('keydown',e=>{
