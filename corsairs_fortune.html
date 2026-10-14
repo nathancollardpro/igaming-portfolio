@@ -3,7 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Corsair's Fortune — Nathan Collard</title>
+<title>Corsair's Fortune — jeu iGaming de Nathan Collard</title>
+<meta name="description" content="Corsair's Fortune : machine à sous 5×3 en 243 ways avec un bonus Cannon Hold à quatre blocs. RTP 96 %, gain max ×15 000.">
+<meta name="theme-color" content="#0b1622">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Corsair's Fortune — un jeu de Nathan Collard">
+<meta property="og:description" content="Corsair's Fortune : machine à sous 5×3 en 243 ways avec un bonus Cannon Hold à quatre blocs. RTP 96 %, gain max ×15 000.">
+<meta property="og:image" content="https://kachingstudio.netlify.app/vitrine_corsair.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Barlow+Condensed:wght@700;800;900&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -97,16 +105,65 @@ input[type=number]::-webkit-inner-spin-button{display:none}
 .kv div{background:var(--bg);border:1px solid var(--bdr);border-radius:8px;padding:.5rem .6rem;text-align:center}
 .kv span{display:block;font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}
 .kv strong{font-size:13px;color:var(--gold)}
+:root{--acc:#f2c14e;--shellw:760px;--pagew:1088px}
+/* ── PAGE JEU : nav, colonne titre/règles ── */
+:root{--dim:#7b98ab}
+body{padding:1.1rem 1rem 2.5rem}
+.gnav{width:100%;max-width:var(--pagew);display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1rem;font-size:13px}
+.gnav a{color:var(--txt);text-decoration:none;font-weight:600;display:inline-flex;gap:6px;align-items:center;padding:7px 12px;border:1px solid rgba(255,255,255,.12);border-radius:8px;transition:color .15s,border-color .15s}
+.gnav a:hover,.gnav a:focus-visible{color:#fff;border-color:var(--acc)}
+.gnav span{color:var(--dim)}
+.gpage{width:100%;max-width:var(--pagew);display:grid;grid-template-columns:300px minmax(0,1fr);grid-template-areas:"head shell" "rules shell";grid-template-rows:auto 1fr;gap:1.1rem 28px;align-items:start}
+.ghead{grid-area:head}
+.gpage>.shell{grid-area:shell;max-width:none}
+.grules{grid-area:rules;display:flex;flex-direction:column;gap:1rem}
+.gposter{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;border-radius:12px;display:block}
+.gtitle h1{font-size:28px;line-height:1.1;font-weight:700;color:#fff;margin-top:14px}
+.gtitle p{font-size:14px;line-height:1.55;color:var(--txt);margin-top:6px}
+.gfacts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.gfacts div{background:var(--bg2);border-radius:8px;padding:.55rem .7rem}
+.gfacts dt{font-size:11px;color:var(--dim)}
+.gfacts dd{font-size:14px;font-weight:700;color:#fff;margin-top:2px}
+.grules h2{font-size:15px;font-weight:700;color:#fff;margin-bottom:.4rem}
+.grules p{font-size:13.5px;line-height:1.6;color:var(--txt)}
+.grules p+p{margin-top:.5rem}
+.grules kbd{font-family:inherit;font-size:12px;font-weight:700;color:#fff;background:var(--bg3);border:1px solid rgba(255,255,255,.15);border-bottom-width:2px;border-radius:5px;padding:1px 6px}
+.odds-wrap{max-height:280px;overflow:auto;border-radius:8px;background:var(--bg2)}
+.odds{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+.odds th{position:sticky;top:0;background:var(--bg3);color:var(--dim);font-weight:600;font-size:11.5px;text-align:right;padding:.45rem .7rem}
+.odds th:first-child,.odds td:first-child{text-align:left}
+.odds td{padding:.36rem .7rem;text-align:right;color:var(--txt);border-top:1px solid rgba(255,255,255,.05)}
+.odds tr.lose td{color:#ff8a7d}
+.odds-meta{font-size:12.5px;color:var(--dim);margin-top:.45rem}
+.odds-meta b{color:#fff}
+.glink{display:inline-flex;align-self:flex-start;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--acc);text-decoration:none;border:1px solid var(--acc);border-radius:8px;padding:8px 12px}
+.glink:hover{background:var(--acc);color:#111}
+button:focus-visible,a:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.clbl,.slbl,.hlbl,.dinfo{font-size:11px!important}
+button.dbtn{font-family:inherit;color:inherit;width:100%}
+@media(max-width:1060px){
+  .gpage{grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "shell" "rules";grid-template-rows:none;max-width:var(--shellw)}
+  .gnav{max-width:var(--shellw)}
+  .ghead{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;align-items:center}
+  .gposter{width:52px;border-radius:7px}
+  .gtitle h1{margin-top:0;font-size:22px}
+  .gtitle p{font-size:13px;margin-top:2px}
+  .grules{margin-top:.4rem}
+}
+@media(max-width:520px){.gnav span{display:none}.gtitle p{display:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
-<div class="logo">
-  <a id="backBtn" href="index.html" style="display:inline-flex;align-items:center;gap:6px;color:rgba(194,212,224,.5);font-size:11px;text-decoration:none;letter-spacing:.08em;transition:color .15s" onmouseenter="this.style.color='#f2c14e'" onmouseleave="this.style.color='rgba(194,212,224,.5)'" onclick="saveAndBack(event)">
-    ← Portfolio
-  </a>
-  <span style="color:rgba(255,255,255,.12);margin:0 8px">|</span>
-  Nathan Collard
-</div>
+<nav class="gnav" aria-label="Navigation">
+  <a id="backBtn" href="index.html#projets" onclick="saveAndBack(event)">← Tous les jeux</a>
+  <span>Nathan Collard · Game Designer</span>
+</nav>
+<main class="gpage">
+<header class="ghead">
+  <img class="gposter" src="vitrine_corsair.jpg" alt="" width="600" height="800">
+  <div class="gtitle"><h1>Corsair's Fortune</h1><p>Machine à sous 243 ways avec un bonus Hold & Win à quatre blocs reliés.</p></div>
+</header>
 <div class="shell">
   <div class="topbar">
     <div class="balgrp">
@@ -115,8 +172,11 @@ input[type=number]::-webkit-inner-spin-button{display:none}
     </div>
     <button class="snd" id="sndBtn" onclick="toggleSnd()">Son ON</button>
   </div>
-  <div class="cvarea"><canvas id="gc"></canvas></div>
+  <div class="cvarea"><canvas id="gc" role="img" aria-label="Rouleaux de Corsair's Fortune et plateau du bonus Cannon Hold"></canvas></div>
   <div class="ctrls">
+    <div class="lrow">
+      <button class="lbtn" id="spinBtn" onclick="spin()">⚓ Lancer</button>
+    </div>
     <div class="crow">
       <div class="cblk">
         <div class="clbl">Mise</div>
@@ -145,9 +205,6 @@ input[type=number]::-webkit-inner-spin-button{display:none}
         <button class="buy" id="buyStd" onclick="buyBonus('std')"><b>Cannon Hold · 85×</b><span id="buyStdP">85,00 €</span></button>
         <button class="buy sup" id="buySup" onclick="buyBonus('sup')"><b>Super Cannon Hold · 430×</b><span id="buySupP">430,00 €</span></button>
       </div>
-    </div>
-    <div class="lrow">
-      <button class="lbtn" id="spinBtn" onclick="spin()">⚓ Lancer</button>
     </div>
   </div>
   <div class="srow">
@@ -185,6 +242,14 @@ input[type=number]::-webkit-inner-spin-button{display:none}
   </div>
 </div>
 
+<section class="grules" aria-label="Règles et chiffres">
+<dl class="gfacts"><div><dt>RTP</dt><dd>96 %</dd></div><div><dt>Gain max</dt><dd>×15 000</dd></div><div><dt>Volatilité</dt><dd>Élevée</dd></div><div><dt>Bonus</dt><dd>1 / 266 spins</dd></div></dl>
+<div><h2>Comment jouer</h2>
+<p>Un gain se forme avec le même symbole sur des rouleaux consécutifs depuis la gauche, sur n'importe quelle ligne : 243 façons de gagner.</p>
+<p>Trois barils de poudre lancent le <b>Cannon Hold</b> : tire au canon pour révéler des pièces dans les tonneaux, et remplis les blocs pour activer leurs multiplicateurs.</p>
+<p>La table des gains et les règles complètes sont sous le jeu. Raccourci : <kbd>Espace</kbd> pour lancer.</p></div>
+</section>
+</main>
 <script>
 // ═══ CORSAIR'S FORTUNE — moteur (base 243 ways + Cannon Hold 4 blocs) ═══
 // Pur JS, sans DOM : inclus tel quel dans la page et utilisé par les scripts de calibration.
@@ -892,6 +957,7 @@ window.addEventListener('beforeunload',saveBal);
 
 function init(){prerender();buildPaytable();upd();loop();}
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(init);else init();
+
 </script>
 </body>
 </html>

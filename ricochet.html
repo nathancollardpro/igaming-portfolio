@@ -3,7 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ricochet — Nathan Collard</title>
+<title>Ricochet — jeu iGaming de Nathan Collard</title>
+<meta name="description" content="Ricochet : un galet ricoche sur le lac et chaque rebond fait grimper le multiplicateur. Quatre modes de risque, jusqu'à ×207, RTP 98 %.">
+<meta name="theme-color" content="#0b1622">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ricochet — un jeu de Nathan Collard">
+<meta property="og:description" content="Ricochet : un galet ricoche sur le lac et chaque rebond fait grimper le multiplicateur. Quatre modes de risque, jusqu'à ×207, RTP 98 %.">
+<meta property="og:image" content="https://kachingstudio.netlify.app/vitrine_ricochet.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -74,27 +82,76 @@ input[type=number]::-webkit-inner-spin-button{display:none}
 .hp.l{background:var(--rbg);color:var(--red)}
 .tt{position:fixed;background:rgba(0,10,20,0.92);color:#c2d4e0;font-size:11px;font-family:'Inter',sans-serif;padding:5px 10px;border-radius:6px;pointer-events:none;opacity:0;transition:opacity .12s;white-space:nowrap;z-index:999;border:1px solid rgba(0,231,1,.3)}
 .tt.show{opacity:1}
+:root{--acc:#00e701;--shellw:680px;--pagew:1008px}
+/* ── PAGE JEU : nav, colonne titre/règles ── */
+:root{--dim:#7b98ab}
+body{padding:1.1rem 1rem 2.5rem}
+.gnav{width:100%;max-width:var(--pagew);display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1rem;font-size:13px}
+.gnav a{color:var(--txt);text-decoration:none;font-weight:600;display:inline-flex;gap:6px;align-items:center;padding:7px 12px;border:1px solid rgba(255,255,255,.12);border-radius:8px;transition:color .15s,border-color .15s}
+.gnav a:hover,.gnav a:focus-visible{color:#fff;border-color:var(--acc)}
+.gnav span{color:var(--dim)}
+.gpage{width:100%;max-width:var(--pagew);display:grid;grid-template-columns:300px minmax(0,1fr);grid-template-areas:"head shell" "rules shell";grid-template-rows:auto 1fr;gap:1.1rem 28px;align-items:start}
+.ghead{grid-area:head}
+.gpage>.shell{grid-area:shell;max-width:none}
+.grules{grid-area:rules;display:flex;flex-direction:column;gap:1rem}
+.gposter{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;border-radius:12px;display:block}
+.gtitle h1{font-size:28px;line-height:1.1;font-weight:700;color:#fff;margin-top:14px}
+.gtitle p{font-size:14px;line-height:1.55;color:var(--txt);margin-top:6px}
+.gfacts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.gfacts div{background:var(--bg2);border-radius:8px;padding:.55rem .7rem}
+.gfacts dt{font-size:11px;color:var(--dim)}
+.gfacts dd{font-size:14px;font-weight:700;color:#fff;margin-top:2px}
+.grules h2{font-size:15px;font-weight:700;color:#fff;margin-bottom:.4rem}
+.grules p{font-size:13.5px;line-height:1.6;color:var(--txt)}
+.grules p+p{margin-top:.5rem}
+.grules kbd{font-family:inherit;font-size:12px;font-weight:700;color:#fff;background:var(--bg3);border:1px solid rgba(255,255,255,.15);border-bottom-width:2px;border-radius:5px;padding:1px 6px}
+.odds-wrap{max-height:280px;overflow:auto;border-radius:8px;background:var(--bg2)}
+.odds{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+.odds th{position:sticky;top:0;background:var(--bg3);color:var(--dim);font-weight:600;font-size:11.5px;text-align:right;padding:.45rem .7rem}
+.odds th:first-child,.odds td:first-child{text-align:left}
+.odds td{padding:.36rem .7rem;text-align:right;color:var(--txt);border-top:1px solid rgba(255,255,255,.05)}
+.odds tr.lose td{color:#ff8a7d}
+.odds-meta{font-size:12.5px;color:var(--dim);margin-top:.45rem}
+.odds-meta b{color:#fff}
+.glink{display:inline-flex;align-self:flex-start;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--acc);text-decoration:none;border:1px solid var(--acc);border-radius:8px;padding:8px 12px}
+.glink:hover{background:var(--acc);color:#111}
+button:focus-visible,a:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.clbl,.slbl,.hlbl,.dinfo{font-size:11px!important}
+button.dbtn{font-family:inherit;color:inherit;width:100%}
+@media(max-width:1060px){
+  .gpage{grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "shell" "rules";grid-template-rows:none;max-width:var(--shellw)}
+  .gnav{max-width:var(--shellw)}
+  .ghead{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;align-items:center}
+  .gposter{width:52px;border-radius:7px}
+  .gtitle h1{margin-top:0;font-size:22px}
+  .gtitle p{font-size:13px;margin-top:2px}
+  .grules{margin-top:.4rem}
+}
+@media(max-width:520px){.gnav span{display:none}.gtitle p{display:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
-<div class="logo">
-  <a id="backBtn" href="index.html" style="display:inline-flex;align-items:center;gap:6px;color:rgba(194,212,224,.5);font-size:11px;text-decoration:none;letter-spacing:.08em;transition:color .15s" onmouseenter="this.style.color='#00e701'" onmouseleave="this.style.color='rgba(194,212,224,.5)'" onclick="saveAndBack(event)">
-    ← Portfolio
-  </a>
-  <span style="color:rgba(255,255,255,.12);margin:0 8px">|</span>
-  Nathan Collard
-</div>
+<nav class="gnav" aria-label="Navigation">
+  <a id="backBtn" href="index.html#projets" onclick="saveAndBack(event)">← Tous les jeux</a>
+  <span>Nathan Collard · Game Designer</span>
+</nav>
+<main class="gpage">
+<header class="ghead">
+  <img class="gposter" src="vitrine_ricochet.jpg" alt="" width="600" height="800">
+  <div class="gtitle"><h1>Ricochet</h1><p>Un galet ricoche sur le lac : chaque rebond fait grimper le multiplicateur.</p></div>
+</header>
 <div id="tt" class="tt"></div>
 <div class="shell">
   <div class="topbar">
     <div class="balgrp">
       <span class="ballbl">Balance</span>
-      <span class="balval"><span id="bal">1 000</span> €</span>
+      <span class="balval"><span id="bal">1 000,00</span> €</span>
     </div>
     <button class="snd" id="sndBtn" onclick="toggleSnd()">Son ON</button>
   </div>
   <div class="cvarea">
-    <canvas id="gc"></canvas>
+    <canvas id="gc" role="img" aria-label="Le lac de Ricochet : le galet, ses rebonds et le résultat"></canvas>
     <div class="ro" id="ro">
       <div class="rmult" id="rm"></div>
       <div class="rsub"  id="rs"></div>
@@ -131,6 +188,17 @@ input[type=number]::-webkit-inner-spin-button{display:none}
     <div class="hlist" id="hl"></div>
   </div>
 </div>
+<section class="grules" aria-label="Règles et chiffres">
+<dl class="gfacts"><div><dt>RTP</dt><dd>98 %</dd></div><div><dt>Gain max</dt><dd>×207</dd></div><div><dt>Volatilité</dt><dd>Faible à extrême</dd></div><div><dt>Modes</dt><dd>4</dd></div></dl>
+<div><h2>Comment jouer</h2>
+<p>Choisis ta mise et un mode de risque, puis lance le galet. Le nombre de rebonds est tiré avant le lancer, et l'animation ne fait que le montrer. Chaque rebond correspond au multiplicateur du tableau ; si le galet coule sans rebondir, la mise est perdue.</p>
+<p><b>Pari rapide</b> accélère l'animation. Raccourci : <kbd>Espace</kbd> pour lancer.</p></div>
+<div><h2>Probabilités · mode <span id="oddsMode">Facile</span></h2>
+<div class="odds-wrap"><table class="odds" id="odds"></table></div>
+<p class="odds-meta">RTP du mode : <b id="oddsRtp">—</b> · chance de gain : <b id="oddsHit">—</b></p></div>
+<a class="glink" href="GDD_Ricochet.pdf" target="_blank" rel="noopener">Lire le GDD (PDF)</a>
+</section>
+</main>
 <script>
 const MODES=[
   {n:'Facile',   i:'Perte 40%',mx:'Max x4.44', p:[.40,.32,.16,.08,.03,.01],             m:[0,1.24,1.65,2.27,3.10,4.44]},
@@ -138,6 +206,7 @@ const MODES=[
   {n:'Difficile',i:'Perte 70%',mx:'Max x75',   p:[.70,.15,.08,.04,.02,.007,.002,.001],   m:[0,1.88,2.75,4.15,6.50,10.00,20.00,75.00]},
   {n:'Expert',   i:'Perte 85%',mx:'Max x207',  p:[.85,.08,.04,.015,.008,.004,.002,.0005,.0003,.0002],m:[0,3.63,5.18,8.29,12.43,20.72,36.26,62.16,103.59,207.19]}
 ];
+const fmtEur=v=>v.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});
 let bal=1000,mod=0,busy=false,fast=false,sndOn=true;
 let st={games:0,wins:0},hist=[];
 let activeRips=[];
@@ -863,13 +932,13 @@ function adj(f){document.getElementById('bi').value=Math.max(1,Math.round(getBet
 function allIn(){document.getElementById('bi').value=Math.floor(bal);}
 function setUI(on){document.getElementById('lb').disabled=!on;document.getElementById('bi').disabled=!on;}
 function upd(){
-  document.getElementById('bal').textContent=Math.round(bal).toLocaleString('fr-FR');
+  document.getElementById('bal').textContent=fmtEur(bal);
   document.getElementById('sg').textContent=st.games;
   document.getElementById('sw').textContent=st.wins;
 }
 function addHist(mult,win){
   hist.unshift({mult,win});if(hist.length>16)hist.pop();
-  document.getElementById('hl').innerHTML=hist.map(h=>`<span class="hp ${h.win?'w':'l'}">${h.win?'x'+h.mult.toFixed(2):'x0'}</span>`).join('');
+  document.getElementById('hl').innerHTML=hist.map(h=>`<span class="hp ${h.win?'w':'l'}">${h.win?'×'+h.mult.toFixed(2):'×0'}</span>`).join('');
 }
 function toggleFast(){fast=!fast;const fb=document.getElementById('fb');fb.classList.toggle('on',fast);fb.textContent=fast?'Rapide ON':'Pari rapide';}
 function toggleSnd(){sndOn=!sndOn;document.getElementById('sndBtn').textContent=sndOn?'Son ON':'Son OFF';}
@@ -884,7 +953,7 @@ function launch(){
   animate(b,()=>{
     // Set result display AFTER animation ends
     const rm=document.getElementById('rm'),rs=document.getElementById('rs'),ro=document.getElementById('ro');
-    rm.textContent=win?'x'+mult.toFixed(2):'x0';
+    rm.textContent=win?'×'+mult.toFixed(2):'×0';
     rm.className='rmult '+(win?'w':'l');
     rs.textContent=win?'+'+(pay-bet).toFixed(2)+' €':'−'+bet.toFixed(2)+' €';
     rs.className='rsub '+(win?'w':'l');
@@ -901,7 +970,7 @@ function buildDiff(){
   g.innerHTML='';
   const tt=document.getElementById('tt');
   MODES.forEach((m,i)=>{
-    const d=document.createElement('div');
+    const d=document.createElement('button');d.type='button';d.setAttribute('aria-pressed',i===mod?'true':'false');
     d.className='dbtn'+(i===mod?' act':'');
     d.innerHTML=`<span class="dname">${m.n}</span><span class="dinfo">${m.mx}</span>`;
     d.onclick=()=>{mod=i;buildDiff();};
@@ -911,6 +980,7 @@ function buildDiff(){
     d.onmouseleave=()=>tt.classList.remove('show');
     g.appendChild(d);
   });
+  renderOdds();
 }
 buildDiff();
 // ── SHARED BALANCE ──
@@ -923,6 +993,25 @@ const NC_KEY='nc_portfolio_balance';
 function saveBal(){localStorage.setItem(NC_KEY,bal);sessionStorage.setItem('nc_came_from_game','1');}
 function saveAndBack(e){e.preventDefault();saveBal();window.location.href='index.html';}
 window.addEventListener('beforeunload',saveBal);
+
+// ── Tableau des probabilités du mode choisi ──
+function fmtPct(p){const v=p*100;return (v>=1?v.toFixed(1):v>=0.1?v.toFixed(2):v.toFixed(3)).replace('.',',')+'\u00a0%';}
+function renderOdds(){
+  const m=MODES[mod],el=document.getElementById('odds');if(!el)return;
+  const rtp=m.p.reduce((s,p,i)=>s+p*m.m[i],0);
+  document.getElementById('oddsMode').textContent=m.n;
+  document.getElementById('oddsRtp').textContent=(rtp*100).toFixed(2).replace('.',',')+'\u00a0%';
+  document.getElementById('oddsHit').textContent=Math.round((1-m.p[0])*100)+'\u00a0%';
+  el.innerHTML='<thead><tr><th>Rebonds</th><th>Gain</th><th>Probabilité</th></tr></thead><tbody>'+
+    m.p.map((p,i)=>'<tr'+(i===0?' class="lose"':'')+'><td>'+(i===0?'Aucun':i)+'</td><td>'+(i===0?'Perdu':'×'+m.m[i].toFixed(2).replace('.',','))+'</td><td>'+fmtPct(p)+'</td></tr>').join('')+'</tbody>';
+}
+renderOdds();
+// ── Raccourci clavier : Espace = lancer ──
+document.addEventListener('keydown',e=>{
+  if(e.code!=='Space'||e.repeat)return;
+  const a=document.activeElement;if(a&&/^(INPUT|BUTTON|A|SELECT|TEXTAREA)$/.test(a.tagName))return;
+  e.preventDefault();launch();
+});
 </script>
 </body>
 </html>

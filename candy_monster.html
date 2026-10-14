@@ -3,7 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Candy Monster — Nathan Collard</title>
+<title>Candy Monster — jeu iGaming de Nathan Collard</title>
+<meta name="description" content="Candy Monster : nourris le monstre bonbon après bonbon pour faire monter le multiplicateur, et encaisse avant qu'il ne recrache tout. RTP 98 %.">
+<meta name="theme-color" content="#0b1622">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Candy Monster — un jeu de Nathan Collard">
+<meta property="og:description" content="Candy Monster : nourris le monstre bonbon après bonbon pour faire monter le multiplicateur, et encaisse avant qu'il ne recrache tout. RTP 98 %.">
+<meta property="og:image" content="https://kachingstudio.netlify.app/vitrine_candy.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -67,16 +75,65 @@ input[type=number]::-webkit-inner-spin-button{display:none}
 .hp.l{background:var(--rbg);color:var(--red)}
 .tt{position:fixed;background:rgba(0,10,20,0.92);color:#c2d4e0;font-size:11px;font-family:'Inter',sans-serif;padding:6px 11px;border-radius:6px;pointer-events:none;opacity:0;transition:opacity .12s;white-space:normal;line-height:1.6;z-index:999;border:1px solid rgba(255,255,255,.1);max-width:200px}
 .tt.show{opacity:1}
+:root{--acc:#00e701;--shellw:680px;--pagew:1008px}
+/* ── PAGE JEU : nav, colonne titre/règles ── */
+:root{--dim:#7b98ab}
+body{padding:1.1rem 1rem 2.5rem}
+.gnav{width:100%;max-width:var(--pagew);display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1rem;font-size:13px}
+.gnav a{color:var(--txt);text-decoration:none;font-weight:600;display:inline-flex;gap:6px;align-items:center;padding:7px 12px;border:1px solid rgba(255,255,255,.12);border-radius:8px;transition:color .15s,border-color .15s}
+.gnav a:hover,.gnav a:focus-visible{color:#fff;border-color:var(--acc)}
+.gnav span{color:var(--dim)}
+.gpage{width:100%;max-width:var(--pagew);display:grid;grid-template-columns:300px minmax(0,1fr);grid-template-areas:"head shell" "rules shell";grid-template-rows:auto 1fr;gap:1.1rem 28px;align-items:start}
+.ghead{grid-area:head}
+.gpage>.shell{grid-area:shell;max-width:none}
+.grules{grid-area:rules;display:flex;flex-direction:column;gap:1rem}
+.gposter{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;border-radius:12px;display:block}
+.gtitle h1{font-size:28px;line-height:1.1;font-weight:700;color:#fff;margin-top:14px}
+.gtitle p{font-size:14px;line-height:1.55;color:var(--txt);margin-top:6px}
+.gfacts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.gfacts div{background:var(--bg2);border-radius:8px;padding:.55rem .7rem}
+.gfacts dt{font-size:11px;color:var(--dim)}
+.gfacts dd{font-size:14px;font-weight:700;color:#fff;margin-top:2px}
+.grules h2{font-size:15px;font-weight:700;color:#fff;margin-bottom:.4rem}
+.grules p{font-size:13.5px;line-height:1.6;color:var(--txt)}
+.grules p+p{margin-top:.5rem}
+.grules kbd{font-family:inherit;font-size:12px;font-weight:700;color:#fff;background:var(--bg3);border:1px solid rgba(255,255,255,.15);border-bottom-width:2px;border-radius:5px;padding:1px 6px}
+.odds-wrap{max-height:280px;overflow:auto;border-radius:8px;background:var(--bg2)}
+.odds{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+.odds th{position:sticky;top:0;background:var(--bg3);color:var(--dim);font-weight:600;font-size:11.5px;text-align:right;padding:.45rem .7rem}
+.odds th:first-child,.odds td:first-child{text-align:left}
+.odds td{padding:.36rem .7rem;text-align:right;color:var(--txt);border-top:1px solid rgba(255,255,255,.05)}
+.odds tr.lose td{color:#ff8a7d}
+.odds-meta{font-size:12.5px;color:var(--dim);margin-top:.45rem}
+.odds-meta b{color:#fff}
+.glink{display:inline-flex;align-self:flex-start;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--acc);text-decoration:none;border:1px solid var(--acc);border-radius:8px;padding:8px 12px}
+.glink:hover{background:var(--acc);color:#111}
+button:focus-visible,a:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.clbl,.slbl,.hlbl,.dinfo{font-size:11px!important}
+button.dbtn{font-family:inherit;color:inherit;width:100%}
+@media(max-width:1060px){
+  .gpage{grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "shell" "rules";grid-template-rows:none;max-width:var(--shellw)}
+  .gnav{max-width:var(--shellw)}
+  .ghead{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;align-items:center}
+  .gposter{width:52px;border-radius:7px}
+  .gtitle h1{margin-top:0;font-size:22px}
+  .gtitle p{font-size:13px;margin-top:2px}
+  .grules{margin-top:.4rem}
+}
+@media(max-width:520px){.gnav span{display:none}.gtitle p{display:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
-<div class="logo">
-  <a id="backBtn" href="index.html" style="display:inline-flex;align-items:center;gap:6px;color:rgba(194,212,224,.5);font-size:11px;text-decoration:none;letter-spacing:.08em;transition:color .15s" onmouseenter="this.style.color='#00e701'" onmouseleave="this.style.color='rgba(194,212,224,.5)'" onclick="saveAndBack(event)">
-    ← Portfolio
-  </a>
-  <span style="color:rgba(255,255,255,.12);margin:0 8px">|</span>
-  Nathan Collard
-</div>
+<nav class="gnav" aria-label="Navigation">
+  <a id="backBtn" href="index.html#projets" onclick="saveAndBack(event)">← Tous les jeux</a>
+  <span>Nathan Collard · Game Designer</span>
+</nav>
+<main class="gpage">
+<header class="ghead">
+  <img class="gposter" src="vitrine_candy.jpg" alt="" width="600" height="800">
+  <div class="gtitle"><h1>Candy Monster</h1><p>Nourris le monstre pour faire monter le multiplicateur, et encaisse avant qu'il ne recrache tout.</p></div>
+</header>
 <div id="tt" class="tt"></div>
 <div class="shell">
   <div class="topbar">
@@ -87,7 +144,7 @@ input[type=number]::-webkit-inner-spin-button{display:none}
     <button class="snd" id="sndBtn" onclick="toggleSnd()">Son ON</button>
   </div>
   <div class="cvarea">
-    <canvas id="gc"></canvas>
+    <canvas id="gc" role="img" aria-label="Le monstre de Candy Monster, le multiplicateur et les paliers"></canvas>
   </div>
   <div class="ctrls">
     <div class="crow">
@@ -117,10 +174,21 @@ input[type=number]::-webkit-inner-spin-button{display:none}
   <div class="srow">
     <div class="stat"><div class="slbl">Parties</div><div class="sval" id="sg">0</div></div>
     <div class="stat"><div class="slbl">Victoires</div><div class="sval g" id="sw">0</div></div>
-    <div class="stat"><div class="slbl">Mise max</div><div class="sval" id="smx">—</div></div>
+    <div class="stat"><div class="slbl">Meilleur gain</div><div class="sval" id="smx">—</div></div>
   </div>
   <div class="hist"><div class="hlbl">Historique</div><div class="hlist" id="hl"></div></div>
 </div>
+<section class="grules" aria-label="Règles et chiffres">
+<dl class="gfacts"><div><dt>RTP</dt><dd>98 %</dd></div><div><dt>Gain max</dt><dd>×181 060</dd></div><div><dt>Volatilité</dt><dd>Faible à extrême</dd></div><div><dt>Modes</dt><dd>4</dd></div></dl>
+<div><h2>Comment jouer</h2>
+<p>Choisis ta mise et un mode, puis nourris le monstre. Chaque bonbon avalé fait monter le multiplicateur ; s'il en refuse un, la manche est perdue. Encaisse quand tu veux avec <b>Cash Out</b>. Au dernier palier, le gain est encaissé automatiquement.</p>
+<p>Raccourcis : <kbd>Espace</kbd> pour nourrir, <kbd>Entrée</kbd> pour encaisser.</p></div>
+<div><h2>Paliers · mode <span id="oddsMode">Facile</span></h2>
+<div class="odds-wrap"><table class="odds" id="odds"></table></div>
+<p class="odds-meta">Chaque multiplicateur vaut 0,98 ÷ la chance d'y arriver : le RTP reste d'environ <b>98 %</b>, quel que soit le moment où tu encaisses.</p></div>
+<a class="glink" href="GDD_CandyMonster.pdf" target="_blank" rel="noopener">Lire le GDD (PDF)</a>
+</section>
+</main>
 <script>
 /* ── CONFIG ────────────────────────────────────────────────── */
 const MODES={
@@ -147,10 +215,11 @@ const MODES={
 };
 
 /* ── STATE ─────────────────────────────────────────────────── */
+const fmtEur=v=>v.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});
 let bal=1000,mod='facile',sndOn=true,busy=false;
 let phase='idle'; // idle|active|busted|cashedout
 let step=0,currentMult=1.0,currentBet=10;
-let st={games:0,wins:0,maxMise:0},hist=[];
+let st={games:0,wins:0,best:0},hist=[];
 let AC=null;
 
 /* ── AUDIO ─────────────────────────────────────────────────── */
@@ -616,7 +685,7 @@ function drawMultiplierOverlay(){
   const pulseFactor=phase==='active'?(1+Math.sin(wt*.09)*.028):1;
 
   if(phase==='idle'){
-    multTxt='×1.00';multCol='rgba(74,106,122,.7)';subTxt='Nourris le monstre !';subCol='rgba(74,106,122,.5)';
+    multTxt='×1.00';multCol='rgba(255,255,255,.6)';subTxt='Nourris le monstre !';subCol='rgba(255,220,240,.85)';
   } else if(phase==='active'){
     multTxt=`×${currentMult.toFixed(2)}`;multCol=modeCol;
     multPulse++;
@@ -639,21 +708,34 @@ function drawMultiplierOverlay(){
   ctx.shadowBlur=0;
 
   // Sub text
-  ctx.fillStyle=subCol;ctx.font=`${fs*.21}px Arial`;
-  ctx.fillText(subTxt,0,fs*.46);
+  ctx.fillStyle=subCol;ctx.font=`600 ${fs*.27}px Arial`;
+  ctx.fillText(subTxt,0,fs*.52);
   ctx.restore();
 }
 
 /* ── BACKGROUND ────────────────────────────────────────────── */
+// Décor aux couleurs de l'affiche : nuit violette, colline guimauve, vermicelles
+const SPRINKLES=Array.from({length:26},(_,i)=>{const r=k=>{const x=Math.sin(i*127.1+k*311.7)*43758.5453;return x-Math.floor(x);};
+  return {x:r(1),y:.08+r(2)*.62,a:r(3)*Math.PI,c:['#ff8fc6','#ffd34d','#7ad7f0','#ffffff'][i%4],tw:r(4)*6};});
 function drawBg(){
   const bg=ctx.createLinearGradient(0,0,0,H);
-  bg.addColorStop(0,'#0d1d2e');bg.addColorStop(.5,'#0b1622');bg.addColorStop(1,'#080f18');
+  bg.addColorStop(0,'#24104a');bg.addColorStop(.6,'#35145f');bg.addColorStop(1,'#1c0a36');
   ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  // Subtle radial glow at monster position
-  ctx.globalAlpha=phase==='active'?.06:.03;
-  const rc=ctx.createRadialGradient(W*.50,H*.50,0,W*.50,H*.50,H*.6);
-  rc.addColorStop(0,'rgba(255,255,255,1)');rc.addColorStop(1,'rgba(255,255,255,0)');
-  ctx.fillStyle=rc;ctx.fillRect(0,0,W,H);ctx.globalAlpha=1;
+  // Halo rose derrière le monstre
+  const rc=ctx.createRadialGradient(W*.50,H*.52,0,W*.50,H*.52,H*.62);
+  rc.addColorStop(0,phase==='active'?'rgba(255,150,210,.20)':'rgba(255,150,210,.13)');rc.addColorStop(1,'rgba(255,150,210,0)');
+  ctx.fillStyle=rc;ctx.fillRect(0,0,W,H);
+  // Colline guimauve
+  ctx.fillStyle='rgba(255,143,198,.13)';
+  ctx.beginPath();ctx.ellipse(W*.5,H*1.04,W*.78,H*.34,0,0,Math.PI*2);ctx.fill();
+  // Vermicelles qui scintillent
+  ctx.lineCap='round';ctx.lineWidth=Math.max(3,H*.013);
+  SPRINKLES.forEach(s=>{
+    ctx.globalAlpha=.34+.2*Math.sin(wt*2.2+s.tw);
+    ctx.strokeStyle=s.c;const L=H*.012,x=s.x*W,y=s.y*H;
+    ctx.beginPath();ctx.moveTo(x-Math.cos(s.a)*L,y-Math.sin(s.a)*L);ctx.lineTo(x+Math.cos(s.a)*L,y+Math.sin(s.a)*L);ctx.stroke();
+  });
+  ctx.globalAlpha=1;
 }
 
 /* ── MAIN DRAW ─────────────────────────────────────────────── */
@@ -806,7 +888,7 @@ function finishFeed(){
     const win=currentBet*currentMult;
     bal+=win;
     phase='cashedout';
-    if(currentBet>st.maxMise)st.maxMise=currentBet;
+    st.best=Math.max(st.best,win);
     st.games++;st.wins++;
     addHist(currentMult,true);upd();
     document.getElementById('coBtn').disabled=true;
@@ -855,7 +937,7 @@ function cashout(){
   phase='cashedout';
   monState='win';createConfetti();
   playWin(currentMult);
-  if(currentBet>st.maxMise)st.maxMise=currentBet;
+  st.best=Math.max(st.best,win);
   st.games++;st.wins++;
   addHist(currentMult,true);upd();
   document.getElementById('coBtn').disabled=true;setUI(false);
@@ -872,10 +954,10 @@ function cashout(){
 
 /* ── UI ────────────────────────────────────────────────────── */
 function upd(){
-  document.getElementById('bal').textContent=Math.round(bal).toLocaleString('fr-FR');
+  document.getElementById('bal').textContent=fmtEur(bal);
   document.getElementById('sg').textContent=st.games;
   document.getElementById('sw').textContent=st.wins;
-  document.getElementById('smx').textContent=st.maxMise>0?st.maxMise+' €':'—';
+  document.getElementById('smx').textContent=st.best>0?fmtEur(st.best)+' €':'—';
   // Gain potentiel near cash out
   const gp=document.getElementById('gainPot');
   if(phase==='active'&&step>0){
@@ -932,7 +1014,7 @@ function buildModes(){
   const g=document.getElementById('dg');g.innerHTML='';
   const tt=document.getElementById('tt');
   Object.entries(MODES).forEach(([key,m],i)=>{
-    const d=document.createElement('div');d.className='dbtn'+(key===mod?' act':'');
+    const d=document.createElement('button');d.type='button';d.setAttribute('aria-pressed',key===mod?'true':'false');d.className='dbtn'+(key===mod?' act':'');
     d.innerHTML=`<span class="dname">${m.label}</span>`;
     d.style.setProperty('--mode-c',m.color);d.style.setProperty('--mode-bg',m.bg);
     d.onclick=()=>{if(phase!=='idle')return;mod=key;buildModes();};
@@ -942,6 +1024,7 @@ function buildModes(){
     d.onmouseleave=()=>tt.classList.remove('show');
     g.appendChild(d);
   });
+  renderOdds();
 }
 buildModes();
 // ── SHARED BALANCE ──
@@ -954,6 +1037,23 @@ const NC_KEY='nc_portfolio_balance';
 function saveBal(){localStorage.setItem(NC_KEY,bal);sessionStorage.setItem('nc_came_from_game','1');}
 function saveAndBack(e){e.preventDefault();saveBal();window.location.href='index.html';}
 window.addEventListener('beforeunload',saveBal);
+
+// ── Tableau des paliers du mode choisi ──
+function renderOdds(){
+  const m=MODES[mod],el=document.getElementById('odds');if(!el)return;
+  document.getElementById('oddsMode').textContent=m.label.replace(/^\S+\s/,'');
+  const pc=v=>(v>=1?v.toFixed(1):v>=0.01?v.toFixed(2):v.toFixed(4)).replace('.',',')+'\u00a0%';
+  el.innerHTML='<thead><tr><th>Bonbons</th><th>Multiplicateur</th><th>Chance d\'y arriver</th></tr></thead><tbody>'+
+    m.mults.map((x,i)=>'<tr><td>'+(i+1)+'</td><td>×'+x.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+'</td><td>'+pc(m.cumWin[i])+'</td></tr>').join('')+'</tbody>';
+}
+renderOdds();
+// ── Raccourcis clavier : Espace = nourrir, Entrée = encaisser ──
+document.addEventListener('keydown',e=>{
+  if(e.repeat)return;
+  const a=document.activeElement;if(a&&/^(INPUT|BUTTON|A|SELECT|TEXTAREA)$/.test(a.tagName))return;
+  if(e.code==='Space'){e.preventDefault();if(!document.getElementById('feedBtn').disabled)onFeedClick();}
+  else if(e.key==='Enter'){e.preventDefault();if(!document.getElementById('coBtn').disabled)cashout();}
+});
 </script>
 </body>
 </html>
