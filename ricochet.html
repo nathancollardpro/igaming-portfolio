@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-game="ricochet">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -143,11 +143,18 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
 .grules .glink{grid-column:1/-1}
 .cvarea{width:100%;height:auto!important;aspect-ratio:680/280;max-height:max(260px,calc(100vh - 440px))}
 @media(max-width:760px){.grules{grid-template-columns:minmax(0,1fr)}.grules .gfacts{grid-template-columns:1fr 1fr}.cvarea{aspect-ratio:auto;height:270px!important;max-height:none}}
+.gnav{gap:1rem}.gnav .glive{display:inline-flex;align-items:center;gap:6px;color:var(--txt);margin-left:auto}.gnav .glive b{color:#fff}.gnav .glive em{font-style:normal}
+.ldot{width:8px;height:8px;border-radius:50%;background:#2ecc71;display:inline-block;animation:livep 2s infinite}
+@keyframes livep{0%{box-shadow:0 0 0 0 rgba(46,204,113,.55)}70%{box-shadow:0 0 0 7px rgba(46,204,113,0)}100%{box-shadow:0 0 0 0 rgba(46,204,113,0)}}
+[hidden]{display:none!important}
+@media(max-width:520px){.gnav .glive{display:inline-flex}.gnav .glive em{display:none}}
 </style>
+<script src="live.js" defer></script>
 </head>
 <body>
 <nav class="gnav" aria-label="Navigation">
   <a id="backBtn" href="index.html#projets" onclick="saveAndBack(event)">← Tous les jeux</a>
+  <span class="glive" data-live="online" hidden title="Visiteurs sur le site en ce moment (compteur réel)"><i class="ldot" aria-hidden="true"></i><b data-n>0</b> <em data-pl="joueurs en ligne" data-sg="joueur en ligne">joueurs en ligne</em></span>
   <span>Nathan Collard · Game Designer</span>
 </nav>
 <main class="gpage">
@@ -963,7 +970,7 @@ function launch(){
   if(bet>bal){document.getElementById('bi').value=Math.floor(bal);return;}
   busy=true;setUI(false);ensureAC();
   const mo=MODES[mod],b=roll(),mult=mo.m[b],pay=bet*mult,win=mult>0;
-  bal-=bet;upd();
+  bal-=bet;upd();window.KCLive&&KCLive.spin();
   animate(b,()=>{
     // Set result display AFTER animation ends
     const rm=document.getElementById('rm'),rs=document.getElementById('rs'),ro=document.getElementById('ro');

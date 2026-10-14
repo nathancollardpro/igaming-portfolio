@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-game="corsair">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -204,13 +204,23 @@ input[type=range]::-moz-range-thumb{width:40px;height:40px;border-radius:50%;bac
 
 button:focus-visible,a:focus-visible,input:focus-visible{outline:4px solid #ffe08a;outline-offset:4px}
 @media (prefers-reduced-motion:reduce){.spin.busy svg,.spin.fire,.boost-tag.on{animation:none}}
+#liveTag{position:absolute;left:24px;top:22px;display:flex;align-items:center;gap:10px;padding:10px 18px;border-radius:30px;background:rgba(20,10,4,.78);border:2px solid rgba(46,204,113,.45);
+  font:700 22px/1 'Inter',sans-serif;color:var(--cream);white-space:nowrap;z-index:3}
+#liveTag b{color:#fff;font-variant-numeric:tabular-nums}
+.port #liveTag{font-size:28px;left:28px;top:24px}
+#liveTag i{width:12px;height:12px;border-radius:50%;background:#2ecc71;display:inline-block;animation:livep 2s infinite}
+@keyframes livep{0%{box-shadow:0 0 0 0 rgba(46,204,113,.55)}70%{box-shadow:0 0 0 10px rgba(46,204,113,0)}100%{box-shadow:0 0 0 0 rgba(46,204,113,0)}}
+#liveTag[hidden]{display:none}
+#stage.inbonus #liveTag{display:none}
 </style>
+<script src="live.js" defer></script>
 </head>
 <body>
 <div id="game">
   <canvas id="gc" role="img" aria-label="Corsair's Fortune : rouleaux dans la cale du navire, capitaine pirate et bonus au canon"></canvas>
   <div id="stage" class="land">
     <h1 class="sr-only">Corsair's Fortune</h1>
+    <div id="liveTag" data-live="online" hidden title="Visiteurs sur le site en ce moment (compteur réel)"><i aria-hidden="true"></i><b data-n>0</b><span data-pl="joueurs en ligne" data-sg="joueur en ligne">joueurs en ligne</span></div>
     <div id="tap">Touchez l'écran pour activer la musique</div>
 
     <button class="buy-plaque" id="buyBtn" type="button" aria-haspopup="dialog" aria-label="Ouvrir le menu bonus"><span class="t1">BUY</span><span class="t2">BONUS</span></button>
@@ -1408,7 +1418,7 @@ function noFunds(){capMood('sad',1600);capSay('Caisse vide ! Recharge depuis le
 
 async function play(force){
   if(busy)return;closePanels();const bet=getBet(),c=cost();if(bal<c){noFunds();return;}
-  ac();busy=true;spinPhase=true;slammed=false;bal=Math.round((bal-c)*100)/100;stats.spins++;stats.wag+=c;saveBal();
+  ac();busy=true;spinPhase=true;slammed=false;bal=Math.round((bal-c)*100)/100;stats.spins++;stats.wag+=c;saveBal();window.KCLive&&KCLive.spin();
   showWins=null;winMsg=null;winCount=null;setWin(null);capMood('watch');upd();
   const res=CF.spin(ante,rnd,force);                 // ← résultat complet figé avant l'animation
   const strips=ante?CF.STRIPS_A:CF.STRIPS_B,teaseF=[1,.8,.62][speedLvl];
@@ -1448,7 +1458,7 @@ async function play(force){
 }
 async function buyBonus(type){
   if(busy)return;const bet=getBet(),c=Math.round(bet*(type==='std'?P.BUY_STD:P.BUY_SUP)*100)/100;if(bal<c){noFunds();return;}
-  closePanels();ac();busy=true;bal=Math.round((bal-c)*100)/100;stats.wag+=c;stats.bonus++;saveBal();
+  closePanels();ac();busy=true;bal=Math.round((bal-c)*100)/100;stats.wag+=c;stats.bonus++;saveBal();window.KCLive&&KCLive.spin();
   showWins=null;winMsg=null;winCount=null;setWin(null);upd();
   sfx.buy();capMood('attack',1800);capSay(pickLine('buy'),1800);
   const B=CF.bonus(type,rnd);                        // ← bonus complet figé avant l'animation

@@ -1,0 +1,7 @@
+# Site statique publié depuis la racine du dépôt ; la fonction du compteur en direct est dans netlify/functions.
+[build]
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
