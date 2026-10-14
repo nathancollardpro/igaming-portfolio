@@ -129,6 +129,20 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
 }
 @media(max-width:520px){.gnav span{display:none}.gtitle p{display:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ── écran de jeu agrandi : plus de colonne latérale, infos sous le jeu ── */
+:root{--pagew:1040px}
+.gpage{grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "shell" "rules";grid-template-rows:none;max-width:var(--pagew)}
+.gnav{max-width:var(--pagew)}
+.ghead{display:grid;grid-template-columns:56px minmax(0,1fr);gap:14px;align-items:center}
+.gposter{width:56px;border-radius:8px}
+.gtitle h1{margin-top:0;font-size:26px}
+.gtitle p{margin-top:2px}
+.grules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 28px;align-items:start;margin-top:.8rem}
+.grules .gfacts{grid-column:1/-1;grid-template-columns:repeat(4,1fr)}
+.grules .glink{grid-column:1/-1}
+.cvarea{width:100%;height:auto!important;aspect-ratio:680/280;max-height:max(260px,calc(100vh - 440px))}
+@media(max-width:760px){.grules{grid-template-columns:minmax(0,1fr)}.grules .gfacts{grid-template-columns:1fr 1fr}.cvarea{aspect-ratio:auto;height:270px!important;max-height:none}}
 </style>
 </head>
 <body>
@@ -835,7 +849,7 @@ function sPos(ai,t,bounces){
   } else {
     y=sY-aH*Math.sin(Math.PI*t); // normal bell arc (throw or bounce)
   }
-  return{x,y,sY,sz:11-xP*3,ang:(t-.5)*.62,isSink};
+  return{x,y,sY,sz:(11-xP*3)*W/560,ang:(t-.5)*.62,isSink};
 }
 
 /* ── ANIMATION ─────────────────────────────────────────────────── */
