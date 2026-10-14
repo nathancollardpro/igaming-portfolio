@@ -152,6 +152,24 @@ body{font-family:'Inter',sans-serif;color:#f3ead5;-webkit-font-smoothing:antiali
 .demo:hover{border-color:var(--gold);color:var(--gold)}
 .port .demo{font-size:22px}
 
+/* mode auto */
+.rbtn.auto{font:900 21px/1 'Barlow Condensed',sans-serif;letter-spacing:.06em;color:var(--gold)}
+.port .rbtn.auto{font-size:24px}
+.rbtn.auto.on{border-color:#ffe08a;color:#2a1608;background:radial-gradient(circle at 35% 30%,#fff3c0,#f2c14e 50%,#b8801e);animation:autopulse 1.6s ease-in-out infinite}
+.rbtn.auto.on .alab{font-size:30px}
+@keyframes autopulse{50%{box-shadow:0 0 0 4px rgba(255,224,138,.35),0 0 26px rgba(242,193,78,.8)}}
+.land #autoPanel{top:40px}
+.port #autoPanel{top:300px}
+.aopt{grid-template-columns:230px 1fr!important;padding:12px 0!important}
+.aopt label{font-size:26px!important;line-height:1.05!important}
+.aopt .segs{gap:10px}
+.aopt .segs button{height:58px;font-size:26px;letter-spacing:.02em;padding:0 4px;white-space:nowrap}
+.anote{font-size:17px;line-height:1.4;color:rgba(243,234,213,.7);margin:10px 0 16px}
+.port .anote{font-size:22px}
+.autogo{width:100%;height:76px;border-radius:16px;border:3px solid var(--gold);cursor:pointer;color:#2a1608;background:linear-gradient(#ffe08a,#f2c14e 50%,#c88a24);font:900 32px/1 'Barlow Condensed',sans-serif;letter-spacing:.05em}
+.autogo:disabled{filter:grayscale(.9) brightness(.6);cursor:default}
+@media (prefers-reduced-motion:reduce){.rbtn.auto.on{animation:none}}
+
 /* options */
 .opt{display:grid;grid-template-columns:200px 1fr 80px;align-items:center;gap:22px;padding:18px 0}
 .port .opt{grid-template-columns:220px 1fr 90px}
@@ -238,6 +256,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:4px solid #ffe0
       <div class="field f-win"><span class="lbl" data-i18n="h.win">Gain</span><span class="val win" id="winV">—</span></div>
       <div class="spacer"></div>
       <div class="hud-grp g-right">
+        <button class="rbtn auto" id="autoBtn" type="button" aria-haspopup="dialog" aria-label="Mode auto" data-i18n-attr="aria-label:au.btnAria"><span class="alab" id="autoLab">AUTO</span></button>
         <button class="rbtn speed" id="speedBtn" type="button" aria-label="Vitesse : normale"><svg viewBox="0 0 36 24"><path class="chev on" d="M4 4l8 8-8 8"/><path class="chev" d="M14 4l8 8-8 8"/><path class="chev" d="M24 4l8 8-8 8"/></svg></button>
       </div>
       <button class="spin" id="spinBtn" type="button" aria-label="Lancer le tirage">
@@ -287,6 +306,19 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:4px solid #ffe0
       <div class="cbody"><p id="cfText"></p><div class="cbtns"><button type="button" class="no" data-close data-i18n="c.no">Annuler</button><button type="button" class="yes" id="cfYes" data-i18n="c.yes">Acheter</button></div></div>
     </div>
 
+    <!-- MODE AUTO -->
+    <div class="panel small" id="autoPanel" role="dialog" aria-modal="true" aria-labelledby="autoTitle">
+      <div class="phead"><div class="ptitle" id="autoTitle" data-i18n="au.title">Mode auto</div><button class="pclose" type="button" data-close aria-label="Fermer" data-i18n-attr="aria-label:p.close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <div class="pbody">
+        <div class="opt aopt"><label data-i18n="au.spins">Nombre de tours</label><div class="segs" id="aSpins" role="group" data-i18n-attr="aria-label:au.spins"></div></div>
+        <div class="opt aopt"><label data-i18n="au.loss">Limite de perte</label><div class="segs" id="aLoss" role="group" data-i18n-attr="aria-label:au.loss"></div></div>
+        <div class="opt aopt"><label data-i18n="au.win">Arrêt si un gain dépasse</label><div class="segs" id="aWin" role="group" data-i18n-attr="aria-label:au.win"></div></div>
+        <div class="opt aopt"><label data-i18n="au.bonus">Arrêt au bonus</label><div class="segs" id="aBonus" role="group" data-i18n-attr="aria-label:au.bonus"></div></div>
+        <p class="anote" data-i18n="au.note">La limite de perte est obligatoire. Le bonus au canon se joue tout seul, sauf si « Arrêt au bonus » est activé. Barre d'espace ou bouton AUTO pour arrêter.</p>
+        <button class="autogo" type="button" id="aGo">LANCER</button>
+      </div>
+    </div>
+
     <!-- OPTIONS -->
     <div class="panel small" id="optPanel" role="dialog" aria-modal="true" aria-labelledby="optTitle">
       <div class="phead"><div class="ptitle" id="optTitle">Options</div><button class="pclose" type="button" data-close aria-label="Fermer" data-i18n-attr="aria-label:p.close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
@@ -321,6 +353,8 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:4px solid #ffe0
           <p><b>Simple Treasure</b> : multiplicateurs ×2 à ×4 (MEGA ×8 / ×12 / ×20). <b>Incredible Treasure</b> : pièces plus fortes, multiplicateurs ×3 à ×6 (MEGA ×15 / ×25 / ×40). <b>Mega Start</b> : Incredible Treasure avec 4 pièces déjà révélées et un multiplicateur MEGA garanti.</p>
           <h3>Menu bonus</h3>
           <p><b>Scatter augmenté</b> : +25 % de mise, bonus 1,6 fois plus fréquent, même RTP. <b>Simple Treasure</b> s'achète 85× la mise, <b>Incredible Treasure</b> 430×.</p>
+          <h3>Mode auto</h3>
+          <p>Le bouton <b>AUTO</b> enchaîne 10 à 250 tirages avec le même moteur et le même RTP. La limite de perte est obligatoire ; l'auto peut aussi s'arrêter sur un gros gain ou au déclenchement du bonus. Sinon, le canon tire tout seul.</p>
           <h3>Commandes</h3>
           <p><b>Espace</b> lance le tirage, tire au canon pendant le bonus et arrête les rouleaux en cours. Le bouton vitesse passe de &gt; à &gt;&gt;&gt;.</p>
           <p><b>Provably fair</b> : le résultat de chaque spin et de chaque bonus est entièrement tiré avant l'animation.</p>
@@ -543,6 +577,8 @@ KC.add({
           <p><b>Simple Treasure</b> : multiplicateurs ×2 à ×4 (MEGA ×8 / ×12 / ×20). <b>Incredible Treasure</b> : pièces plus fortes, multiplicateurs ×3 à ×6 (MEGA ×15 / ×25 / ×40). <b>Mega Start</b> : Incredible Treasure avec 4 pièces déjà révélées et un multiplicateur MEGA garanti.</p>
           <h3>Menu bonus</h3>
           <p><b>Scatter augmenté</b> : +25 % de mise, bonus 1,6 fois plus fréquent, même RTP. <b>Simple Treasure</b> s'achète 85× la mise, <b>Incredible Treasure</b> 430×.</p>
+          <h3>Mode auto</h3>
+          <p>Le bouton <b>AUTO</b> enchaîne 10 à 250 tirages avec le même moteur et le même RTP. La limite de perte est obligatoire ; l'auto peut aussi s'arrêter sur un gros gain ou au déclenchement du bonus. Sinon, le canon tire tout seul.</p>
           <h3>Commandes</h3>
           <p><b>Espace</b> lance le tirage, tire au canon pendant le bonus et arrête les rouleaux en cours. Le bouton vitesse passe de &gt; à &gt;&gt;&gt;.</p>
           <p><b>Provably fair</b> : le résultat de chaque spin et de chaque bonus est entièrement tiré avant l'animation.</p>
@@ -558,6 +594,8 @@ KC.add({
           <p><b>Simple Treasure</b>: multipliers ×2 to ×4 (MEGA ×8 / ×12 / ×20). <b>Incredible Treasure</b>: bigger coins, multipliers ×3 to ×6 (MEGA ×15 / ×25 / ×40). <b>Mega Start</b>: Incredible Treasure with 4 coins already revealed and a guaranteed MEGA multiplier.</p>
           <h3>Bonus menu</h3>
           <p><b>Scatter Boost</b>: +25% bet, bonus 1.6 times more frequent, same RTP. <b>Simple Treasure</b> costs 85× the bet, <b>Incredible Treasure</b> 430×.</p>
+          <h3>Autoplay</h3>
+          <p>The <b>AUTO</b> button chains 10 to 250 spins with the same engine and the same RTP. A loss limit is mandatory; autoplay can also stop on a big win or when the bonus triggers. Otherwise, the cannon fires by itself.</p>
           <h3>Controls</h3>
           <p><b>Space</b> spins, fires the cannon during the bonus and stops spinning reels. The speed button cycles from &gt; to &gt;&gt;&gt;.</p>
           <p><b>Provably fair</b>: the outcome of every spin and every bonus is fully drawn before the animation.</p>
@@ -576,6 +614,25 @@ KC.add({
   // canvas et messages
   'cf.powder':{fr:'POUDRE',en:'POWDER'},
   'cf.splash':{fr:'PLOUF',en:'SPLASH'},
+  'au.title':{fr:'Mode auto',en:'Autoplay'},
+  'au.btnAria':{fr:'Mode auto',en:'Autoplay'},
+  'au.stopAria':{fr:'Arrêter le mode auto, {n} tours restants',en:'Stop autoplay, {n} spins left'},
+  'au.spins':{fr:'Nombre de tours',en:'Number of spins'},
+  'au.loss':{fr:'Limite de perte',en:'Loss limit'},
+  'au.win':{fr:'Arrêt si un gain dépasse',en:'Stop if a win exceeds'},
+  'au.bonus':{fr:'Arrêt au bonus',en:'Stop on bonus'},
+  'au.none':{fr:'Aucun',en:'Off'},
+  'au.yes':{fr:'Oui',en:'Yes'},
+  'au.no':{fr:'Non',en:'No'},
+  'au.note':{fr:"La limite de perte est obligatoire. Le bonus au canon se joue tout seul, sauf si « Arrêt au bonus » est activé. Barre d'espace ou bouton AUTO pour arrêter.",en:'A loss limit is mandatory. The cannon bonus plays itself unless “Stop on bonus” is on. Press Space or the AUTO button to stop.'},
+  'au.go':{fr:'LANCER {n} TOURS',en:'START {n} SPINS'},
+  'au.startSay':{fr:'Pilote automatique, cap sur le trésor !',en:'Autopilot on, set course for treasure!'},
+  'au.end.done':{fr:'Fin du mode auto.',en:'Autoplay finished.'},
+  'au.end.user':{fr:'Mode auto arrêté.',en:'Autoplay stopped.'},
+  'au.end.loss':{fr:'Limite de perte atteinte, on jette l\'ancre.',en:'Loss limit reached, dropping anchor.'},
+  'au.end.win':{fr:'Gros butin ! Auto arrêté.',en:'Big haul! Autoplay stopped.'},
+  'au.end.bonus':{fr:'Bonus ! À toi de tirer, matelot.',en:'Bonus! Your turn to fire, sailor.'},
+  'au.end.funds':{fr:'Caisse vide, auto arrêté.',en:'The chest is empty, autoplay stopped.'},
   'cf.logoSub':{fr:'KACHING ORIGINALS · 243 WAYS · RTP 96 %',en:'KACHING ORIGINALS · 243 WAYS · 96% RTP'},
   'cf.maxWin':{fr:'GAIN MAX',en:'MAX WIN'},
   'cf.maxv':{fr:'×15 000',en:'×15,000'},
@@ -697,6 +754,7 @@ document.getElementById('lobbyBtn').addEventListener('click',e=>{e.preventDefaul
 
 // ═════════════════════════ PRÉFÉRENCES ═════════════════════════
 const OPTS={music:60,sfx:80,speed:0};
+var AUTO={on:false,left:0,cfg:null,fireAt:0,tick:null,start:0,lossCap:0,winCap:0};let lastRoundWin=0;
 try{Object.assign(OPTS,JSON.parse(localStorage.getItem('cf_opts')||'{}'));}catch(e){}
 speedLvl=Math.max(0,Math.min(2,OPTS.speed|0));
 function saveOpts(){OPTS.speed=speedLvl;try{localStorage.setItem('cf_opts',JSON.stringify(OPTS));}catch(e){}}
@@ -1608,6 +1666,7 @@ async function play(force){
     if(!res.bonus&&totalX<15&&!(teased&&!res.bonus)){if(totalX>=3){capMood('happy',1700);capSay(pickLine('small'),1600);}else if(totalX>=1)capMood('happy',1100);}}
   if(totalX>=15)await showBig(totalX,bet);
   if(res.bonus){
+    if(AUTO.on&&AUTO.cfg.bonus)stopAuto('bonus');
     stats.bonus++;upd();
     winMsg={txt:KC.t('cf.trig'+(res.ns===5?5:res.ns===4?4:3)),col:'#ff8c3c',force:true};
     capMood('attack',2400);capSay(pickLine('trigger'),2200);sfx.roar();
@@ -1627,7 +1686,7 @@ async function buyBonus(type){
   finish(B.x,bet,c,true);
 }
 function finish(totalX,bet,c,isBonus){
-  const won=Math.round(totalX*bet*100)/100;
+  const won=Math.round(totalX*bet*100)/100;lastRoundWin=won;
   bal=Math.round((bal+won)*100)/100;stats.won+=won;saveBal();setWin(won>0?won:null,won>0);
   busy=false;if(!CAP.until)capMood('idle');upd();
 }
@@ -1711,6 +1770,7 @@ let spinIcoKey='';
 function setSpinIcon(k,label){if(spinIcoKey===k)return;spinIcoKey=k;$('spinIco').innerHTML=ICONS[k];const b=$('spinBtn');
   let lab=b.querySelector('.lab');if(label){if(!lab){lab=document.createElement('span');lab.className='lab';b.appendChild(lab);}lab.textContent=label;}else if(lab)lab.remove();}
 function upd(){
+  const busyOrig=busy;{const busy=busyOrig||AUTO.on;
   $('balV').textContent=fmt(bal)+' €';
   const bet=getBet();$('betV').textContent=fmt(cost())+' €';$('buyBet').textContent=fmt(bet)+' €';
   const sb=$('spinBtn');
@@ -1724,12 +1784,14 @@ function upd(){
   const fb=$('fBoost');fb.firstChild.nodeValue=KC.t(ante?'cf.deactivate':'cf.activate');fb.classList.toggle('on',ante);fb.disabled=busy;
   $('fSimpleP').textContent=fmt(bet*P.BUY_STD)+' €';$('fIncredP').textContent=fmt(bet*P.BUY_SUP)+' €';
   $('fSimple').disabled=busy||bal<bet*P.BUY_STD;$('fIncred').disabled=busy||bal<bet*P.BUY_SUP;$('demoMega').disabled=busy||bal<cost();
+  $('autoBtn').disabled=busy&&!AUTO.on;
+  }
   $('sRtp').textContent=stats.wag?KC.dec((stats.won/stats.wag*100).toFixed(1))+KC.t('pct'):'—';
 }
 let lastWinShown=0;
 function setWin(v,flash){lastWinShown=v;const el=$('winV');el.textContent=v?fmt(v)+' €':'—';if(flash){el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');
   const b=$('balV');b.classList.remove('flash');void b.offsetWidth;b.classList.add('flash');}}
-function setBetIdx(i){if(busy)return;betIdx=Math.max(0,Math.min(BETS.length-1,i));sfx.click();upd();buildPaytable();}
+function setBetIdx(i){if(busy||AUTO.on)return;betIdx=Math.max(0,Math.min(BETS.length-1,i));sfx.click();upd();buildPaytable();}
 ['betDn'].forEach(id=>$(id).addEventListener('click',()=>setBetIdx(betIdx-1)));
 ['betUp'].forEach(id=>$(id).addEventListener('click',()=>setBetIdx(betIdx+1)));
 document.querySelectorAll('.bdn').forEach(b=>b.addEventListener('click',()=>setBetIdx(betIdx-1)));
@@ -1739,7 +1801,7 @@ function setSpeed(l){speedLvl=l;saveOpts();const names=[KC.t('cf.sp0'),KC.t('cf.
   document.querySelectorAll('.segs button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.sp===l?'true':'false'));}
 $('speedBtn').addEventListener('click',()=>{setSpeed((speedLvl+1)%3);sfx.click();});
 document.querySelectorAll('.segs button').forEach(b=>b.addEventListener('click',()=>{setSpeed(+b.dataset.sp);sfx.click();}));
-function toggleAnte(){if(busy)return;ante=!ante;sfx.click();
+function toggleAnte(){if(busy||AUTO.on)return;ante=!ante;sfx.click();
   for(let c=0;c<5;c++){reels[c].strip=(ante?CF.STRIPS_A:CF.STRIPS_B)[c];reels[c].y=Math.floor(reels[c].y)%reels[c].strip.length;}
   if(ante){capSay(KC.t('cf.morePowder'),1800);capMood('happy',1200);}upd();}
 
@@ -1758,7 +1820,7 @@ $('optBtn').addEventListener('click',()=>openP('optPanel'));
 $('infoBtn').addEventListener('click',()=>{buildPaytable();openP('infoPanel');});
 $('fBoost').addEventListener('click',()=>{toggleAnte();});
 let pendingBuy=null;
-function askBuy(type){if(busy)return;const bet=getBet(),c=bet*(type==='std'?P.BUY_STD:P.BUY_SUP);pendingBuy=type;
+function askBuy(type){if(busy||AUTO.on)return;const bet=getBet(),c=bet*(type==='std'?P.BUY_STD:P.BUY_SUP);pendingBuy=type;
   $('cfText').innerHTML=KC.t('cf.confirm',{n:type==='std'?'SIMPLE TREASURE':'INCREDIBLE TREASURE',v:fmt(c)});openP('confirmPanel');}
 $('fSimple').addEventListener('click',()=>askBuy('std'));
 $('fIncred').addEventListener('click',()=>askBuy('sup'));
@@ -1785,16 +1847,63 @@ function bolts(id,n,label){const el=$(id);if(!el)return;let h='';for(let i=0;i<5
 function buildBolts(){bolts('volBoost',4,KC.t('cf.volHigh'));bolts('volSimple',4,KC.t('cf.volHigh'));bolts('volIncred',5,KC.t('cf.volVHigh'));}
 buildBolts();
 
+// ═════════════════════════ MODE AUTO ═════════════════════════
+// Enchaîne des tirages normaux (même moteur, même RTP). Limite de perte obligatoire,
+// arrêt optionnel sur gros gain ou au déclenchement du bonus. Pendant l'auto, le canon tire tout seul.
+const AUTO_SPINS=[10,25,50,100,250],AUTO_LOSS=[20,50,100,250],AUTO_WIN=[0,10,50,100];
+function autoCfg(){if(!AUTO.cfg){const c=OPTS.auto||{};AUTO.cfg={spins:AUTO_SPINS.includes(c.spins)?c.spins:25,loss:AUTO_LOSS.includes(c.loss)?c.loss:50,win:AUTO_WIN.includes(c.win)?c.win:0,bonus:!!c.bonus};}return AUTO.cfg;}
+function autoSegs(id,vals,key,lab){const el=$(id),cfg=autoCfg();el.innerHTML='';
+  vals.forEach(v=>{const b=document.createElement('button');b.type='button';b.textContent=lab(v);b.setAttribute('aria-pressed',cfg[key]===v?'true':'false');
+    b.addEventListener('click',()=>{cfg[key]=v;sfx.click();buildAutoPanel();});el.appendChild(b);});}
+function buildAutoPanel(){const c=cost();
+  autoSegs('aSpins',AUTO_SPINS,'spins',v=>String(v));
+  autoSegs('aLoss',AUTO_LOSS,'loss',v=>shortEur(v*c));
+  autoSegs('aWin',AUTO_WIN,'win',v=>v?shortEur(v*c):KC.t('au.none'));
+  autoSegs('aBonus',[true,false],'bonus',v=>KC.t(v?'au.yes':'au.no'));
+  const go=$('aGo');go.textContent=KC.t('au.go',{n:autoCfg().spins});go.disabled=bal<c;}
+function updAuto(){const b=$('autoBtn');b.classList.toggle('on',AUTO.on);
+  $('autoLab').textContent=AUTO.on?String(AUTO.left):'AUTO';
+  b.setAttribute('aria-label',AUTO.on?KC.t('au.stopAria',{n:AUTO.left}):KC.t('au.btnAria'));}
+function autoTick(){if(!AUTO.on||openPanel)return;const now=performance.now();
+  if(fireResolve){if(!AUTO.fireAt)AUTO.fireAt=now+[650,400,220][speedLvl];
+    else if(now>=AUTO.fireAt){AUTO.fireAt=0;const f=fireResolve;fireResolve=null;upd();f();}}
+  else AUTO.fireAt=0;
+  if(bigWin&&now-bigWin.t0>=bigWin.d+700)skipBig();}
+function stopAuto(reason){if(!AUTO.on)return;AUTO.on=false;clearInterval(AUTO.tick);AUTO.tick=null;AUTO.fireAt=0;
+  updAuto();upd();capSay(KC.t('au.end.'+reason),reason==='bonus'?2600:2200);if(reason==='loss'||reason==='funds')capMood('sad',1600);}
+async function startAuto(){
+  if(AUTO.on||busy)return;const cfg=autoCfg(),c=cost();if(bal<c){noFunds();return;}
+  OPTS.auto=Object.assign({},cfg);saveOpts();closePanels(true);ac();
+  Object.assign(AUTO,{on:true,left:cfg.spins,start:bal,lossCap:cfg.loss*c,winCap:cfg.win*c,fireAt:0});
+  AUTO.tick=setInterval(autoTick,100);updAuto();upd();capSay(KC.t('au.startSay'),1600);
+  while(AUTO.on){
+    while(openPanel&&AUTO.on)await waitRaw(200);          // menu ouvert : l'auto attend
+    if(!AUTO.on)break;
+    if(bal<cost()){stopAuto('funds');break;}
+    if(AUTO.start-bal+cost()>AUTO.lossCap+1e-9){stopAuto('loss');break;}   // le prochain tirage dépasserait la limite
+    AUTO.left--;updAuto();lastRoundWin=0;
+    await play(0);
+    if(!AUTO.on)break;
+    if(AUTO.winCap&&lastRoundWin>=AUTO.winCap){stopAuto('win');break;}
+    if(AUTO.left<=0){stopAuto('done');break;}
+    await waitRaw([500,280,120][speedLvl]);
+  }
+}
+$('autoBtn').addEventListener('click',()=>{if(AUTO.on){stopAuto('user');return;}if(busy)return;buildAutoPanel();openP('autoPanel');});
+$('aGo').addEventListener('click',startAuto);
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&AUTO.on)stopAuto('user');});
+
 // ── commandes ──
 function spinAction(){
   if(openPanel)return;
+  if(AUTO.on){stopAuto('user');if(spinPhase)slamStop();return;}
   if(bigWin){skipBig();return;}
   if(fireResolve){const f=fireResolve;fireResolve=null;upd();f();return;}
   if(spinPhase){slamStop();return;}
   if(busy)return;play(0);
 }
 $('spinBtn').addEventListener('click',spinAction);
-cv.addEventListener('click',()=>{if(openPanel)return;if(bigWin)skipBig();else if(fireResolve)spinAction();});
+cv.addEventListener('click',()=>{if(openPanel)return;if(AUTO.on){if(bigWin)skipBig();return;}if(bigWin)skipBig();else if(fireResolve)spinAction();});
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&openPanel){closePanels();return;}
   if(e.code==='Space'){const a=document.activeElement;if(openPanel||(a&&/^(INPUT|BUTTON|A)$/.test(a.tagName)))return;e.preventDefault();if(!e.repeat)spinAction();}
@@ -1807,6 +1916,7 @@ KC.on(()=>{prerender();PAYIMG=null;buildPaytable();drawFeatArt();buildBolts();
   $('muteBtn').textContent=KC.t(OPTS.music+OPTS.sfx===0?'cf.unmute':'cf.mute');
   $('volMusO').textContent=$('volMus').value+KC.t('pct');$('volSfxO').textContent=$('volSfx').value+KC.t('pct');
   if(pendingBuy)$('cfText').innerHTML=KC.t('cf.confirm',{n:pendingBuy==='std'?'SIMPLE TREASURE':'INCREDIBLE TREASURE',v:fmt(getBet()*(pendingBuy==='std'?P.BUY_STD:P.BUY_SUP))});
+  if(openPanel===$('autoPanel'))buildAutoPanel();updAuto();
   upd();setWin(lastWinShown,false);});
 function init(){try{if(!matchMedia('(pointer:coarse)').matches){$('tap').setAttribute('data-i18n','h.tapClick');$('tap').textContent=KC.t('h.tapClick');}}catch(e){}layout();drawFeatArt();setSpeed(speedLvl);upd();buildPaytable();loop();}
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(init);else init();
