@@ -1012,9 +1012,9 @@ cv.addEventListener('mousemove',e=>{
     const ix=i-visStart;
     const cx2=startX+ix*slotW;
     if(mx>=cx2-pillW/2&&mx<=cx2+pillW/2&&my>=rowY-pillH*.82&&my<=rowY+pillH*.20){
-      const cumPct=m.cumWin[i];
+      const cumPct=pcS(survPct(m,i));
       const condPct=+(100*(1-m.busts[i])).toFixed(1);
-      tt.innerHTML=`Chance depuis le départ : <b>${cumPct}%</b><br>Chance de passer ce palier : ${condPct}%`;
+      tt.innerHTML=`Chance depuis le départ : <b>${cumPct} %</b><br>Chance de passer ce palier : ${condPct}%`;
       tt.style.left=(e.clientX+14)+'px';
       tt.style.top=(e.clientY-48)+'px';
       tt.classList.add('show');
@@ -1060,12 +1060,15 @@ function saveAndBack(e){e.preventDefault();saveBal();window.location.href='index
 window.addEventListener('beforeunload',saveBal);
 
 // ── Tableau des paliers du mode choisi ──
+// Chance d'atteindre le palier i, calculée depuis busts (les tirages réels), pas depuis cumWin arrondi
+function survPct(m,i){let s=100;for(let k=0;k<=i;k++)s*=1-m.busts[k];return s;}
+function pcS(v){return (v>=10?v.toFixed(1):v>=1?v.toFixed(2):Number(v.toPrecision(3)).toString()).replace('.',',');}
 function renderOdds(){
   const m=MODES[mod],el=document.getElementById('odds');if(!el)return;
   document.getElementById('oddsMode').textContent=m.label.replace(/^\S+\s/,'');
-  const pc=v=>(v>=1?v.toFixed(1):v>=0.01?v.toFixed(2):v.toFixed(4)).replace('.',',')+'\u00a0%';
+  const pc=v=>pcS(v)+'\u00a0%';
   el.innerHTML='<thead><tr><th>Bonbons</th><th>Multiplicateur</th><th>Chance d\'y arriver</th></tr></thead><tbody>'+
-    m.mults.map((x,i)=>'<tr><td>'+(i+1)+'</td><td>×'+x.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+'</td><td>'+pc(m.cumWin[i])+'</td></tr>').join('')+'</tbody>';
+    m.mults.map((x,i)=>'<tr><td>'+(i+1)+'</td><td>×'+x.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+'</td><td>'+pc(survPct(m,i))+'</td></tr>').join('')+'</tbody>';
 }
 renderOdds();
 // ── Raccourcis clavier : Espace = nourrir, Entrée = encaisser ──

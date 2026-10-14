@@ -66,7 +66,9 @@ header{display:flex;align-items:center;justify-content:space-between;gap:.75rem;
   .bal-val{font-size:.82rem}
   .reload,.reset{padding:.34rem .5rem;font-size:.72rem}
 }
-@media(max-width:360px){.reset{display:none}}
+@media(max-width:480px){.reset{display:none}.bal-wrap{gap:.35rem}header{gap:.5rem}.logo-area{flex-shrink:0}}
+@media(max-width:420px){.live-chip{display:none!important}}
+@media(max-width:340px){.logo-name{font-size:.95rem}.bal-dot{display:none}.bal-wrap{gap:.25rem}.bal-chip{padding:.34rem .4rem}.reload{padding:.34rem .35rem}}
 
 /* TABS NAV */
 .tabs-nav{display:flex;border-bottom:1px solid var(--bdr);background:var(--bg2);padding:0 var(--pad);overflow-x:auto;scrollbar-width:none}
@@ -211,7 +213,7 @@ footer a:hover{color:var(--acc)}
     <div class="bal-chip" title="Solde fictif partagé entre les jeux">
       <div class="bal-dot" aria-hidden="true"></div>
       <span class="bal-lbl">Solde</span>
-      <span class="bal-val"><b id="balVal">1 000</b>&nbsp;&euro;</span>
+      <span class="bal-val"><b id="balVal">1 000,00</b>&nbsp;&euro;</span>
     </div>
     <button class="reload" type="button" onclick="reloadBal()">+1&nbsp;000&nbsp;€</button>
     <button class="reset" type="button" onclick="resetBal()">Reset</button>
@@ -400,13 +402,14 @@ footer a:hover{color:var(--acc)}
 // ── BALANCE ──
 const NC_KEY='nc_portfolio_balance',INIT=1000;
 function getBal(){try{const v=parseFloat(localStorage.getItem(NC_KEY));return isNaN(v)?INIT:v;}catch(e){return INIT;}}
-function setBal(v){try{localStorage.setItem(NC_KEY,v);}catch(e){}document.getElementById('balVal').textContent=Math.round(v).toLocaleString('fr-FR');}
-function reloadBal(){var v=getBal()+INIT;setBal(v);showToast('+1 000 € chargés — Solde : '+Math.round(v).toLocaleString('fr-FR')+' €');}
+var fmtBal=function(v){return Number(v).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});};
+function setBal(v){try{localStorage.setItem(NC_KEY,v);}catch(e){}document.getElementById('balVal').textContent=fmtBal(v);}
+function reloadBal(){var v=getBal()+INIT;setBal(v);showToast('+1 000 € chargés — Solde : '+fmtBal(v)+' €');}
 function resetBal(){setBal(INIT);showToast('Solde réinitialisé à 1 000 €');}
 let toastT;
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2500);}
 setBal(getBal());
-try{if(sessionStorage.getItem('nc_came_from_game')){showToast('Solde récupéré : '+Math.round(getBal()).toLocaleString('fr-FR')+' €');sessionStorage.removeItem('nc_came_from_game');}}catch(e){}
+try{if(sessionStorage.getItem('nc_came_from_game')){showToast('Solde récupéré : '+fmtBal(getBal())+' €');sessionStorage.removeItem('nc_came_from_game');}}catch(e){}
 
 // ── TABS (avec URL : #moi, #experiences, #projets) ──
 const HASH={moi:'moi',exp:'experiences',projets:'projets'};
