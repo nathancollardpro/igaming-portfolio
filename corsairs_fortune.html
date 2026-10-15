@@ -817,6 +817,42 @@ function noise(d,freq,vol=.25,delay=0,type='lowpass'){
   const s=N(t,d),f=F(type,freq),g=A.createGain();g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);
   s.connect(f).connect(g).connect(AU.sfx);
 }
+// ── voix du capitaine : synthèse par formants (dents de scie → 3 passe-bande), « r » roulé par modulation d'amplitude ──
+const VOW={a:[730,1090,2440],o:[520,860,2400],u:[340,820,2250],i:[290,2200,2900],r:[480,1300,1650]};
+// segment : v → v1 (voyelles, glissé sur la fraction gl), p = [hauteur début, fin] en Hz, h = attaque soufflée, r = roulement, x = râle final ; sans v = silence
+function vox(segs,o={}){
+  if(!sfxOn())return;const A=AU.ac,vol=o.vol||1;
+  let t=A.currentTime+(segs[0].h?.1:.02);const t0=t,end=t0+segs.reduce((a,x)=>a+x.d,0)+.05;
+  const src=O('sawtooth',segs[0].p[0],t0,end),vib=O('sine',o.vibF||5.5,t0,end),vg=G(0);vib.connect(vg).connect(src.frequency);
+  const roll=O('triangle',o.rollF||27,t0,end),rg=G(0),amp=G(1);roll.connect(rg).connect(amp.gain);src.connect(amp);
+  const env=G(0),out=G(vol*(o.gain||.75));env.connect(out).connect(AU.sfx);
+  const fl=[0,1,2].map(k=>{const f=F('bandpass',500,[6,9,12][k]),g=G([1,.6,.3][k]);amp.connect(f).connect(g).connect(env);return f;});
+  {const lp=F('lowpass',360,.7),lg=G(.1);amp.connect(lp).connect(lg).connect(env);}
+  env.gain.setValueAtTime(0,t0);
+  segs.forEach((s,i)=>{
+    if(s.v){const v0=VOW[s.v],v1=VOW[s.v1||s.v],e=t+s.d,gl=t+s.d*(s.gl||1),a=s.a||1,prev=segs[i-1],next=segs[i+1];
+      src.frequency.setValueAtTime(s.p[0],t);src.frequency.exponentialRampToValueAtTime(s.p[1],e);
+      vg.gain.setValueAtTime(s.p[0]*(o.vib||.022),t);
+      fl.forEach((f,k)=>{f.frequency.setValueAtTime(v0[k],t);f.frequency.linearRampToValueAtTime(v1[k],gl);});
+      rg.gain.setValueAtTime(0,t);if(s.r)rg.gain.linearRampToValueAtTime(s.r,t+(gl-t)*.8+.04);
+      if(!prev||!prev.v){env.gain.setValueAtTime(.0001,t);env.gain.linearRampToValueAtTime(a,t+.025);}else env.gain.linearRampToValueAtTime(a,t+.03);
+      if(!next||!next.v){env.gain.setValueAtTime(a,Math.max(t+.03,e-.08));env.gain.exponentialRampToValueAtTime(.0001,e);}
+      if(s.h){const n=N(t-.08,.12),hf=F('bandpass',v0[1],1.1),hg=G(0);hg.gain.setValueAtTime(.0001,t-.08);hg.gain.linearRampToValueAtTime(.16*s.h*vol,t-.01);hg.gain.exponentialRampToValueAtTime(.0001,t+.05);n.connect(hf).connect(hg).connect(AU.sfx);}
+      if(s.x){const n=N(e-.04,.3),hf=F('lowpass',1100,.8),hg=G(0);hg.gain.setValueAtTime(.0001,e-.04);hg.gain.linearRampToValueAtTime(.14*vol,e);hg.gain.exponentialRampToValueAtTime(.0001,e+.28);n.connect(hf).connect(hg).connect(AU.sfx);}}
+    t+=s.d;});
+}
+const VOX={
+  arr:[{v:'a',v1:'r',d:.7,p:[128,92],gl:.35,r:.8}],                                                          // « Arrr ! »
+  aargh:[{v:'a',d:.22,p:[150,158]},{v:'a',v1:'r',d:.5,p:[158,96],gl:.45,r:.85,x:1}],                         // « Aaarrgh ! »
+  yoho:[{v:'i',v1:'o',d:.2,p:[150,168],gl:.45},{d:.06},{v:'o',d:.18,p:[180,172],h:1},{d:.07},{v:'o',d:.42,p:[160,118],h:1}], // « Yo-ho-ho ! »
+  yarr:[{v:'i',v1:'a',d:.14,p:[132,142],gl:.9},{v:'a',v1:'r',d:.52,p:[142,94],gl:.35,r:.8}],                 // « Yarrr ! »
+  harhar:[{v:'a',v1:'r',d:.22,p:[152,140],gl:.6,h:1,r:.45},{d:.07},{v:'a',v1:'r',d:.34,p:[146,108],gl:.5,h:1,r:.6}], // « Har har ! »
+  ahoy:[{v:'a',d:.16,p:[128,136]},{d:.03},{v:'o',v1:'i',d:.4,p:[168,128],gl:.65,h:1}],                       // « Ahoy ! »
+  hohoho:[{v:'o',d:.15,p:[112,110],h:1},{d:.07},{v:'o',d:.15,p:[106,104],h:1},{d:.07},{v:'o',d:.32,p:[102,84],h:1}], // « Ho ho ho ! »
+  cry:[{v:'u',d:.2,p:[340,305],h:1},{d:.05},{v:'u',d:.2,p:[320,290],h:1},{d:.05},{v:'u',d:.2,p:[300,270],h:1},{d:.09},{v:'u',v1:'i',d:.8,p:[330,180],gl:.45}], // « Bouhouhouuuin »
+};
+const VOX_SETS={any:['arr','aargh','yoho','yarr','harhar','ahoy','hohoho'],joy:['yoho','harhar','hohoho'],tease:['arr','yarr','aargh'],buy:['harhar','ahoy','yoho']};
+const voxDur=k=>VOX[k].reduce((a,x)=>a+x.d,0)*1000;
 const sfx={
   click:()=>tone(900,.05,'triangle',.05,600),
   stop:(i=0)=>{tone(150-i*6,.09,'triangle',.13,70);noise(.05,900,.08);},
@@ -838,6 +874,20 @@ const sfx={
   creak:()=>{if(!sfxOn())return;const A=AU.ac,t=A.currentTime,s=N(t,1.1),f=F('bandpass',420,9),g=G();
     f.frequency.setValueAtTime(420,t);f.frequency.linearRampToValueAtTime(260,t+1);adsr(g,t,.25,.09,.3,.8,.8,.15);s.connect(f).connect(g).connect(AU.sfx);},
   roar:()=>{noise(.6,600,.15,0,'bandpass');tone(140,.5,'sawtooth',.05,90);},
+  // épée tirée du fourreau : frottement qui monte + tintement métallique
+  shing:()=>{if(!sfxOn())return;const A=AU.ac,t=A.currentTime,s=N(t,.45),f=F('bandpass',1800,4),g=G(0);
+    f.frequency.setValueAtTime(1800,t);f.frequency.exponentialRampToValueAtTime(6500,t+.32);
+    g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.3,t+.05);g.gain.exponentialRampToValueAtTime(.0001,t+.42);s.connect(f).connect(g).connect(AU.sfx);
+    [2960,4410,6230].forEach((fr,i)=>tone(fr,.9-i*.2,'sine',.06-i*.014,null,.28));},
+  // épée rengainée : glissement puis claquement de la garde
+  sheathe:()=>{noise(.2,2800,.12,0,'bandpass');tone(900,.06,'square',.05,500,.18);noise(.06,1200,.2,.18);},
+  // cri du perroquet qui s'envole
+  squawk:()=>{if(!sfxOn())return;const A=AU.ac,t=A.currentTime;[0,.17].forEach((d,k)=>{const o=O('sawtooth',1400+k*200,t+d,t+d+.15),f=F('bandpass',2600,3),g=G(0);
+    o.frequency.linearRampToValueAtTime(2700,t+d+.04);o.frequency.exponentialRampToValueAtTime(1300,t+d+.14);
+    g.gain.setValueAtTime(.0001,t+d);g.gain.linearRampToValueAtTime(.3,t+d+.015);g.gain.exponentialRampToValueAtTime(.0001,t+d+.14);o.connect(f).connect(g).connect(AU.sfx);});},
+  // pleurs du capitaine : sanglots qui descendent, long « ouiiin », deux reniflements
+  cry:()=>{vox(VOX.cry,{vib:.06,vibF:7,vol:.5});if(!sfxOn())return;const A=AU.ac;
+    [1.86,2.1].forEach(d=>{const t=A.currentTime+d,n=N(t,.2),f=F('bandpass',2600,1.4),g=G(0);g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.14,t+.15);g.gain.exponentialRampToValueAtTime(.0001,t+.19);n.connect(f).connect(g).connect(AU.sfx);});},
 };
 
 // ═════════════════════════ MUSIQUE ═════════════════════════
@@ -1191,83 +1241,108 @@ function plaque(c,x,y,w,lab,val,col){const h=78;rr(c,x,y,w,h,14);const g=c.creat
 
 // ═════════════════════════ LE CAPITAINE ═════════════════════════
 // Dessiné en code, pieds à l'origine, ~600 unités de haut. Il réagit à chaque événement du jeu.
-const POSES={hip:[1.2,2.6],point:[-.25,-.35],raise:[-1.3,-1.5],fist:[1.6,-2.4],cheer:[-1.0,-1.35],shrug:[.7,-.3],pump:[-.6,-1.9],aim:[-.45,-.6]};
+const POSES={hip:[1.2,2.6],point:[-.25,-.35],raise:[-1.3,-1.5],fist:[1.6,-2.4],cheer:[-1.0,-1.35],shrug:[.7,-.3],pump:[-.6,-1.9],aim:[-.45,-.6],
+  grab:[.65,2.38],guard:[.9,-1.5],droop:[1.35,1.7],wipe:[3.089,-1.413]};   // grab : main sur la poignée du fourreau · guard : en garde, lame droite (ne passe pas devant les rouleaux) · droop : bras ballant · wipe : main gauche sur l'œil
+// L'épée ne dépend plus de l'humeur : elle sort seulement pendant le tease (CAP.inHand). Rs = pose du bras droit épée en main (sinon « guard »).
 const MOODS={
-  idle:{smile:.35,open:0,brow:0,wide:0,lean:0,R:'hip',Lp:'hip',sabre:0,hat:0,dance:0,look:[.35,0]},
-  watch:{smile:.2,open:.08,brow:.35,wide:.15,lean:.3,R:'point',Lp:'hip',sabre:0,hat:0,dance:0,look:[1,-.2]},
-  happy:{smile:1,open:.4,brow:.5,wide:.2,lean:.1,R:'pump',Lp:'hip',sabre:0,hat:.2,dance:.35,look:[.4,0]},
-  ecstatic:{smile:1,open:.95,brow:1,wide:.7,lean:0,R:'cheer',Lp:'cheer',sabre:0,hat:.9,dance:1,look:[0,-.3]},
-  tense:{smile:-.25,open:.3,brow:1,wide:1,lean:.75,R:'fist',Lp:'fist',sabre:0,hat:0,dance:0,look:[1,.1]},
-  sad:{smile:-.85,open:.05,brow:-.7,wide:0,lean:-.2,R:'shrug',Lp:'shrug',sabre:0,hat:-.35,dance:0,look:[-.2,.5]},
-  attack:{smile:.5,open:1,brow:-.8,wide:.4,lean:.45,R:'raise',Lp:'hip',sabre:1,hat:.3,dance:.2,look:[.8,-.4]},
-  fire:{smile:.6,open:.75,brow:-.5,wide:.5,lean:.55,R:'aim',Lp:'hip',sabre:1,hat:.1,dance:0,look:[1,-.3]},
-  sabre:{smile:.45,open:.1,brow:-.2,wide:.1,lean:.15,R:'hip',Lp:'hip',sabre:1,hat:0,dance:0,look:[.6,-.1]},
+  idle:{smile:.35,open:0,brow:0,wide:0,lean:0,R:'hip',Lp:'hip',hat:0,dance:0,look:[.35,0]},
+  watch:{smile:.2,open:.08,brow:.35,wide:.15,lean:.3,R:'point',Lp:'hip',hat:0,dance:0,look:[1,-.2]},
+  happy:{smile:1,open:.4,brow:.5,wide:.2,lean:.1,R:'pump',Lp:'hip',hat:.2,dance:.35,look:[.4,0]},
+  ecstatic:{smile:1,open:.95,brow:1,wide:.7,lean:0,R:'cheer',Lp:'cheer',hat:.9,dance:1,look:[0,-.3]},
+  tense:{smile:-.25,open:.3,brow:1,wide:1,lean:.75,R:'fist',Rs:'guard',Lp:'fist',hat:0,dance:0,look:[1,.1]},
+  sad:{smile:-.85,open:.05,brow:-.7,wide:0,lean:-.2,R:'shrug',Lp:'shrug',hat:-.35,dance:0,look:[-.2,.5]},
+  fire:{smile:.6,open:.75,brow:-.5,wide:.5,lean:.55,R:'aim',Lp:'hip',hat:.1,dance:0,look:[1,-.3]},
+  mortar:{smile:.45,open:.1,brow:-.2,wide:.1,lean:.15,R:'hip',Lp:'hip',hat:0,dance:0,look:[.6,-.1]},
+  joy:{smile:1,open:.85,brow:1,wide:.7,lean:0,R:'cheer',Rs:'raise',Lp:'cheer',hat:.2,dance:0,jump:1,look:[0,-.35]},   // saute de joie
+  cry:{smile:-1,open:.5,brow:-1,wide:-.9,lean:-.25,R:'droop',Lp:'wipe',hat:-.35,dance:0,sob:1,look:[-.2,.6]},          // pleure
 };
-const CAP={mood:'idle',until:0,cur:null,blinkAt:2000,blinkT:-1e9,bubble:null,lastIdleLine:0,flap:0};
-CAP.cur=(()=>{const m=MOODS.idle;return {smile:m.smile,open:m.open,brow:m.brow,wide:m.wide,lean:m.lean,sabre:0,hat:0,dance:0,lx:.35,ly:0,
+const CAP={mood:'idle',until:0,cur:null,blinkAt:2000,blinkT:-1e9,bubble:null,lastSpinLine:-1e9,flap:0,
+  sword:0,inHand:false,swAct:null,perch:0,pf:0,pFrom:0,pT0:-1e9,cryUntil:0,talkT0:0,talkUntil:0,voxUntil:0,voxLast:''};
+CAP.cur=(()=>{const m=MOODS.idle;return {smile:m.smile,open:m.open,brow:m.brow,wide:m.wide,lean:m.lean,sabre:0,hat:0,dance:0,jump:0,sob:0,lx:.35,ly:0,
   r1:POSES.hip[0],r2:POSES.hip[1],l1:Math.PI-POSES.hip[0],l2:Math.PI-POSES.hip[1]};})();
 function capMood(name,ms){CAP.mood=name;CAP.until=ms?performance.now()+ms:0;}
-function capSay(txt,ms=2400){CAP.bubble={txt,t0:performance.now(),d:ms};}
+// Chaque réplique s'accompagne d'un bruitage de pirate (pas deux fois le même de suite) et la bouche bouge.
+function capSay(txt,ms=2400,vk='any'){if(KC.lang==='fr')txt=String(txt).replace(/ ([!?:;])/g,' $1');
+  CAP.bubble={txt,t0:performance.now(),d:ms};if(vk)capVoice(vk);}
+function capVoice(set){const now=performance.now();if(now<CAP.voxUntil)return;
+  const pool=VOX_SETS[set]||VOX_SETS.any;let k;do{k=pool[Math.floor(Math.random()*pool.length)];}while(pool.length>1&&k===CAP.voxLast);
+  CAP.voxLast=k;const d=voxDur(k);CAP.talkT0=now;CAP.talkUntil=now+d;CAP.voxUntil=now+d+150;vox(VOX[k]);}
+// Épée : la main va chercher la poignée (260 ms), puis l'épée sort du fourreau ; rengainer fait le chemin inverse.
+function capDraw(){if(CAP.inHand||CAP.swAct)return;CAP.swAct={k:'draw',t0:performance.now()};}
+function capSheathe(){if(!CAP.inHand&&!CAP.swAct)return;CAP.swAct={k:'sheathe',t0:performance.now()};}
+// Perroquet : 0 = épaule, 1 = perché sur le tricorne ; il vole en arc entre les deux.
+function capPerch(to,instant){if(instant){CAP.perch=CAP.pf=CAP.pFrom=to;CAP.pT0=-1e9;return;}
+  if(CAP.perch===to)return;CAP.pFrom=CAP.pf;CAP.perch=to;CAP.pT0=performance.now();sfx.squawk();}
+function capJoy(ms){capMood('joy',ms);capPerch(1);CAP.flap=performance.now()+1600;}
+function capCry(){const now=performance.now();capMood('cry',2400);capSheathe();CAP.cryUntil=now+2400;CAP.bubble=null;CAP.voxUntil=now+2300;sfx.cry();}
+function capReset(){CAP.sword=0;CAP.inHand=false;CAP.swAct=null;CAP.cur.sabre=0;CAP.cryUntil=0;capPerch(0,true);}
 const LINES={
-  idle:['Hisse la mise, moussaillon !','Ça sent la poudre…','Le trésor ne va pas se trouver tout seul.','Un spin de plus, pour la route ?'],
+  spin:['Le trésor est bientôt à nous !','Navire en vue !',"Un crochet neuf, c'est tout ce que je demande…",'Un jour la fortune viendra…','Du nerf, moussaillon !',"À l'abordage !!"],     // au hasard pendant les spins
   small:['Pas mal !','Ho ho !','Ça remplit la cale.'],
   big:['PAR MA BARBE !','Quel butin !','Mille sabords !'],
-  tease:['Encore un baril…','Allez, allez !','Je le sens !'],
-  teaseFail:['Arrr… presque !','Sacrebleu !','La prochaine fois…'],
-  trigger:["À L'ABORDAGE !",'Aux canons !'],
+  tease:['Je sens la poudre à canon…','On va tout faire péter !','Préparez mon canon !'],     // 2 barils posés, le 3e peut tomber
+  trigger:['Fortune, Gloire et Pouvoir !','Pour sûr elles sont en or celles-ci !'],     // bonus déclenché par les barils
   fire:['FEU !','Feu à volonté !'],
   flow:['Le trésor est à nous !','On tient le bon bout !'],
   bridge:['Abordage réussi !','Tout le monde à bord !'],
   last:['Dernier boulet !','Vise juste…'],
   endGood:['Quel festin !','Partage le butin !'],
   endMeh:['Mieux que rien.','On remet ça ?'],
-  buy:['Tu as le sens des affaires !','Bon investissement, matelot !'],
+  buy:['Excellent choix, moussaillon !','Voilà que la fortune nous sourit !',"J'aurais fait pareil !"],     // bonus acheté
 };
 const LINES_EN={
-  idle:['Raise the stakes, matey!','Smells like gunpowder…',"That treasure won't find itself.",'One more spin for the road?'],
+  spin:['The treasure will soon be ours!','Sail ho!',"A new hook, that's all I ask…",'One day, fortune will come…','Look lively, matey!','Prepare to board!!'],     // au hasard pendant les spins
   small:['Not bad!','Yo ho!','Filling up the hold.'],
   big:['BLOW ME DOWN!','What a haul!','Shiver me timbers!'],
-  tease:['One more barrel…','Come on, come on!','I can feel it!'],
-  teaseFail:['Arrr… so close!','Blast it!','Next time…'],
-  trigger:['PREPARE TO BOARD!','To the cannons!'],
+  tease:['I can smell gunpowder…',"We're gonna blow it all sky-high!",'Ready my cannon!'],     // 2 barils posés, le 3e peut tomber
+  trigger:['Fortune, Glory and Power!',"These ones are solid gold, I'm sure of it!"],     // bonus déclenché par les barils
   fire:['FIRE!','Fire at will!'],
   flow:['The treasure is ours!',"We're onto something!"],
   bridge:['Boarding successful!','All aboard!'],
   last:['Last cannonball!','Aim true…'],
   endGood:['What a feast!','Share the loot!'],
   endMeh:['Better than nothing.','Go again?'],
-  buy:['A shrewd deal!','Good investment, sailor!'],
+  buy:['Excellent choice, matey!','Fortune is smiling on us!',"I'd have done the same!"],     // bonus acheté
 };
 const pickLine=k=>{const a=(KC.lang==='fr'?LINES:LINES_EN)[k];return a[Math.floor(Math.random()*a.length)];};
 function capUpdate(t,dt){
   if(CAP.until&&t>CAP.until){CAP.until=0;CAP.mood=busy?'watch':'idle';}
-  const m=MOODS[CAP.mood],c=CAP.cur,k=1-Math.exp(-dt/110),k2=1-Math.exp(-dt/170);
-  for(const p of ['smile','open','brow','wide','lean','sabre','hat','dance'])c[p]+=(m[p]-c[p])*(p==='sabre'?k2:k);
+  const m=MOODS[CAP.mood],c=CAP.cur,k=1-Math.exp(-dt/110),k2=1-Math.exp(-dt/170),k3=1-Math.exp(-dt/75);
+  let Rn=CAP.inHand?(m.Rs||'guard'):m.R,ka=k2;const A=CAP.swAct;
+  if(A){const e=t-A.t0;ka=k3;
+    if(A.k==='draw'){if(e<260)Rn='grab';else{if(!CAP.inHand){CAP.inHand=true;CAP.sword=1;sfx.shing();}Rn=m.Rs||'guard';if(e>800)CAP.swAct=null;}}
+    else{Rn='grab';CAP.sword=0;if(e>480){if(CAP.inHand){CAP.inHand=false;sfx.sheathe();}CAP.swAct=null;}}}
+  for(const p of ['smile','open','brow','wide','lean','hat','dance','jump','sob'])c[p]+=((m[p]||0)-c[p])*k;
+  c.sabre+=(CAP.sword-c.sabre)*(A?k3:k2);
   c.lx+=(m.look[0]-c.lx)*k;c.ly+=(m.look[1]-c.ly)*k;
-  const R=POSES[m.R],Lp=POSES[m.Lp];c.r1+=(R[0]-c.r1)*k2;c.r2+=(R[1]-c.r2)*k2;c.l1+=(Math.PI-Lp[0]-c.l1)*k2;c.l2+=(Math.PI-Lp[1]-c.l2)*k2;
+  const R=POSES[Rn],Lp=POSES[m.Lp];c.r1+=(R[0]-c.r1)*ka;c.r2+=(R[1]-c.r2)*ka;c.l1+=(Math.PI-Lp[0]-c.l1)*k2;c.l2+=(Math.PI-Lp[1]-c.l2)*k2;
+  CAP.pf=CAP.pFrom+(CAP.perch-CAP.pFrom)*easeInOut(Math.min(1,(t-CAP.pT0)/650));
   if(t>CAP.blinkAt){CAP.blinkT=t;CAP.blinkAt=t+2200+Math.random()*3200;}
-  if(!busy&&CAP.mood==='idle'&&t-CAP.lastIdleLine>26000&&!CAP.bubble&&t>8000){CAP.lastIdleLine=t;if(Math.random()<.6)capSay(pickLine('idle'),2600);}
   if(CAP.bubble&&t-CAP.bubble.t0>CAP.bubble.d)CAP.bubble=null;
 }
 function limb(c,x,y,a,len,w,col,edge){const x2=x+Math.cos(a)*len,y2=y+Math.sin(a)*len;
   c.lineCap='round';c.strokeStyle=edge;c.lineWidth=w+6;c.beginPath();c.moveTo(x,y);c.lineTo(x2,y2);c.stroke();
   c.strokeStyle=col;c.lineWidth=w;c.beginPath();c.moveTo(x,y);c.lineTo(x2,y2);c.stroke();return [x2,y2];}
-function drawArm(c,sx,sy,a1,a2,sabre,right){
+function drawArm(c,sx,sy,a1,a2,sabre,right,held){
   const [ex,ey]=limb(c,sx,sy,a1,95,40,'#a3201f','#5a0e0e');
   const [hx,hy]=limb(c,ex,ey,a2,82,34,'#b3262a','#5a0e0e');
   c.fillStyle='#d6a73e';c.beginPath();c.arc(ex+Math.cos(a2)*70,ey+Math.sin(a2)*70,19,0,7);c.fill();
-  if(right&&sabre>.02){c.save();c.globalAlpha=Math.min(1,sabre*1.4);c.translate(hx,hy);c.rotate(a2);
-    const bl=c.createLinearGradient(0,-8,0,8);bl.addColorStop(0,'#f4f7fa');bl.addColorStop(.6,'#aab8c4');bl.addColorStop(1,'#6a7a86');
-    c.fillStyle=bl;c.beginPath();c.moveTo(14,-6);c.quadraticCurveTo(110,-22,190,-6);c.quadraticCurveTo(120,4,14,6);c.closePath();c.fill();
-    c.strokeStyle='rgba(255,255,255,.7)';c.lineWidth=2;c.beginPath();c.moveTo(20,-4);c.quadraticCurveTo(110,-18,184,-6);c.stroke();
+  if(right&&held){c.save();c.translate(hx,hy);c.rotate(a2);
+    c.fillStyle='#d6a73e';c.beginPath();c.arc(-17,0,7,0,7);c.fill();            // pommeau
+    if(sabre>.02){c.save();c.translate(14,0);c.scale(sabre,1);                 // la lame sort du fourreau : sa longueur suit l'animation
+      const bl=c.createLinearGradient(0,-8,0,8);bl.addColorStop(0,'#f4f7fa');bl.addColorStop(.6,'#aab8c4');bl.addColorStop(1,'#6a7a86');
+      c.fillStyle=bl;c.beginPath();c.moveTo(0,-6);c.quadraticCurveTo(96,-22,176,-6);c.quadraticCurveTo(106,4,0,6);c.closePath();c.fill();
+      c.strokeStyle='rgba(255,255,255,.7)';c.lineWidth=2;c.beginPath();c.moveTo(6,-4);c.quadraticCurveTo(96,-18,170,-6);c.stroke();c.restore();}
     c.strokeStyle='#d6a73e';c.lineWidth=6;c.beginPath();c.arc(6,0,16,-1.8,1.8);c.stroke();c.restore();}
   c.fillStyle='#e9b98a';c.beginPath();c.arc(hx,hy,17,0,7);c.fill();c.strokeStyle='#8a5a3a';c.lineWidth=2;c.stroke();
 }
 function drawCaptain(c,x,y,s,t){
-  const C=CAP.cur,breathe=Math.sin(t/650)*3.2,dance=C.dance*Math.abs(Math.sin(t/170))*-16,sway=C.dance*Math.sin(t/340)*.05;
+  const C=CAP.cur,breathe=Math.sin(t/650)*3.2+C.sob*Math.sin(t/85)*4,dance=C.dance*Math.abs(Math.sin(t/170))*-16,sway=C.dance*Math.sin(t/340)*.05;
+  // saut de joie : bonds paraboliques, ombre qui rétrécit, écrasement à la réception
+  const ph=(t%540)/540,hop=C.jump*4*ph*(1-ph),squash=C.jump*Math.max(0,1-hop*5)*.08;
   c.save();c.translate(x,y);c.scale(s,s);
-  c.fillStyle='rgba(0,0,0,.4)';c.beginPath();c.ellipse(0,0,130,20,0,0,7);c.fill();
-  c.translate(0,dance);c.rotate(sway);
+  c.fillStyle='rgba(0,0,0,'+(.4*(1-hop*.45))+')';c.beginPath();c.ellipse(0,0,130*(1-hop*.3),20*(1-hop*.3),0,0,7);c.fill();
+  c.translate(0,dance-hop*70);c.rotate(sway);c.scale(1+squash*.7,1-squash);
   // jambes et bottes
   c.fillStyle='#1d2433';c.fillRect(-58,-240,50,190);c.fillRect(8,-240,50,190);
   [-34,34].forEach(bx=>{c.fillStyle='#120c08';rr(c,bx-30,-78,60,78,10);c.fill();c.fillStyle='#3a2414';rr(c,bx-34,-92,68,24,8);c.fill();
@@ -1291,9 +1366,13 @@ function drawCaptain(c,x,y,s,t){
   // ceinture
   c.fillStyle='#15100c';c.fillRect(-112,-252,224,30);c.fillStyle='#f2c14e';rr(c,-20,-256,40,38,6);c.fill();c.fillStyle='#15100c';rr(c,-11,-248,22,22,3);c.fill();
   // fourreau
-  if(C.sabre<.5){c.save();c.translate(96,-238);c.rotate(.5);c.fillStyle='#2a1608';rr(c,-6,0,14,150,6);c.fill();c.fillStyle='#d6a73e';c.fillRect(-7,-6,16,10);c.restore();}
-  // bras gauche (côté perroquet)
-  drawArm(c,-96,-386+bt,C.l1,C.l2,0,false);
+  // toujours au côté ; la poignée dépasse tant que l'épée y est rangée
+  c.save();c.translate(96,-238);c.rotate(.5);c.fillStyle='#2a1608';rr(c,-7,0,15,150,6);c.fill();
+  c.fillStyle='#d6a73e';rr(c,-8,136,17,16,5);c.fill();c.fillRect(-8,-3,17,10);
+  if(!CAP.inHand){c.fillStyle='#3a2414';rr(c,-5,-38,11,34,4);c.fill();c.strokeStyle='#d6a73e';c.lineCap='round';c.lineWidth=6;
+    c.beginPath();c.moveTo(-15,-6);c.lineTo(16,-6);c.stroke();c.lineWidth=4;c.beginPath();c.moveTo(15,-7);c.quadraticCurveTo(24,-28,5,-42);c.stroke();
+    c.fillStyle='#d6a73e';c.beginPath();c.arc(.5,-42,7,0,7);c.fill();}
+  c.restore();
   // tête
   c.save();c.translate(10,-462+bt*.6);
   c.fillStyle='#e9b98a';c.fillRect(-22,40,44,30);
@@ -1306,7 +1385,7 @@ function drawCaptain(c,x,y,s,t){
   c.quadraticCurveTo(40,30,24,26);c.quadraticCurveTo(0,40,-24,26);c.quadraticCurveTo(-40,30,-52,4);c.fill();
   [-14,0,14].forEach((bx,i)=>{c.fillStyle='#1b1410';rr(c,bx-6,92,12,30+i%2*6,5);c.fill();c.fillStyle='#c0392b';c.beginPath();c.arc(bx,124+i%2*6,5,0,7);c.fill();});
   // bouche
-  const mo=C.open,sm=C.smile,my=34;
+  const talk=t<CAP.talkUntil?.12+.8*Math.abs(Math.sin((t-CAP.talkT0)/62)):-1,mo=talk>=0?Math.max(talk,C.open*.4):C.open,sm=C.smile,my=34;
   c.fillStyle='#3b0d0d';c.beginPath();c.moveTo(-22,my-sm*7);c.quadraticCurveTo(0,my+6+sm*10+mo*34,22,my-sm*7);c.quadraticCurveTo(0,my-2+mo*4,-22,my-sm*7);c.fill();
   if(mo>.15){c.fillStyle='#fff8e6';c.fillRect(-14,my-1,28,5);c.fillStyle='#f2c14e';c.fillRect(4,my-1,7,5);c.fillStyle='#d64545';c.beginPath();c.ellipse(0,my+6+mo*20,10,5+mo*4,0,0,7);c.fill();}
   // moustache
@@ -1322,6 +1401,10 @@ function drawCaptain(c,x,y,s,t){
   const br=C.brow;c.lineWidth=8;c.lineCap='round';c.strokeStyle='#1b1410';
   c.beginPath();c.moveTo(10,-36-br*8);c.lineTo(36,-40-br*4+(br<0?-br*8:0));c.stroke();
   c.beginPath();c.moveTo(-34,-38-br*4+(br<0?-br*8:0));c.lineTo(-8,-36-br*8);c.stroke();
+  // larmes (bonus raté)
+  if(t<CAP.cryUntil){const fa=Math.min(1,(CAP.cryUntil-t)/350);c.save();c.fillStyle='#8fd3ff';
+    c.globalAlpha=.55*fa;c.beginPath();c.moveTo(18,-4);c.quadraticCurveTo(34,30,30,70);c.lineTo(38,70);c.quadraticCurveTo(42,30,28,-4);c.closePath();c.fill();
+    for(let k=0;k<3;k++){const q=(t/480+k/3)%1;c.globalAlpha=fa*(1-q*q);c.beginPath();c.ellipse(32+q*8,4+q*84,5.5,8,0,0,7);c.fill();}c.restore();}
   // tricorne
   c.save();c.translate(0,-54-C.hat*30);c.rotate(-C.hat*.08+(C.hat<0?.12:0));
   c.fillStyle='#15110e';c.beginPath();c.moveTo(-120,8);c.quadraticCurveTo(-60,-12,0,-6);c.quadraticCurveTo(60,-12,120,8);c.quadraticCurveTo(100,-46,60,-58);
@@ -1333,9 +1416,13 @@ function drawCaptain(c,x,y,s,t){
   c.strokeStyle='#7a1414';c.lineWidth=2;c.beginPath();c.moveTo(-8,0);c.quadraticCurveTo(4,-40,-2,-84);c.stroke();c.restore();
   c.restore();
   c.restore();// tête
+  // bras gauche (côté perroquet), dessiné devant la tête pour pouvoir s'essuyer les yeux
+  drawArm(c,-96,-386+bt,C.l1,C.l2,0,false);
   // perroquet
-  const pb=Math.sin(t/300)*4,flap=C.dance>.5||CAP.flap>t?Math.sin(t/60)*.8:0;
-  c.save();c.translate(-108,-410+bt+pb);
+  // sur l'épaule, ou perché sur le tricorne quand le bonus tombe ; vol en arc entre les deux
+  const pf=CAP.pf,fly=pf>.01&&pf<.99,pb=Math.sin(t/300)*4*(1-pf*.6),flap=fly||C.dance>.5||C.jump>.5||CAP.flap>t?Math.sin(t/(fly?40:60))*.8:0;
+  const hy=-462+bt*.6-54-C.hat*30-100;
+  c.save();c.translate(-108+84*pf,(-410+bt)*(1-pf)+hy*pf+pb-Math.sin(Math.PI*pf)*90);if(fly)c.rotate(-.35*Math.sin(Math.PI*pf));
   c.fillStyle='#1e6fd0';c.beginPath();c.moveTo(-6,30);c.lineTo(-20,92);c.lineTo(4,88);c.lineTo(10,34);c.fill();
   c.fillStyle='#2fa84f';c.beginPath();c.ellipse(0,6,26,36,-.15,0,7);c.fill();
   c.save();c.translate(12,0);c.rotate(-.3+flap);c.fillStyle='#21803c';c.beginPath();c.ellipse(10,4,14,30,-.4,0,7);c.fill();c.fillStyle='#f2c14e';c.beginPath();c.ellipse(16,26,8,10,-.4,0,7);c.fill();c.restore();
@@ -1344,7 +1431,7 @@ function drawCaptain(c,x,y,s,t){
   c.fillStyle='#f2c14e';c.beginPath();c.moveTo(20,-30);c.quadraticCurveTo(38,-30,32,-14);c.quadraticCurveTo(26,-20,18,-20);c.closePath();c.fill();
   c.restore();
   // bras droit (vers les rouleaux)
-  drawArm(c,96,-386+bt,C.r1,C.r2,C.sabre,true);
+  drawArm(c,96,-386+bt,C.r1,C.r2,C.sabre,true,CAP.inHand);
   c.restore();// buste
   c.restore();
 }
@@ -1354,9 +1441,12 @@ function drawBubble(c,t,x,y){
   c.save();c.globalAlpha=al;c.font='900 34px "Barlow Condensed",Arial';
   const words=b.txt.split(' '),lines=[];let ln='';for(const w of words){const tt=ln?ln+' '+w:w;if(c.measureText(tt).width>300&&ln){lines.push(ln);ln=w;}else ln=tt;}lines.push(ln);
   const w=Math.max(...lines.map(l=>c.measureText(l).width))+44,h=lines.length*38+26;
+  const tp=(L.bubble.tail||[-20,30]).slice();
+  // perroquet perché sur le tricorne : si la bulle le cache, elle s'écarte à droite et monte au-dessus du saut (la pointe vise toujours la tête)
+  if(CAP.perch&&scene==='base'){const cp=L.cap,s=cp.s,pr=cp.x+12*s;
+    if(x<pr+10){const d=pr+10-x;x+=d;tp[0]-=d;const top=cp.y-684*s;if(y>top){const ny=Math.max(VY0+8+h,top);tp[1]+=y-ny;y=ny;}}}
   c.translate(x,y);c.scale(sc,sc);
-  c.fillStyle='#f3ead5';c.strokeStyle='#5a3418';c.lineWidth=5;rr(c,0,-h,w,h,22);c.fill();c.stroke();
-  const tp=L.bubble.tail||[-20,30];c.beginPath();c.moveTo(30,-6);c.lineTo(tp[0],tp[1]);c.lineTo(70,-6);c.closePath();c.fill();c.stroke();c.fillRect(32,-12,36,10);
+  c.fillStyle='#f3ead5';c.strokeStyle='#5a3418';c.lineWidth=5;rr(c,0,-h,w,h,22);c.fill();c.stroke();c.beginPath();c.moveTo(30,-6);c.lineTo(tp[0],tp[1]);c.lineTo(70,-6);c.closePath();c.fill();c.stroke();c.fillRect(32,-12,36,10);
   c.fillStyle='#2a1608';c.textAlign='left';lines.forEach((l,i)=>c.fillText(l,22,-h+44+i*38));
   c.restore();
 }
@@ -1717,7 +1807,7 @@ function showBig(x,bet){
 function skipBig(){if(!bigWin)return;const now=performance.now();
   if(now-bigWin.t0>=bigWin.d){bigWin=null;const r=bigWinResolve;bigWinResolve=null;r&&r();}else bigWin.t0=now-bigWin.d;}
 function doWipe(txt,col,onMid){wipe={t0:performance.now(),d:1500*Math.max(.7,sp()),txt,col,onMid,mid:false};return waitRaw(wipe.d);}
-function startTease(){if(teaseOn)return;teaseOn=true;teaseT0=performance.now();capMood('tense');capSay(pickLine('tease'),2000);
+function startTease(){if(teaseOn)return;teaseOn=true;teaseT0=performance.now();capMood('tense');capDraw();capSay(pickLine('tease'),2200,'tease');
   Music.duck(.4);sfx.whoosh();sfx.heart();clearInterval(hbTimer);hbTimer=setInterval(()=>sfx.heart(),760);}
 function endTease(){if(!teaseOn)return;teaseOn=false;clearInterval(hbTimer);hbTimer=null;Music.unduck();}
 function slamStop(){if(!spinPhase)return;slammed=true;const now=performance.now();endTease();
@@ -1734,19 +1824,21 @@ async function play(force){
   // Le résultat est connu : on prévoit le tease dès le départ. Il démarre quand le 2ᵉ baril se pose.
   const scatReels=[0,1,2,3,4].filter(i=>CF.hasScat(strips[i],res.stops[i])),teaseFrom=scatReels.length>=2&&scatReels[1]<4?scatReels[1]:-1;
   const land=Math.max(200,380*Math.sqrt(sp()));
+  // réplique au hasard pendant les spins (pas pendant un tease, 15 s mini entre deux)
+  if(teaseFrom<0&&t-CAP.lastSpinLine>15000&&Math.random()<.18){CAP.lastSpinLine=t;capSay(pickLine('spin'),2300);}
   reels.forEach((R,i)=>{R.strip=strips[i];R.target=res.stops[i];R.spinning=true;R.dur=0;R.antic=false;R.baiting=false;R.stopAt=t+delay+i*stag;});
   // Tease séquentiel : chaque rouleau après le 2e baril a son propre appât (feu, ralenti, whoosh), un rouleau à la fois.
   // Les suivants tournent normalement et attendent que le précédent se pose.
   const BAIT=BAIT_SPIN*teaseF,BLAND=BAIT_LAND*teaseF;
   if(teaseFrom>=0)for(let j=teaseFrom+1;j<5;j++){reels[j].stopAt=Infinity;reels[j].antic=true;}
   const bait=(j,first)=>{const N=reels[j];if(!N||!N.antic||slammed)return;const now=performance.now();N.baiting=true;N.baitT0=now;N.baitD=BAIT;N.landD=BLAND;N.stopAt=now+BAIT;
-    if(!first){sfx.whoosh();clearInterval(hbTimer);const k=j-teaseFrom-1;hbTimer=setInterval(()=>sfx.heart(),Math.max(420,760-170*k));capMood('tense');}};
+    if(!first){sfx.whoosh();clearInterval(hbTimer);const k=j-teaseFrom-1;hbTimer=setInterval(()=>sfx.heart(),Math.max(420,760-170*k));if(scatSeen<3)capMood('tense');}};
   await new Promise(resolve=>{let done=0;
     reels.forEach((R,i)=>{
       R.onStop=()=>{sfx.stop(i);
         if(CF.hasScat(R.strip,R.target)){scatSeen++;sfx.scat(scatSeen);const Ls=R.strip.length;
           for(let r=0;r<3;r++)if(R.strip[(R.target+r)%Ls]===CF.S){const x=GX+i*CW+CW/2,y=GY+r*CH+CH/2;ring(x,y,'#ff8c3c',90);burst(x,y,16,'#ff9a3c');shake(2+scatSeen);}
-          if(scatSeen>=3){CAP.flap=performance.now()+1500;capMood('ecstatic',1400);}}
+          if(scatSeen===3&&res.bonus){capJoy(9000);capSay(pickLine('trigger'),2600,'joy');}else if(scatSeen>3)CAP.flap=performance.now()+1500;}
         if(i===teaseFrom&&!slammed){teased=true;startTease();bait(i+1,true);}
         else if(teaseFrom>=0&&i>teaseFrom&&i<4&&!slammed)bait(i+1,false);
         if(++done===5){endTease();reels.forEach(r=>{r.antic=false;r.baiting=false;});resolve();}};});});
@@ -1754,7 +1846,7 @@ async function play(force){
   let totalX=res.waysX+res.scatX;
   const list=res.ways.slice().sort((a,b)=>b.x-a.x).map(w=>({type:'way',...w}));
   if(res.scatX)list.unshift({type:'scat',ns:res.ns,x:res.scatX});
-  if(teased&&!res.bonus){capMood('sad',1900);capSay(pickLine('teaseFail'),2000);}
+  if(teased&&!res.bonus)capCry();else if(!res.bonus&&CAP.inHand)capSheathe();
   if(list.length){showWins={list,bet};winT0=performance.now();sfx.win(totalX);
     winCount={x:totalX,bet,t0:performance.now(),d:Math.min(1600,350+totalX*60)*Math.max(.5,sp())};
     const n=Math.min(70,8+Math.round(totalX*5));for(let k=0;k<n;k++)setTimeout(()=>burst(GX+Math.random()*CW*5,GY+CH*3*Math.random(),2),k*18);
@@ -1765,7 +1857,7 @@ async function play(force){
     if(AUTO.on&&AUTO.cfg.bonus)stopAuto('bonus');
     stats.bonus++;upd();
     winMsg={txt:KC.t('cf.trig'+(res.ns===5?5:res.ns===4?4:3)),col:'#ff8c3c',force:true};
-    capMood('attack',2400);capSay(pickLine('trigger'),2200);sfx.roar();
+    capJoy(2600);sfx.roar();
     await wait(1700);
     await runBonus(res.bonus,bet);totalX+=res.bonus.x;
   }else if(totalX>0)await wait(450);
@@ -1775,7 +1867,7 @@ async function buyBonus(type){
   if(busy)return;const bet=getBet(),c=Math.round(bet*(type==='std'?P.BUY_STD:P.BUY_SUP)*100)/100;if(bal<c){noFunds();return;}
   closePanels();ac();busy=true;bal=Math.round((bal-c)*100)/100;stats.wag+=c;stats.bonus++;saveBal();window.KCLive&&KCLive.spin();
   showWins=null;winMsg=null;winCount=null;setWin(null);upd();
-  sfx.buy();capMood('attack',1800);capSay(pickLine('buy'),1800);
+  sfx.buy();capMood('happy',2000);capSay(pickLine('buy'),2200,'buy');CAP.flap=performance.now()+1400;
   const B=CF.bonus(type,rnd);                        // ← bonus complet figé avant l'animation
   await wait(900);
   await runBonus(B,bet);
@@ -1784,7 +1876,7 @@ async function buyBonus(type){
 function finish(totalX,bet,c,isBonus){
   const won=Math.round(totalX*bet*100)/100;lastRoundWin=won;
   bal=Math.round((bal+won)*100)/100;stats.won+=won;saveBal();setWin(won>0?won:null,won>0);
-  busy=false;if(!CAP.until)capMood('idle');upd();
+  busy=false;if(!CAP.until)capMood('idle');if(CAP.inHand&&!CAP.swAct)capSheathe();upd();
 }
 function waitFire(){return new Promise(r=>{fireResolve=r;upd();});}
 
@@ -1843,8 +1935,8 @@ async function runBonus(B,bet){
     banner:null,prompt:false,fireT:-1e9,shots:null,up:null,miss:null,phase:'play',focus:null,collected:{},flyers:null,stamp:null,pot:0,potShown:0,potT:-1e9,hits:0,deploy:{},shownM:[1,1,1,1],intro:null};
   V.live=CF.resolve(V.grid,B.mults);
   Music.toBonus();
-  await doWipe(BONUS_NAME(B.type),theme,()=>{scene='bonus';bonusView=V;winMsg=null;showWins=null;winCount=null;});
-  capMood('sabre');
+  await doWipe(BONUS_NAME(B.type),theme,()=>{scene='bonus';bonusView=V;winMsg=null;showWins=null;winCount=null;capReset();});
+  capMood('mortar');
   // écran de présentation : un clic (ou la barre d'espace) pour commencer ; en mode auto, il se ferme seul
   V.intro={t0:performance.now()};await new Promise(r=>{V.introDone=r;});
   sfx.cannon();shake(6);await wait(500);
