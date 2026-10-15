@@ -390,11 +390,11 @@ const SYM=['10','J','Q','K','A','HOOK','HAT','WHEEL','CHEST','W','S'];
 const NAMES=['10','J','Q','K','A','Crochet','Chapeau','Gouvernail','Coffre','Wild','Baril de poudre'];
 const W=9,S=10;
 // RC[sym] = [R1..R5], bandes de 40 positions (avril)
-const RC=[[7,6,6,6,7],[6,6,5,6,6],[5,5,6,5,5],[5,4,5,4,5],[4,4,4,4,4],[4,3,3,3,4],[3,3,3,3,3],[2,4,3,4,2],[2,2,2,2,2],[1,2,2,2,1],[1,1,1,1,1]];
+const RC=[[8,6,6,6,7],[6,6,5,6,6],[5,5,6,5,5],[5,4,5,4,5],[4,4,4,4,4],[4,3,3,3,4],[3,3,3,3,3],[2,4,3,4,2],[2,2,2,2,2],[0,2,2,2,1],[1,1,1,1,1]];   // pas de Wild sur le rouleau 1 (il n'y remplace rien) : sa place revient à un « 10 »
 const P={
   PAY_BASE:[[0.08,0.23,0.77],[0.10,0.29,0.97],[0.12,0.39,1.17],[0.15,0.48,1.55],[0.19,0.58,1.94],
             [0.29,0.97,2.91],[0.39,1.55,3.88],[0.77,2.33,6.79],[1.17,3.88,11.65],[1.55,4.85,15.53]],
-  PAY_SCALE:1.36,               // paytable d'avril ×1,36 (calibration oct. 2026)
+  PAY_SCALE:1.342,              // paytable d'avril ×1,342 (recalibrée le 15 oct. 2026 après le retrait du Wild du rouleau 1)
   SCAT_PAY:[2,10,100],
   ANTE_MULT:16, ANTE_SCAT:[20,19,18,20,18], ANTE_COST:1.25,  // bande Ante = bande base ×16 (640 pos.) ; 16 → 18-20 barils
   P_REVEAL:0.05, RESPINS:3, MAX_WIN:15000,
@@ -670,6 +670,7 @@ KC.add({
   'cf.megaSay':{fr:'Un MEGA ! Mille sabords !',en:'A MEGA! Shiver me timbers!'},
   'cf.3shots':{fr:'3 TIRS !',en:'3 SHOTS!'},
   'cf.hit':{fr:'Touché !',en:'Hit!'},
+  'cf.wildPt':{fr:'Remplace tous les symboles, sauf le baril, sur les rouleaux 2 à 5',en:'Substitutes for every symbol except the keg, on reels 2 to 5'},
   'cf.bull':{fr:'Dans le mille !',en:'Bullseye!'},
   'cf.activated':{fr:'ACTIVÉ',en:'ACTIVE'},
   'cf.slamBang':{fr:'GRAND CHELEM !',en:'GRAND SLAM!'},
@@ -2089,7 +2090,8 @@ document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',
   document.querySelectorAll('.tabpane').forEach(p=>p.classList.toggle('on',p.id===b.dataset.tab));sfx.click();}));
 function buildPaytable(){const el=$('ptab');if(!el)return;const bet=getBet(),im=payImages();el.innerHTML='';
   [9,8,7,6,5,4,3,2,1,0].forEach(s=>{const d=document.createElement('div');d.className='pcell';
-    d.innerHTML=`<img src="${im[s]}" alt=""><div><b>${symName(s)}</b><br>${[3,4,5].map(k=>fmt(CF.PAY(s,k)*bet)).join(' · ')}\u00a0€</div>`;el.appendChild(d);});
+    // le Wild n'apparaît pas sur le rouleau 1 : il ne forme pas de gain seul, il remplace
+    d.innerHTML=`<img src="${im[s]}" alt=""><div><b>${symName(s)}</b><br>${s===CF.W?KC.t('cf.wildPt'):[3,4,5].map(k=>fmt(CF.PAY(s,k)*bet)).join(' · ')+'\u00a0€'}</div>`;el.appendChild(d);});
   const d=document.createElement('div');d.className='pcell';d.innerHTML=`<img src="${im[10]}" alt=""><div><b>${KC.t('cf.scatName')}</b><br>${P.SCAT_PAY.map(v=>fmt(v*bet)).join(' · ')}\u00a0€ + bonus</div>`;el.appendChild(d);}
 // éclairs de volatilité
 function bolts(id,n,label){const el=$(id);if(!el)return;let h='';for(let i=0;i<5;i++)h+=`<svg viewBox="0 0 20 24" aria-hidden="true"><path class="${i<n?'b':'o'}" d="M12 1L3 14h6l-2 9 10-14h-6z"/></svg>`;
