@@ -184,7 +184,7 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
     <div class="crow">
       <div class="cblk">
         <div class="clbl" data-i18n="ui.bet">Mise</div>
-        <div class="bwrap"><span class="cur">€</span><input type="number" id="bi" value="10" min="1" step="1"></div>
+        <div class="bwrap"><span class="cur">€</span><input type="number" id="bi" value="10" min="0.01" step="0.01" inputmode="decimal"></div>
         <div class="bbtns">
           <button class="bbtn" onclick="adj(.5)">½</button>
           <button class="bbtn" onclick="adj(2)">×2</button>
@@ -992,9 +992,12 @@ function animate(bounces,done){
 
 /* ── GAME ──────────────────────────────────────────────────────── */
 function roll(){const mo=MODES[mod],r=Math.random();let cum=0;for(let i=0;i<mo.p.length;i++){cum+=mo.p[i];if(r<cum)return i;}return mo.p.length-1;}
-function getBet(){return Math.max(1,Math.round((parseFloat(document.getElementById('bi').value)||1)*100)/100);}
-function adj(f){document.getElementById('bi').value=Math.max(1,Math.round(getBet()*f*100)/100);}
-function allIn(){document.getElementById('bi').value=Math.floor(bal);}
+// Mise au centime près, jamais sous 0,01 €
+const MINBET=0.01,cents=v=>Math.round(v*100)/100,floorCents=v=>Math.max(0,Math.floor(v*100+1e-9)/100);
+function getBet(){const v=parseFloat(document.getElementById('bi').value);return Math.max(MINBET,isNaN(v)?MINBET:cents(v));}
+document.getElementById('bi').addEventListener('change',()=>{document.getElementById('bi').value=getBet();});
+function adj(f){document.getElementById('bi').value=Math.max(MINBET,cents(getBet()*f));}
+function allIn(){document.getElementById('bi').value=Math.max(MINBET,floorCents(bal));}
 function setUI(on){document.getElementById('lb').disabled=!on;document.getElementById('bi').disabled=!on;}
 function upd(){
   document.getElementById('bal').textContent=fmtEur(bal);
@@ -1012,7 +1015,7 @@ function toggleSnd(){sndOn=!sndOn;document.getElementById('sndBtn').textContent=
 function launch(){
   if(busy)return;
   const bet=getBet();
-  if(bet>bal){document.getElementById('bi').value=Math.floor(bal);return;}
+  if(bet>bal){document.getElementById('bi').value=Math.max(MINBET,floorCents(bal));return;}
   busy=true;setUI(false);ensureAC();
   const mo=MODES[mod],b=roll(),mult=mo.m[b],pay=bet*mult,win=mult>0;
   bal-=bet;upd();window.KCLive&&KCLive.spin();

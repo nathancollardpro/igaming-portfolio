@@ -223,7 +223,7 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
     <div class="crow">
       <div class="cblk">
         <div class="clbl" data-i18n="ui.bet">Mise</div>
-        <div class="bwrap"><span class="cur">€</span><input type="number" id="bi" value="10" min="1" step="1"></div>
+        <div class="bwrap"><span class="cur">€</span><input type="number" id="bi" value="10" min="0.01" step="0.01" inputmode="decimal"></div>
         <div class="bbtns">
           <button class="bbtn" onclick="adj(.5)">½</button>
           <button class="bbtn" onclick="adj(2)">×2</button>
@@ -392,12 +392,15 @@ function anyGuessPossible(){for(let p=0;p<NP;p++){const P=piles[p];if(P.length>=
 const resumePrice=()=>Math.round(base*m/RTP*100)/100;
 
 /* ── MISES ──────────────────────────────────────────────────── */
-function getBet(){return Math.max(1,Math.round((parseFloat($('bi').value)||1)*100)/100);}
-function adj(f){if(phase==='run')return;$('bi').value=Math.max(1,Math.round(getBet()*f*100)/100);upd();}
-function allIn(){if(phase==='run')return;$('bi').value=Math.max(1,Math.floor(bal));upd();}
+// Mise au centime près, jamais sous 0,01 €
+const MINBET=0.01,cents=v=>Math.round(v*100)/100,floorCents=v=>Math.max(0,Math.floor(v*100+1e-9)/100);
+function getBet(){const v=parseFloat($('bi').value);return Math.max(MINBET,isNaN(v)?MINBET:cents(v));}
+$('bi').addEventListener('change',()=>{$('bi').value=getBet();updMain();});
+function adj(f){if(phase==='run')return;$('bi').value=Math.max(MINBET,cents(getBet()*f));upd();}
+function allIn(){if(phase==='run')return;$('bi').value=Math.max(MINBET,floorCents(bal));upd();}
 function startRun(price){bal=Math.round((bal-price)*100)/100;stake=price;wins=0;phase='run';st.games++;window.KCLive&&KCLive.spin();saveBal();}
 function mainAction(){if(busy||phase==='run')return;ac();
-  const b=getBet();if(b>bal){$('bi').value=Math.max(1,Math.floor(bal));setSub('m.funds');return;}
+  const b=getBet();if(b>bal){$('bi').value=Math.max(MINBET,floorCents(bal));setSub('m.funds');return;}
   base=b;m=RTP;dealBoard(true);startRun(b);setM('×—','dim');setSub('m.start');upd();}
 function resumeBoard(){if(busy||phase!=='cashed')return;ac();const price=resumePrice();if(price>bal){setSub('m.funds');return;}
   startRun(price);setM('×'+fmtM(m),'',true);setSub('m.start');upd();}
