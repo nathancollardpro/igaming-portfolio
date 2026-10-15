@@ -208,7 +208,7 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
 <p data-i18n-html="r.p2">Raccourcis : <kbd>Espace</kbd> pour nourrir, <kbd>Entrée</kbd> pour encaisser.</p></div>
 <div><h2><span data-i18n="r.odds">Paliers · mode</span> <span id="oddsMode">Facile</span></h2>
 <div class="odds-wrap"><table class="odds" id="odds"></table></div>
-<p class="odds-meta" data-i18n-html="r.meta">Chaque multiplicateur vaut 0,98 ÷ la chance d'y arriver : le RTP reste d'environ <b>98 %</b>, quel que soit le moment où tu encaisses.</p></div>
+<p class="odds-meta" data-i18n-html="r.meta">Chaque multiplicateur vaut 0,98 ÷ la chance d'y arriver : le RTP reste à <b>98 %</b>, quel que soit le moment où tu encaisses.</p></div>
 <a class="glink" href="GDD_CandyMonster.pdf" target="_blank" rel="noopener" data-i18n="r.gdd">Lire le GDD (PDF)</a>
 </section>
 </main>
@@ -255,32 +255,34 @@ KC.add({
           en:'Pick your bet and a mode, then feed the monster. Every sweet he swallows raises the multiplier; if he refuses one, the round is lost. Cash out whenever you like with <b>Cash Out</b>. At the last step, the win is cashed out automatically.'},
   'r.p2':{fr:'Raccourcis : <kbd>Espace</kbd> pour nourrir, <kbd>Entrée</kbd> pour encaisser.',en:'Shortcuts: <kbd>Space</kbd> to feed, <kbd>Enter</kbd> to cash out.'},
   'r.odds':{fr:'Paliers · mode',en:'Steps · mode'},
-  'r.meta':{fr:"Chaque multiplicateur vaut 0,98 ÷ la chance d'y arriver : le RTP reste d'environ <b>98 %</b>, quel que soit le moment où tu encaisses.",en:'Each multiplier equals 0.98 ÷ the chance of reaching it: RTP stays around <b>98%</b> whenever you cash out.'},
+  'r.meta':{fr:"Chaque multiplicateur vaut 0,98 ÷ la chance d'y arriver : le RTP reste à <b>98 %</b>, quel que soit le moment où tu encaisses.",en:'Each multiplier equals 0.98 ÷ the chance of reaching it: RTP stays at <b>98%</b> whenever you cash out.'},
   'r.gdd':{fr:'Lire le GDD (PDF)',en:'Read the GDD (PDF)'},
   'o.candies':{fr:'Bonbons',en:'Sweets'},'o.mult':{fr:'Multiplicateur',en:'Multiplier'},'o.reach':{fr:"Chance d'y arriver",en:'Chance to reach'}
 });
 
 /* ── CONFIG ────────────────────────────────────────────────── */
+// Calibrage (15 oct. 2026) : chaque chance d'échec est déduite du multiplicateur affiché,
+// pour que multiplicateur × chance d'y arriver = 0,98 exactement à chaque palier.
 const MODES={
   facile:{label:'😄 Facile',color:'#00e701',bg:'rgba(0,231,1,.10)',
-    mults:[1.03,1.09,1.15,1.23,1.31,1.40,1.51,1.63,1.78,1.96,2.18,2.45,2.80,3.27,3.92,4.90,6.53,9.80,19.60],
-    busts:[0.05,0.052632,0.055556,0.058824,0.0625,0.066667,0.071429,0.076923,0.083333,0.090909,0.1,0.111111,0.125,0.142857,0.166667,0.2,0.25,0.333333,0.5],
-    cumWin:[95,90,85,80,75,70,65,60,55,50,45,40,35,30,25,20,15,10,5],
+    mults:[1.03,1.09,1.16,1.24,1.33,1.43,1.54,1.66,1.79,1.96,2.18,2.45,2.80,3.27,3.92,4.90,6.53,9.80,19.60],
+    busts:[0.048543689,0.055045872,0.060344828,0.064516129,0.067669173,0.06993007,0.071428571,0.072289157,0.072625698,0.086734694,0.100917431,0.110204082,0.125,0.143730887,0.165816327,0.2,0.249617152,0.333673469,0.5],
+    cumWin:[95.1,89.9,84.5,79,73.7,68.5,63.6,59,54.7,50,45,40,35,30,25,20,15,10,5],
     candy:'#ff85c0',candyLight:'#ffb8da',info:'Max ×19.60'},
   moyen:{label:'🙂 Moyen',color:'#f5a623',bg:'rgba(245,166,35,.12)',
     mults:[1.15,1.37,1.64,2.00,2.46,3.07,3.91,5.08,6.77,9.31,13.30,19.95,31.92,55.86,111.72,279.30,1117.20],
-    busts:[0.15,0.157895,0.166667,0.176471,0.1875,0.2,0.214286,0.230769,0.25,0.272727,0.3,0.333333,0.375,0.428571,0.5,0.6,0.750001],
-    cumWin:[85,71.6,59.6,49.1,39.9,31.9,25.1,19.3,14.5,10.5,7.4,4.9,3.1,1.8,0.9,0.4,0.1],
+    busts:[0.147826087,0.160583942,0.164634146,0.18,0.18699187,0.198697068,0.21483376,0.230314961,0.249630724,0.272824919,0.3,0.333333333,0.375,0.428571429,0.5,0.6,0.75],
+    cumWin:[85.2,71.5,59.8,49,39.8,31.9,25.1,19.3,14.5,10.5,7.37,4.91,3.07,1.75,0.877,0.351,0.0877],
     candy:'#ffb300',candyLight:'#ffd54f',info:'Max ×1 117'},
   difficile:{label:'🫨 Difficile',color:'#e74c3c',bg:'rgba(231,76,60,.10)',
     mults:[1.31,1.77,2.46,3.48,5.06,7.59,11.81,19.18,32.89,60.29,120.59,271.32,723.52,2532.32,15193.92],
-    busts:[0.25,0.263158,0.277778,0.294118,0.3125,0.333333,0.357143,0.384615,0.416667,0.454545,0.5,0.555555,0.625,0.714284,0.833333],
-    cumWin:[75,55.3,39.9,28.2,19.4,12.9,8.3,5.1,3.0,1.6,0.8,0.4,0.1,0.04,0.006],
+    busts:[0.251908397,0.259887006,0.280487805,0.293103448,0.312252964,0.333333333,0.357324301,0.384254432,0.416844026,0.454470061,0.500041463,0.55554327,0.625,0.714285714,0.833333333],
+    cumWin:[74.8,55.4,39.8,28.2,19.4,12.9,8.3,5.11,2.98,1.63,0.813,0.361,0.135,0.0387,0.00645],
     candy:'#f44336',candyLight:'#ef9a9a',info:'Max ×15 193'},
   extreme:{label:'😈 Expert',color:'#9b59b6',bg:'rgba(155,89,182,.12)',
     mults:[1.96,4.14,9.31,22.61,60.29,180.88,633.08,2743.35,16460.08,181060.88],
-    busts:[0.5,0.526316,0.555556,0.588235,0.625,0.666666,0.714285,0.76923,0.833329,0.909137],
-    cumWin:[50,23.7,10.5,4.3,1.6,0.5,0.15,0.036,0.006,0.0005],
+    busts:[0.5,0.526570048,0.555316864,0.588235294,0.624979267,0.666685095,0.714285714,0.76923105,0.833333131,0.909090909],
+    cumWin:[50,23.7,10.5,4.33,1.63,0.542,0.155,0.0357,0.00595,0.000541],
     candy:'#9c27b0',candyLight:'#ce93d8',info:'Max ×181 060'}
 };
 
