@@ -1468,7 +1468,7 @@ function drawReels(c,t){
       const idx=((base+r)%Ls+Ls)%Ls,s=R.strip[idx],y=GY+(r-fr)*CH;
       const on=R.spinning||!showWins||cellOn(cur,r,col,s);
       const hit=!R.spinning&&cur&&on&&r>=0&&r<=2;
-      c.globalAlpha=R.spinning?(R.antic&&teaseOn?1:.85):on?1:.28;
+      c.globalAlpha=R.spinning?(R.baiting&&teaseOn?1:.85):on?1:.28;
       if(teaseOn&&!R.spinning&&s!==CF.S&&!showWins)c.globalAlpha*=1-.45*tz;
       if(hit){const k=1+.06*Math.sin(t/110);const col2=cur.type==='scat'?'#ff8c3c':'#f2c14e';
         c.save();c.translate(x+CW/2,y+CH/2);c.scale(k,k);c.shadowColor=col2;c.shadowBlur=22;c.drawImage(IMG[s],-CW/2,-CH/2,CW,CH);c.restore();
@@ -1481,7 +1481,7 @@ function drawReels(c,t){
   }
   c.restore();
   // tease : colonnes en feu sur les rouleaux encore en mouvement
-  for(let col=0;col<5;col++){const R=reels[col];if(!(teaseOn&&R.antic&&R.spinning))continue;const x=GX+col*CW,a=.55+.35*Math.sin(t/80+col);
+  for(let col=0;col<5;col++){const R=reels[col];if(!(teaseOn&&R.baiting&&R.spinning))continue;const x=GX+col*CW,a=.55+.35*Math.sin(t/80+col);
     c.save();c.shadowColor='#ff7a2a';c.shadowBlur=34;c.strokeStyle=`rgba(255,${150+60*Math.sin(t/60)|0},60,${a})`;c.lineWidth=7;rr(c,x+3,GY-6,CW-6,CH*3+12,14);c.stroke();c.restore();
     const g=c.createLinearGradient(0,GY+CH*3,0,GY);g.addColorStop(0,`rgba(255,110,30,${.32*a})`);g.addColorStop(.5,'rgba(255,110,30,.05)');g.addColorStop(1,`rgba(255,110,30,${.2*a})`);c.fillStyle=g;c.fillRect(x+4,GY,CW-8,CH*3);
     if(Math.random()<.6)sparks(x+CW/2,GY+CH*3+4,2);if(Math.random()<.3)sparks(x+CW/2,GY-4,1);}
@@ -1689,9 +1689,9 @@ function loop(){requestAnimationFrame(loop);const t=performance.now(),dt=Math.ma
 function frame(t,dt){
   const spdF=1/Math.max(.5,sp());
   for(const R of reels){if(!R.spinning)continue;
-    if(t<R.stopAt){let v=.03*Math.min(1.6,spdF);if(R.antic&&teaseOn){const left=R.stopAt-t;v=.012+.018*Math.min(1,left/1600);}R.y-=dt*v;}
-    else{if(!R.dur){R.from=R.y;const Ls=R.strip.length;let to=R.target;const minT=R.antic?5:3;while(to>R.from-minT)to-=Ls;R.to=to;R.t0=t;R.dur=R.antic?1100:Math.max(200,380*Math.sqrt(sp()));}
-      const k=Math.min(1,(t-R.t0)/R.dur);R.y=R.from+(R.to-R.from)*(R.antic?easeOutCubic(k):easeOutBack(k));
+    if(t<R.stopAt){let v=.03*Math.min(1.6,spdF);if(R.baiting&&teaseOn){const left=R.stopAt-t;v=.012+.018*Math.min(1,left/R.baitD);}R.y-=dt*v;}
+    else{if(!R.dur){R.from=R.y;const Ls=R.strip.length;let to=R.target;const minT=R.baiting?5:3;while(to>R.from-minT)to-=Ls;R.to=to;R.t0=t;R.dur=R.baiting?R.landD:Math.max(200,380*Math.sqrt(sp()));}
+      const k=Math.min(1,(t-R.t0)/R.dur);R.y=R.from+(R.to-R.from)*(R.baiting?easeOutCubic(k):easeOutBack(k));
       if(k>=1){R.y=R.target;R.spinning=false;R.dur=0;R.onStop&&R.onStop();}}}
   capUpdate(t,dt);
   const c=ctx;stageTransform(c);
@@ -1706,6 +1706,7 @@ function frame(t,dt){
 }
 
 // ═════════════════════════ DÉROULÉ ═════════════════════════
+const BAIT_SPIN=1600,BAIT_LAND=1000;   // appât d'un rouleau : ralenti en feu puis atterrissage
 let bigWinResolve=null,fireResolve=null,spinPhase=false,slammed=false,hbTimer=null;
 function showBig(x,bet){
   const label=x>=500?'LEGENDARY WIN':x>=100?'EPIC WIN':x>=40?'MEGA WIN':'BIG WIN',col=x>=500?'#ff6f98':x>=100?'#ff8c3c':x>=40?'#c77dff':'#f2c14e';
@@ -1720,7 +1721,7 @@ function startTease(){if(teaseOn)return;teaseOn=true;teaseT0=performance.now();c
   Music.duck(.4);sfx.whoosh();sfx.heart();clearInterval(hbTimer);hbTimer=setInterval(()=>sfx.heart(),760);}
 function endTease(){if(!teaseOn)return;teaseOn=false;clearInterval(hbTimer);hbTimer=null;Music.unduck();}
 function slamStop(){if(!spinPhase)return;slammed=true;const now=performance.now();endTease();
-  reels.forEach((R,i)=>{if(R.spinning&&!R.dur){R.stopAt=Math.min(R.stopAt,now+i*35);R.antic=false;}});}
+  reels.forEach((R,i)=>{if(R.spinning&&!R.dur){R.stopAt=Math.min(R.stopAt,now+i*35);R.antic=false;R.baiting=false;}});}
 function noFunds(){capMood('sad',1600);capSay(KC.t('cf.noFunds'),2800);const el=document.getElementById('balV');el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}
 
 async function play(force){
@@ -1733,16 +1734,22 @@ async function play(force){
   // Le résultat est connu : on prévoit le tease dès le départ. Il démarre quand le 2ᵉ baril se pose.
   const scatReels=[0,1,2,3,4].filter(i=>CF.hasScat(strips[i],res.stops[i])),teaseFrom=scatReels.length>=2&&scatReels[1]<4?scatReels[1]:-1;
   const land=Math.max(200,380*Math.sqrt(sp()));
-  reels.forEach((R,i)=>{R.strip=strips[i];R.target=res.stops[i];R.spinning=true;R.dur=0;R.antic=false;R.stopAt=t+delay+i*stag;});
-  if(teaseFrom>=0){const t0=reels[teaseFrom].stopAt+land;let k=0;for(let j=teaseFrom+1;j<5;j++){reels[j].stopAt=t0+(1500+k*1250)*teaseF;reels[j].antic=true;k++;}}
+  reels.forEach((R,i)=>{R.strip=strips[i];R.target=res.stops[i];R.spinning=true;R.dur=0;R.antic=false;R.baiting=false;R.stopAt=t+delay+i*stag;});
+  // Tease séquentiel : chaque rouleau après le 2e baril a son propre appât (feu, ralenti, whoosh), un rouleau à la fois.
+  // Les suivants tournent normalement et attendent que le précédent se pose.
+  const BAIT=BAIT_SPIN*teaseF,BLAND=BAIT_LAND*teaseF;
+  if(teaseFrom>=0)for(let j=teaseFrom+1;j<5;j++){reels[j].stopAt=Infinity;reels[j].antic=true;}
+  const bait=(j,first)=>{const N=reels[j];if(!N||!N.antic||slammed)return;const now=performance.now();N.baiting=true;N.baitT0=now;N.baitD=BAIT;N.landD=BLAND;N.stopAt=now+BAIT;
+    if(!first){sfx.whoosh();clearInterval(hbTimer);const k=j-teaseFrom-1;hbTimer=setInterval(()=>sfx.heart(),Math.max(420,760-170*k));capMood('tense');}};
   await new Promise(resolve=>{let done=0;
     reels.forEach((R,i)=>{
       R.onStop=()=>{sfx.stop(i);
         if(CF.hasScat(R.strip,R.target)){scatSeen++;sfx.scat(scatSeen);const Ls=R.strip.length;
           for(let r=0;r<3;r++)if(R.strip[(R.target+r)%Ls]===CF.S){const x=GX+i*CW+CW/2,y=GY+r*CH+CH/2;ring(x,y,'#ff8c3c',90);burst(x,y,16,'#ff9a3c');shake(2+scatSeen);}
           if(scatSeen>=3){CAP.flap=performance.now()+1500;capMood('ecstatic',1400);}}
-        if(i===teaseFrom&&!slammed){teased=true;startTease();}
-        if(++done===5){endTease();reels.forEach(r=>r.antic=false);resolve();}};});});
+        if(i===teaseFrom&&!slammed){teased=true;startTease();bait(i+1,true);}
+        else if(teaseFrom>=0&&i>teaseFrom&&i<4&&!slammed)bait(i+1,false);
+        if(++done===5){endTease();reels.forEach(r=>{r.antic=false;r.baiting=false;});resolve();}};});});
   spinPhase=false;upd();
   let totalX=res.waysX+res.scatX;
   const list=res.ways.slice().sort((a,b)=>b.x-a.x).map(w=>({type:'way',...w}));
