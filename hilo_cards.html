@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="fr" data-game="hilo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hi-Lo Cards — jeu iGaming de Nathan Collard</title>
+<meta name="description" content="Hi-Lo Cards : quatre piles de cartes, plus haut ou plus bas sur la pile de ton choix, cash-out à tout moment et reprise du plateau. RTP 98 %.">
+<meta name="theme-color" content="#0b1622">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<script src="i18n.js"></script>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hi-Lo Cards — un jeu de Nathan Collard">
+<meta property="og:description" content="Quatre piles de cartes, plus haut ou plus bas, cash-out à tout moment. RTP 98 %.">
+<meta property="og:image" content="https://kachingstudio.netlify.app/vitrine_hilo.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0b1622;--bg2:#172533;--bg3:#1e3245;--bg4:#243b52;
+  --grn:#00e701;--gdn:#00b800;--gbg:rgba(0,231,1,.10);
+  --red:#e74c3c;--rbg:rgba(231,76,60,.10);
+  --txt:#c2d4e0;--dim:#4a6a7a;--bdr:rgba(255,255,255,.07);
+  --amb:#f5a623;--abg:rgba(245,166,35,.12);
+  --pur:#9b59b6;--pubg:rgba(155,89,182,.12)
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:2rem 1rem}
+.logo{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--grn);margin-bottom:2rem;opacity:.55}
+.shell{width:100%;max-width:680px;background:var(--bg2);border:1px solid var(--bdr);border-radius:12px;overflow:hidden}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.25rem;border-bottom:1px solid var(--bdr);background:var(--bg)}
+.balgrp{display:flex;align-items:center;gap:10px}
+.ballbl{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em}
+.balval{font-size:15px;font-weight:700;color:#fff}
+.balval span{color:var(--grn)}
+.snd{background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;padding:4px 10px;font-size:11px;color:var(--dim);cursor:pointer;font-family:'Inter',sans-serif}
+.cvarea{position:relative;height:300px;overflow:hidden;background:var(--bg)}
+canvas{display:block;width:100%;height:100%}
+.ctrls{padding:1.2rem 1.25rem;display:flex;flex-direction:column;gap:.9rem}
+.clbl{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px}
+.dgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;position:relative}
+.dbtn{background:var(--bg);border:1px solid var(--bdr);border-radius:8px;padding:8px 4px;text-align:center;cursor:pointer;transition:all .12s}
+.dbtn:hover{border-color:rgba(0,231,1,.25);background:var(--bg3)}
+.dbtn.act{border-color:var(--mode-c);background:var(--mode-bg)}
+.dbtn.act .dname{color:var(--mode-c)}
+.dbtn.act .dinfo{color:rgba(255,255,255,.45)}
+.dname{font-size:11px;font-weight:700;color:#fff;display:block}
+.dinfo{font-size:10px;color:var(--dim);display:block;margin-top:2px}
+.crow{display:flex;gap:.75rem;align-items:flex-start}
+.cblk{flex:1}
+.bwrap{display:flex;align-items:center;background:var(--bg);border:1px solid var(--bdr);border-radius:8px;padding:0 10px;height:40px;gap:6px;transition:border-color .15s}
+.bwrap:focus-within{border-color:rgba(0,231,1,.35)}
+.cur{font-size:12px;color:var(--dim)}
+input[type=number]{background:none;border:none;outline:none;color:#fff;font-size:14px;font-weight:700;font-family:'Inter',sans-serif;width:100%}
+input[type=number]::-webkit-inner-spin-button{display:none}
+.bbtns{display:flex;gap:4px;margin-top:5px}
+.bbtn{flex:1;background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;color:var(--dim);font-size:11px;font-family:'Inter',sans-serif;padding:4px 0;cursor:pointer;transition:all .12s}
+.bbtn:hover{background:var(--bg4);color:var(--txt)}
+.lrow{display:flex;gap:8px}
+.lbtn{flex:1;height:52px;background:var(--grn);color:#000;font-size:14px;font-weight:700;font-family:'Inter',sans-serif;border:none;border-radius:8px;cursor:pointer;letter-spacing:.03em;transition:all .12s;display:flex;align-items:center;justify-content:center;gap:7px}
+.lbtn:hover:not(:disabled){background:var(--gdn)}
+.lbtn:active:not(:disabled){transform:scale(.985)}
+.lbtn:disabled{background:var(--bg3);color:var(--dim);cursor:not-allowed}
+.cobtn{height:52px;background:transparent;border:2px solid var(--amb);color:var(--amb);font-size:13px;font-weight:700;font-family:'Inter',sans-serif;border-radius:8px;cursor:pointer;padding:0 20px;transition:all .12s;white-space:nowrap}
+.cobtn:hover:not(:disabled){background:var(--abg)}
+.cobtn:disabled{opacity:.3;cursor:not-allowed}
+.srow{display:flex;gap:6px;padding:0 1.25rem 1rem}
+.stat{flex:1;background:var(--bg);border:1px solid var(--bdr);border-radius:8px;padding:.55rem .75rem;text-align:center}
+.slbl{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}
+.sval{font-size:13px;font-weight:700;color:#fff;margin-top:2px}
+.sval.g{color:var(--grn)}.sval.r{color:var(--red)}
+.hist{padding:0 1.25rem 1.2rem}
+.hlbl{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px}
+.hlist{display:flex;gap:5px;flex-wrap:wrap}
+.hp{font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px}
+.hp.w{background:var(--gbg);color:var(--grn)}
+.hp.l{background:var(--rbg);color:var(--red)}
+.tt{position:fixed;background:rgba(0,10,20,0.92);color:#c2d4e0;font-size:11px;font-family:'Inter',sans-serif;padding:6px 11px;border-radius:6px;pointer-events:none;opacity:0;transition:opacity .12s;white-space:normal;line-height:1.6;z-index:999;border:1px solid rgba(255,255,255,.1);max-width:200px}
+.tt.show{opacity:1}
+:root{--acc:#00e701;--shellw:680px;--pagew:1008px}
+/* ── PAGE JEU : nav, colonne titre/règles ── */
+:root{--dim:#7b98ab}
+body{padding:1.1rem 1rem 2.5rem}
+.gnav{width:100%;max-width:var(--pagew);display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1rem;font-size:13px}
+.gnav a{color:var(--txt);text-decoration:none;font-weight:600;display:inline-flex;gap:6px;align-items:center;padding:7px 12px;border:1px solid rgba(255,255,255,.12);border-radius:8px;transition:color .15s,border-color .15s}
+.gnav a:hover,.gnav a:focus-visible{color:#fff;border-color:var(--acc)}
+.gnav span{color:var(--dim)}
+.gpage{width:100%;max-width:var(--pagew);display:grid;grid-template-columns:300px minmax(0,1fr);grid-template-areas:"head shell" "rules shell";grid-template-rows:auto 1fr;gap:1.1rem 28px;align-items:start}
+.ghead{grid-area:head}
+.gpage>.shell{grid-area:shell;max-width:none}
+.grules{grid-area:rules;display:flex;flex-direction:column;gap:1rem}
+.gposter{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;border-radius:12px;display:block}
+.gtitle h1{font-size:28px;line-height:1.1;font-weight:700;color:#fff;margin-top:14px}
+.gtitle p{font-size:14px;line-height:1.55;color:var(--txt);margin-top:6px}
+.gfacts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.gfacts div{background:var(--bg2);border-radius:8px;padding:.55rem .7rem}
+.gfacts dt{font-size:11px;color:var(--dim)}
+.gfacts dd{font-size:14px;font-weight:700;color:#fff;margin-top:2px}
+.grules h2{font-size:15px;font-weight:700;color:#fff;margin-bottom:.4rem}
+.grules p{font-size:13.5px;line-height:1.6;color:var(--txt)}
+.grules p+p{margin-top:.5rem}
+.grules kbd{font-family:inherit;font-size:12px;font-weight:700;color:#fff;background:var(--bg3);border:1px solid rgba(255,255,255,.15);border-bottom-width:2px;border-radius:5px;padding:1px 6px}
+.odds-wrap{max-height:280px;overflow:auto;border-radius:8px;background:var(--bg2)}
+.odds{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+.odds th{position:sticky;top:0;background:var(--bg3);color:var(--dim);font-weight:600;font-size:11.5px;text-align:right;padding:.45rem .7rem}
+.odds th:first-child,.odds td:first-child{text-align:left}
+.odds td{padding:.36rem .7rem;text-align:right;color:var(--txt);border-top:1px solid rgba(255,255,255,.05)}
+.odds tr.lose td{color:#ff8a7d}
+.odds-meta{font-size:12.5px;color:var(--dim);margin-top:.45rem}
+.odds-meta b{color:#fff}
+.glink{display:inline-flex;align-self:flex-start;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--acc);text-decoration:none;border:1px solid var(--acc);border-radius:8px;padding:8px 12px}
+.glink:hover{background:var(--acc);color:#111}
+button:focus-visible,a:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.clbl,.slbl,.hlbl,.dinfo{font-size:11px!important}
+button.dbtn{font-family:inherit;color:inherit;width:100%}
+@media(max-width:1060px){
+  .gpage{grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "shell" "rules";grid-template-rows:none;max-width:var(--shellw)}
+  .gnav{max-width:var(--shellw)}
+  .ghead{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;align-items:center}
+  .gposter{width:52px;border-radius:7px}
+  .gtitle h1{margin-top:0;font-size:22px}
+  .gtitle p{font-size:13px;margin-top:2px}
+  .grules{margin-top:.4rem}
+}
+@media(max-width:520px){.gnav span{display:none}.gtitle p{display:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ── écran de jeu agrandi : plus de colonne latérale, infos sous le jeu ── */
+:root{--pagew:1040px}
+.gpage{grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "shell" "rules";grid-template-rows:none;max-width:var(--pagew)}
+.gnav{max-width:var(--pagew)}
+.ghead{display:grid;grid-template-columns:56px minmax(0,1fr);gap:14px;align-items:center}
+.gposter{width:56px;border-radius:8px}
+.gtitle h1{margin-top:0;font-size:26px}
+.gtitle p{margin-top:2px}
+.grules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 28px;align-items:start;margin-top:.8rem}
+.grules .gfacts{grid-column:1/-1;grid-template-columns:repeat(4,1fr)}
+.grules .glink{grid-column:1/-1}
+.cvarea{width:100%;height:auto!important;aspect-ratio:680/300;max-height:max(280px,calc(100vh - 440px))}
+@media(max-width:760px){.grules{grid-template-columns:minmax(0,1fr)}.grules .gfacts{grid-template-columns:1fr 1fr}.cvarea{aspect-ratio:auto;height:300px!important;max-height:none}}
+.gnav{gap:1rem}.gnav .glive{display:inline-flex;align-items:center;gap:6px;color:var(--txt);margin-left:auto}.gnav .glive b{color:#fff}.gnav .glive em{font-style:normal}
+.ldot{width:8px;height:8px;border-radius:50%;background:#2ecc71;display:inline-block;animation:livep 2s infinite}
+@keyframes livep{0%{box-shadow:0 0 0 0 rgba(46,204,113,.55)}70%{box-shadow:0 0 0 7px rgba(46,204,113,0)}100%{box-shadow:0 0 0 0 rgba(46,204,113,0)}}
+[hidden]{display:none!important}
+@media(max-width:520px){.gnav .glive{display:inline-flex}.gnav .glive em{display:none}}
+
+/* ── Hi-Lo Cards : plateau de 4 piles ── */
+.cvarea.board{aspect-ratio:auto!important;max-height:none!important;height:auto!important;overflow:visible;padding:16px 14px 18px;
+  background:radial-gradient(120% 90% at 50% 0%,#12283a 0%,#0b1622 70%)}
+.mhead{text-align:center;min-height:70px}
+.mval{font-size:40px;line-height:1;font-weight:800;color:#fff;font-variant-numeric:tabular-nums;letter-spacing:-.01em;transition:color .2s}
+.mval.dim{color:rgba(255,255,255,.35)}
+.mval.win{color:var(--grn)}.mval.lose{color:var(--red)}
+.mval.pop{animation:mpop .35s ease-out}
+@keyframes mpop{0%{transform:scale(1.18)}100%{transform:none}}
+.msub{font-size:13px;color:var(--txt);margin-top:8px;min-height:18px}
+.msub b{color:#fff}
+.piles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:12px}
+.pile{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0}
+.stack{position:relative;width:var(--cw);height:calc(var(--ch) + var(--fan) * 4)}
+.card{position:absolute;left:0;width:var(--cw);height:var(--ch);border-radius:calc(var(--cw) * .09);background:linear-gradient(160deg,#ffffff 0%,#eef2f6 100%);
+  box-shadow:0 2px 0 rgba(0,0,0,.25),0 6px 14px rgba(0,0,0,.35);color:#1a2330;font-weight:800;transition:box-shadow .2s,transform .2s,opacity .2s;transform-origin:50% 50%}
+.card.red{color:#d7263d}
+.card .cr{position:absolute;left:7%;top:5%;font-size:calc(var(--cw) * .25);line-height:1;text-align:center}
+.card .cr i{display:block;font-style:normal;font-size:.72em;margin-top:1px}
+.card .cs{position:absolute;left:0;right:0;top:50%;transform:translateY(-38%);text-align:center;font-size:calc(var(--cw) * .5);line-height:1}
+.card .cr2{left:auto;right:7%;top:auto;bottom:5%;transform:rotate(180deg)}
+.slot{position:absolute;left:0;width:var(--cw);height:var(--ch);border-radius:calc(var(--cw) * .09);border:2px dashed rgba(255,255,255,.14)}
+.card.old{filter:brightness(.82) saturate(.85)}
+.card.top{box-shadow:0 0 0 2px rgba(255,255,255,.0),0 6px 16px rgba(0,0,0,.45)}
+.pile.sel .card.top{box-shadow:0 0 0 3px var(--grn),0 6px 18px rgba(0,231,1,.25)}
+.card.deal{animation:deal .42s cubic-bezier(.2,.8,.25,1)}
+@keyframes deal{0%{transform:translateY(-46px) rotateY(90deg) scale(.9);opacity:0}55%{transform:translateY(4px) rotateY(0) scale(1.03);opacity:1}100%{transform:none}}
+.card.good{box-shadow:0 0 0 3px var(--grn),0 0 22px rgba(0,231,1,.55)}
+.card.bad{box-shadow:0 0 0 3px var(--red),0 0 22px rgba(231,76,60,.6)}
+.pile.shake{animation:shake .4s}
+@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+.gb{width:100%;max-width:calc(var(--cw) + 18px);display:flex;align-items:center;justify-content:space-between;gap:4px;background:var(--bg2);border:1px solid rgba(255,255,255,.1);border-radius:8px;
+  padding:7px 8px;color:#fff;font:700 13px/1.1 'Inter',sans-serif;cursor:pointer;transition:background .12s,border-color .12s,transform .08s}
+.gb:hover:not(:disabled){border-color:var(--grn);background:var(--bg3)}
+.gb:active:not(:disabled){transform:scale(.97)}
+.gb:disabled{opacity:.32;cursor:not-allowed}
+.gb .ar{font-size:12px;color:var(--grn)}
+.gb.lo .ar{color:#5cc8ff}
+.gb .gm{font-variant-numeric:tabular-nums}
+.gb small{display:block;font-size:10px;font-weight:600;color:var(--dim);margin-top:2px;text-align:right}
+.gbw{display:flex;flex-direction:column;gap:6px;width:100%;align-items:center}
+.pile.full .gbw{visibility:hidden}
+.plabel{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em}
+.lrow .cobtn{flex:1}
+.lrow .cobtn b{font-variant-numeric:tabular-nums}
+.resume{height:52px;background:transparent;border:2px solid #5cc8ff;color:#5cc8ff;font-size:13px;font-weight:700;font-family:'Inter',sans-serif;border-radius:8px;cursor:pointer;padding:0 16px;transition:all .12s;flex:1;line-height:1.2}
+.resume:hover:not(:disabled){background:rgba(92,200,255,.1)}
+.resume:disabled{opacity:.3;cursor:not-allowed}
+.resume small{display:block;font-size:11px;font-weight:600;opacity:.85}
+.odds td.na{color:var(--dim)}
+@media(max-width:760px){.cvarea.board{padding:12px 8px 14px}.piles{gap:6px}.mval{font-size:34px}.gb{padding:6px 5px;font-size:12px}.gb small{font-size:9px}}
+</style>
+<script src="live.js" defer></script>
+</head>
+<body>
+<nav class="gnav" aria-label="Navigation">
+  <a id="backBtn" href="index.html#projets" onclick="saveAndBack(event)" data-i18n="nav.back">← Tous les jeux</a>
+  <span class="glive" data-live="online" hidden data-i18n-attr="title:live.title"><i class="ldot" aria-hidden="true"></i><b data-n>0</b> <em data-i18n-pl="live.online.pl" data-i18n-sg="live.online.sg">joueurs en ligne</em></span>
+  <span>Nathan Collard · Game Designer</span>
+  <div data-lang-switch></div>
+</nav>
+<main class="gpage">
+<header class="ghead">
+  <img class="gposter" src="vitrine_hilo.jpg" alt="" width="600" height="800">
+  <div class="gtitle"><h1>Hi-Lo Cards</h1><p data-i18n="g.tag">Quatre piles, une seule question : plus haut ou plus bas ?</p></div>
+</header>
+<div class="shell">
+  <div class="topbar">
+    <div class="balgrp"><span class="ballbl" data-i18n="ui.balance">Balance</span><span class="balval"><span id="bal">1 000,00</span> €</span></div>
+    <button class="snd" id="sndBtn" onclick="toggleSnd()" data-i18n="ui.sndOn">Son ON</button>
+  </div>
+  <div class="cvarea board" id="boardArea" role="region" data-i18n-attr="aria-label:g.boardAria" aria-label="Plateau de 4 piles">
+    <div class="mhead"><div class="mval dim" id="mval">×—</div><div class="msub" id="msub" aria-live="polite"></div></div>
+    <div class="piles" id="piles"></div>
+  </div>
+  <div class="ctrls">
+    <div class="crow">
+      <div class="cblk">
+        <div class="clbl" data-i18n="ui.bet">Mise</div>
+        <div class="bwrap"><span class="cur">€</span><input type="number" id="bi" value="10" min="1" step="1"></div>
+        <div class="bbtns">
+          <button class="bbtn" onclick="adj(.5)">½</button>
+          <button class="bbtn" onclick="adj(2)">×2</button>
+          <button class="bbtn" onclick="adj(10)">×10</button>
+          <button class="bbtn" onclick="allIn()">All-in</button>
+        </div>
+      </div>
+    </div>
+    <div class="lrow">
+      <button class="lbtn" id="mainBtn" onclick="mainAction()" data-i18n="ui.bet1">Miser</button>
+      <button class="cobtn" id="coBtn" onclick="cashout()" disabled hidden></button>
+      <button class="resume" id="resBtn" onclick="resumeBoard()" hidden></button>
+    </div>
+  </div>
+  <div class="srow">
+    <div class="stat"><div class="slbl" data-i18n="ui.games">Parties</div><div class="sval" id="sg">0</div></div>
+    <div class="stat"><div class="slbl" data-i18n="ui.cashouts">Encaissements</div><div class="sval g" id="sw">0</div></div>
+    <div class="stat"><div class="slbl" data-i18n="ui.best">Meilleur gain</div><div class="sval" id="smx">—</div></div>
+  </div>
+  <div class="hist"><div class="hlbl" data-i18n="ui.hist">Historique</div><div class="hlist" id="hl"></div></div>
+</div>
+<section class="grules" aria-label="Règles et chiffres" data-i18n-attr="aria-label:r.aria">
+<dl class="gfacts"><div><dt>RTP</dt><dd data-i18n="r.rtpv">98 %</dd></div><div><dt data-i18n="r.max">Gain max</dt><dd data-i18n="r.maxv">×10 000</dd></div><div><dt data-i18n="r.vol">Volatilité</dt><dd data-i18n="r.volv">Au choix du joueur</dd></div><div><dt data-i18n="r.board">Plateau</dt><dd data-i18n="r.boardv">4 piles × 5 cartes</dd></div></dl>
+<div><h2 data-i18n="r.how">Comment jouer</h2>
+<p data-i18n-html="r.p1"></p>
+<p data-i18n-html="r.p2"></p>
+<p data-i18n-html="r.p3"></p></div>
+<div><h2 data-i18n="r.odds">Chances et gains par carte</h2>
+<div class="odds-wrap"><table class="odds" id="odds"></table></div>
+<p class="odds-meta" data-i18n-html="r.meta"></p></div>
+</section>
+</main>
+<script>
+// ── TEXTES FR / EN ──
+KC.add({
+  'meta.title':{fr:'Hi-Lo Cards — jeu iGaming de Nathan Collard',en:'Hi-Lo Cards — an iGaming game by Nathan Collard'},
+  'meta.desc':{fr:'Hi-Lo Cards : quatre piles de cartes, plus haut ou plus bas sur la pile de ton choix, cash-out à tout moment et reprise du plateau. RTP 98 %.',en:'Hi-Lo Cards: four card piles, call higher or lower on the pile of your choice, cash out any time and buy back the board. 98% RTP.'},
+  'nav.back':{fr:'← Tous les jeux',en:'← All games'},
+  'live.title':{fr:'Visiteurs sur le site en ce moment (compteur réel)',en:'Visitors on the site right now (real count)'},
+  'live.online.pl':{fr:'joueurs en ligne',en:'players online'},
+  'live.online.sg':{fr:'joueur en ligne',en:'player online'},
+  'g.tag':{fr:'Quatre piles, une seule question : plus haut ou plus bas ?',en:'Four piles, one question: higher or lower?'},
+  'g.boardAria':{fr:'Plateau de 4 piles de cartes',en:'Board of 4 card piles'},
+  'ui.balance':{fr:'Balance',en:'Balance'},
+  'ui.sndOn':{fr:'Son ON',en:'Sound ON'},'ui.sndOff':{fr:'Son OFF',en:'Sound OFF'},
+  'ui.bet':{fr:'Mise',en:'Bet'},
+  'ui.bet1':{fr:'Miser',en:'Bet'},
+  'ui.newBoard':{fr:'Nouveau plateau',en:'New board'},
+  'ui.cash':{fr:'Encaisser <b>{v} €</b>',en:'Cash out <b>{v} €</b>'},
+  'ui.cash0':{fr:'Encaisser',en:'Cash out'},
+  'ui.resume':{fr:'Reprendre ce plateau',en:'Resume this board'},
+  'ui.resumeSub':{fr:'mise {v} € · ×{m}',en:'stake {v} € · ×{m}'},
+  'ui.games':{fr:'Parties',en:'Rounds'},
+  'ui.cashouts':{fr:'Encaissements',en:'Cash-outs'},
+  'ui.best':{fr:'Meilleur gain',en:'Best win'},
+  'ui.hist':{fr:'Historique',en:'History'},
+  'ui.hi':{fr:'Plus haut',en:'Higher'},'ui.lo':{fr:'Plus bas',en:'Lower'},
+  'ui.pile':{fr:'Pile {n}',en:'Pile {n}'},
+  'ui.full':{fr:'Pleine',en:'Full'},
+  'ui.max':{fr:'MAX',en:'MAX'},
+  'ui.betAria':{fr:'{d} que {c}, chance {p}, multiplicateur {m}',en:'{d} than {c}, chance {p}, multiplier {m}'},
+  'm.idle':{fr:'Mise, puis choisis une pile : <b>plus haut</b> ou <b>plus bas</b> ?',en:'Place a bet, then pick a pile: <b>higher</b> or <b>lower</b>?'},
+  'm.start':{fr:'Choisis une pile et annonce la prochaine carte.',en:'Pick a pile and call the next card.'},
+  'm.run':{fr:'Gain potentiel <b>{v} €</b> · {n} carte(s) trouvée(s)',en:'Potential win <b>{v} €</b> · {n} card(s) right'},
+  'm.lostHi':{fr:'Perdu : {c} n\'est pas plus haut que {t}.',en:'Lost: {c} is not higher than {t}.'},
+  'm.lostLo':{fr:'Perdu : {c} n\'est pas plus bas que {t}.',en:'Lost: {c} is not lower than {t}.'},
+  'm.tie':{fr:'Même rang ({c}) : perdu.',en:'Same rank ({c}): lost.'},
+  'm.cashed':{fr:'Encaissé <b>{v} €</b>. Reprends ce plateau ou repars à zéro.',en:'Cashed out <b>{v} €</b>. Resume this board or start fresh.'},
+  'm.full':{fr:'Plateau complet ! Encaissé <b>{v} €</b>.',en:'Board complete! Cashed out <b>{v} €</b>.'},
+  'm.capped':{fr:'Gain max atteint ! Encaissé <b>{v} €</b>.',en:'Max win reached! Cashed out <b>{v} €</b>.'},
+  'm.funds':{fr:'Solde insuffisant : recharge depuis le portfolio.',en:'Not enough balance: top up from the portfolio.'},
+  'h.lost':{fr:'perdu',en:'lost'},
+  'pct':{fr:' %',en:'%'},
+  'r.aria':{fr:'Règles et chiffres',en:'Rules and numbers'},
+  'r.rtpv':{fr:'98 %',en:'98%'},
+  'r.max':{fr:'Gain max',en:'Max win'},'r.maxv':{fr:'×10 000',en:'×10,000'},
+  'r.vol':{fr:'Volatilité',en:'Volatility'},'r.volv':{fr:'Au choix du joueur',en:"Player's choice"},
+  'r.board':{fr:'Plateau',en:'Board'},'r.boardv':{fr:'4 piles × 5 cartes',en:'4 piles × 5 cards'},
+  'r.how':{fr:'Comment jouer',en:'How to play'},
+  'r.p1':{fr:"Mise, puis choisis une pile et annonce si la prochaine carte sera <b>plus haute</b> ou <b>plus basse</b> que la sienne. As = 1, Roi = 13 ; le même rang perd. Chaque bonne réponse fait monter le multiplicateur ; une mauvaise arrête la manche.",
+          en:'Bet, then pick a pile and call whether the next card will be <b>higher</b> or <b>lower</b> than its top card. Ace = 1, King = 13; the same rank loses. Every right call raises the multiplier; a wrong one ends the round.'},
+  'r.p2':{fr:"Choisir la pile, c'est choisir le risque : sur un As, « plus haut » gagne 12 fois sur 13 ; sur une Dame, 1 fois sur 13. Chaque pile monte jusqu'à 5 cartes ; le plateau complet est encaissé automatiquement.",
+          en:'Picking the pile means picking the risk: on an Ace, "higher" wins 12 times out of 13; on a Queen, once in 13. Each pile holds up to 5 cards; a full board is cashed out automatically.'},
+  'r.p3':{fr:"<b>Encaisse</b> quand tu veux. Le plateau reste alors sur la table : tu peux repartir à zéro, ou <b>reprendre ce plateau</b> avec ton multiplicateur, en rachetant ta position au juste prix (mise × multiplicateur ÷ 0,98). Raccourcis : <kbd>Espace</kbd> pour miser, <kbd>Entrée</kbd> pour encaisser.",
+          en:'<b>Cash out</b> whenever you like. The board then stays on the table: start fresh, or <b>resume this board</b> with your multiplier by buying back your position at a fair price (stake × multiplier ÷ 0.98). Shortcuts: <kbd>Space</kbd> to bet, <kbd>Enter</kbd> to cash out.'},
+  'r.odds':{fr:'Chances et gains par carte',en:'Odds and payouts per card'},
+  'r.meta':{fr:"Sabot infini : chaque rang a toujours 1 chance sur 13. Le multiplicateur vaut 0,98 ÷ le produit des chances de tes paris gagnés, donc le RTP reste à <b>98 %</b> quels que soient tes choix et le moment où tu encaisses.",
+            en:'Infinite shoe: every rank always has a 1-in-13 chance. The multiplier equals 0.98 ÷ the product of the chances of your winning calls, so RTP stays at <b>98%</b> whatever you pick and whenever you cash out.'},
+  'o.card':{fr:'Carte',en:'Card'},'o.hi':{fr:'Plus haut',en:'Higher'},'o.lo':{fr:'Plus bas',en:'Lower'}
+});
+
+/* ── CONFIG ─────────────────────────────────────────────────── */
+const RTP=.98,MAXW=10000,DEPTH=5,NP=4;
+const RANKS=['A','2','3','4','5','6','7','8','9','10','J','Q','K'],SUITS=['♠','♥','♦','♣'];
+const rankName=r=>RANKS[r-1];
+// chance que la prochaine carte gagne : sabot infini, même rang = perdu
+const pWin=(r,hi)=>(hi?13-r:r-1)/13;
+
+/* ── ÉTAT ───────────────────────────────────────────────────── */
+let bal=1000,sndOn=true,busy=false;
+let piles=[];               // 4 piles de cartes {r,s}
+let phase='idle';           // idle | run | lost | cashed
+let base=10,stake=0,m=RTP;  // m : multiplicateur interne ; gain au cash-out = base × m
+let wins=0,lastPay=0;       // bonnes réponses de la manche en cours
+let st={games:0,wins:0,best:0},hist=[];
+const fmtEur=v=>KC.num(v,2);
+const fmtM=v=>KC.dec(v>=1000?Math.round(v).toLocaleString(KC.loc()):v>=100?v.toFixed(1):v.toFixed(2));
+
+/* ── HASARD ─────────────────────────────────────────────────── */
+function rnd(n){const a=new Uint32Array(1);crypto.getRandomValues(a);return Math.floor(a[0]/4294967296*n);}
+const draw=()=>({r:1+rnd(13),s:rnd(4)});
+
+/* ── AUDIO ──────────────────────────────────────────────────── */
+let AC=null;
+function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();}
+function tone(f,d,type='sine',v=.12,delay=0,f2=null){if(!sndOn||!AC)return;const t=AC.currentTime+delay,o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+d);
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d+.05);}
+function flick(){if(!sndOn||!AC)return;const t=AC.currentTime,n=Math.floor(AC.sampleRate*.05),b=AC.createBuffer(1,n,AC.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/n*6);
+  const s=AC.createBufferSource(),f=AC.createBiquadFilter(),g=AC.createGain();s.buffer=b;f.type='bandpass';f.frequency.value=2400;g.gain.value=.35;s.connect(f);f.connect(g);g.connect(AC.destination);s.start(t);}
+const sfx={deal:()=>flick(),win:k=>{[660,880].forEach((f,i)=>tone(f*(1+Math.min(k,8)*.04),.18,'triangle',.11,i*.07));},
+  lose:()=>tone(260,.45,'sawtooth',.13,0,90),cash:()=>[523,659,784,1047].forEach((f,i)=>tone(f,.28,'triangle',.1,i*.07))};
+
+/* ── PLATEAU ────────────────────────────────────────────────── */
+const $=id=>document.getElementById(id);
+function cardHTML(c,cls){const red=c.s===1||c.s===2,R=rankName(c.r),S=SUITS[c.s];
+  return `<div class="card ${red?'red':''} ${cls||''}" aria-hidden="true"><div class="cr">${R}<i>${S}</i></div><div class="cs">${S}</div><div class="cr cr2">${R}<i>${S}</i></div></div>`;}
+function sizeBoard(){const a=$('boardArea'),w=a.clientWidth-(innerWidth<=760?16:28),gap=innerWidth<=760?6:12,col=(w-gap*3)/4,cw=Math.max(54,Math.min(104,col-8)),ch=cw*1.4;
+  a.style.setProperty('--cw',cw+'px');a.style.setProperty('--ch',ch+'px');a.style.setProperty('--fan',(ch*.24)+'px');}
+function buildPiles(){const el=$('piles');el.innerHTML='';
+  for(let p=0;p<NP;p++){const d=document.createElement('div');d.className='pile';d.id='pile'+p;
+    d.innerHTML=`<div class="stack" id="stack${p}"></div><div class="gbw"><button class="gb hi" id="hi${p}" type="button"></button><button class="gb lo" id="lo${p}" type="button"></button></div>`;
+    el.appendChild(d);$('hi'+p).onclick=()=>guess(p,true);$('lo'+p).onclick=()=>guess(p,false);}}
+function renderStack(p,anim){const s=$('stack'+p),P=piles[p],fan=getComputedStyle($('boardArea')).getPropertyValue('--fan');
+  s.innerHTML=(P.length<DEPTH?'<div class="slot" aria-hidden="true"></div>':'')+P.map((c,i)=>cardHTML(c,(i===P.length-1?'top':'old')+(anim&&i===P.length-1?' deal':''))).join('');
+  const sl=s.querySelector('.slot');if(sl){sl.style.top=`calc(${fan} * ${P.length})`;sl.style.zIndex=0;}
+  [...s.querySelectorAll('.card')].forEach((el,i)=>{el.style.top=`calc(${fan} * ${i})`;el.style.zIndex=i+1;});
+  $('pile'+p).classList.toggle('full',P.length>=DEPTH);}
+function renderAll(){for(let p=0;p<NP;p++)renderStack(p,false);updGuess();}
+function dealBoard(anim){piles=[0,1,2,3].map(()=>[draw()]);for(let p=0;p<NP;p++)renderStack(p,anim);if(anim)sfx.deal();}
+
+/* ── BOUTONS DE PARI ────────────────────────────────────────── */
+function guessInfo(p,hi){const P=piles[p],top=P[P.length-1],pw=pWin(top.r,hi),next=pw>0?m/pw:Infinity;
+  return {pw,next,ok:phase==='run'&&!busy&&pw>0&&P.length<DEPTH&&next<=MAXW+1e-9,full:P.length>=DEPTH,capped:pw>0&&next>MAXW+1e-9,top};}
+function updGuess(){for(let p=0;p<NP;p++)for(const hi of [true,false]){const b=$((hi?'hi':'lo')+p),g=guessInfo(p,hi);
+  const pct=g.pw>0?Math.round(g.pw*100)+KC.t('pct'):'—',mtxt=g.pw<=0?'—':g.capped?KC.t('ui.max'):'×'+fmtM(g.next);
+  b.innerHTML=`<span class="ar">${hi?'▲':'▼'}</span><span><span class="gm">${mtxt}</span><small>${pct}</small></span>`;
+  b.disabled=!g.ok;b.setAttribute('aria-label',KC.t('ui.pile',{n:p+1})+' · '+KC.t('ui.betAria',{d:KC.t(hi?'ui.hi':'ui.lo'),c:rankName(g.top.r),p:pct,m:mtxt}));b.title=KC.t(hi?'ui.hi':'ui.lo');}}
+
+/* ── AFFICHAGE ──────────────────────────────────────────────── */
+function setM(txt,cls,pop){const e=$('mval');e.textContent=txt;e.className='mval'+(cls?' '+cls:'');if(pop){void e.offsetWidth;e.classList.add('pop');}}
+function setSub(key,vars){$('msub').innerHTML=KC.t(key,vars);$('msub').dataset.k=key;$('msub').dataset.v=JSON.stringify(vars||{});}
+function updMain(){const mb=$('mainBtn'),co=$('coBtn'),rb=$('resBtn');
+  if(phase==='run'){mb.hidden=true;co.hidden=false;co.disabled=busy||wins===0;co.innerHTML=wins?KC.t('ui.cash',{v:fmtEur(base*m)}):KC.t('ui.cash0');rb.hidden=true;}
+  else{mb.hidden=false;co.hidden=true;mb.textContent=KC.t(phase==='cashed'?'ui.newBoard':'ui.bet1');mb.disabled=busy;
+    const canRes=phase==='cashed'&&!boardFull()&&anyGuessPossible();rb.hidden=!canRes;
+    if(canRes){const price=resumePrice();rb.innerHTML=KC.t('ui.resume')+'<small>'+KC.t('ui.resumeSub',{v:fmtEur(price),m:fmtM(m)})+'</small>';rb.disabled=busy||price>bal+1e-9;}}
+  $('bi').disabled=phase==='run';}
+function upd(){$('bal').textContent=fmtEur(bal);$('sg').textContent=st.games;$('sw').textContent=st.wins;$('smx').textContent=st.best>0?fmtEur(st.best)+' €':'—';updMain();updGuess();}
+function addHist(x,win){hist.unshift({x,win});if(hist.length>16)hist.pop();renderHist();}
+function renderHist(){$('hl').innerHTML=hist.map(h=>`<span class="hp ${h.win?'w':'l'}">${h.win?'×'+fmtM(h.x):KC.t('h.lost')}</span>`).join('');}
+const boardFull=()=>piles.every(P=>P.length>=DEPTH);
+function anyGuessPossible(){for(let p=0;p<NP;p++){const P=piles[p];if(P.length>=DEPTH)continue;const r=P[P.length-1].r;for(const hi of [true,false]){const pw=pWin(r,hi);if(pw>0&&m/pw<=MAXW+1e-9)return true;}}return false;}
+// prix juste de la reprise : l'espérance de la position vaut base × m, on la rachète à 98 %
+const resumePrice=()=>Math.round(base*m/RTP*100)/100;
+
+/* ── MISES ──────────────────────────────────────────────────── */
+function getBet(){return Math.max(1,Math.round((parseFloat($('bi').value)||1)*100)/100);}
+function adj(f){if(phase==='run')return;$('bi').value=Math.max(1,Math.round(getBet()*f*100)/100);upd();}
+function allIn(){if(phase==='run')return;$('bi').value=Math.max(1,Math.floor(bal));upd();}
+function startRun(price){bal=Math.round((bal-price)*100)/100;stake=price;wins=0;phase='run';st.games++;window.KCLive&&KCLive.spin();saveBal();}
+function mainAction(){if(busy||phase==='run')return;ac();
+  const b=getBet();if(b>bal){$('bi').value=Math.max(1,Math.floor(bal));setSub('m.funds');return;}
+  base=b;m=RTP;dealBoard(true);startRun(b);setM('×—','dim');setSub('m.start');upd();}
+function resumeBoard(){if(busy||phase!=='cashed')return;ac();const price=resumePrice();if(price>bal){setSub('m.funds');return;}
+  startRun(price);setM('×'+fmtM(m),'',true);setSub('m.start');upd();}
+
+/* ── UN PARI ────────────────────────────────────────────────── */
+function guess(p,hi){const g=guessInfo(p,hi);if(!g.ok)return;ac();busy=true;
+  document.querySelectorAll('.pile').forEach((e,i)=>e.classList.toggle('sel',i===p));
+  const c=draw(),top=g.top,won=hi?c.r>top.r:c.r<top.r;
+  piles[p].push(c);renderStack(p,true);sfx.deal();upd();
+  setTimeout(()=>{
+    const el=$('stack'+p).querySelector('.card:last-child');
+    if(won){wins++;m=g.next;el.classList.add('good');sfx.win(wins);setM('×'+fmtM(m),'win',true);setSub('m.run',{v:fmtEur(base*m),n:wins});
+      busy=false;
+      if(boardFull())return finishCash('m.full');
+      if(!anyGuessPossible())return finishCash('m.capped');
+    }else{el.classList.add('bad');$('pile'+p).classList.add('shake');sfx.lose();setM(KC.t('h.lost').toUpperCase(),'lose',true);
+      setSub(c.r===top.r?'m.tie':hi?'m.lostHi':'m.lostLo',{c:rankName(c.r),t:rankName(top.r)});
+      phase='lost';addHist(0,false);busy=false;saveBal();setTimeout(()=>$('pile'+p).classList.remove('shake'),450);}
+    document.querySelectorAll('.pile').forEach(e=>e.classList.remove('sel'));upd();
+  },380);}
+function cashout(){if(phase!=='run'||busy||wins===0)return;finishCash('m.cashed');}
+function finishCash(key){const pay=Math.round(base*m*100)/100;bal=Math.round((bal+pay)*100)/100;lastPay=pay;phase='cashed';st.wins++;st.best=Math.max(st.best,pay);
+  addHist(m,true);sfx.cash();setM('×'+fmtM(m),'win',true);setSub(key,{v:fmtEur(pay)});saveBal();
+  document.querySelectorAll('.pile').forEach(e=>e.classList.remove('sel'));upd();}
+
+/* ── TABLEAU DES CHANCES ────────────────────────────────────── */
+function renderOdds(){const pc=p=>KC.dec((p*100).toFixed(1))+KC.t('pct'),cell=(r,hi)=>{const p=pWin(r,hi);return p>0?`<td>${pc(p)} · ×${KC.dec((1/p).toFixed(2))}</td>`:'<td class="na">—</td>';};
+  $('odds').innerHTML=`<thead><tr><th>${KC.t('o.card')}</th><th>${KC.t('o.hi')}</th><th>${KC.t('o.lo')}</th></tr></thead><tbody>`+
+    RANKS.map((R,i)=>`<tr><td>${R}</td>${cell(i+1,true)}${cell(i+1,false)}</tr>`).join('')+'</tbody>';}
+
+/* ── DIVERS ─────────────────────────────────────────────────── */
+function toggleSnd(){sndOn=!sndOn;$('sndBtn').textContent=KC.t(sndOn?'ui.sndOn':'ui.sndOff');}
+const NC_KEY='nc_portfolio_balance';
+(function initBal(){try{const v=parseFloat(localStorage.getItem(NC_KEY));if(!isNaN(v)&&v>0)bal=Math.round(v*100)/100;}catch(e){}})();
+function saveBal(){try{localStorage.setItem(NC_KEY,bal);}catch(e){}}
+function saveAndBack(e){e.preventDefault();saveBal();try{sessionStorage.setItem('nc_came_from_game','1');}catch(_){}window.location.href='index.html';}
+window.addEventListener('beforeunload',saveBal);
+$('bi').addEventListener('input',()=>updMain());
+document.addEventListener('keydown',e=>{if(e.repeat)return;const a=document.activeElement;if(a&&/^(INPUT|BUTTON|A|SELECT|TEXTAREA)$/.test(a.tagName))return;
+  if(e.code==='Space'){e.preventDefault();if(phase!=='run')mainAction();}
+  else if(e.key==='Enter'){e.preventDefault();cashout();}});
+window.addEventListener('resize',()=>{sizeBoard();renderAll();});
+KC.on(()=>{upd();renderOdds();renderHist();const s=$('msub');if(s.dataset.k)s.innerHTML=KC.t(s.dataset.k,JSON.parse(s.dataset.v||'{}'));$('sndBtn').textContent=KC.t(sndOn?'ui.sndOn':'ui.sndOff');
+  if(phase==='lost')setM(KC.t('h.lost').toUpperCase(),'lose');});
+
+// démarrage : un plateau est déjà sur la table
+buildPiles();sizeBoard();dealBoard(false);setSub('m.idle');renderOdds();upd();
+</script>
+</body>
+</html>

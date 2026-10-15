@@ -2,7 +2,7 @@
 // Chaque page envoie un battement toutes les 25 s ; un visiteur sans battement depuis 70 s n'est plus compté.
 import { getStore } from "@netlify/blobs";
 
-const GAMES = ["ricochet", "candy", "corsair"];
+const GAMES = ["ricochet", "candy", "corsair", "hilo"];
 const TTL = 70_000;          // délai avant qu'un visiteur ne soit plus « en ligne »
 const MAX_SPINS = 40;        // plafond de parties déclarées par battement (anti-abus)
 
@@ -29,7 +29,7 @@ export default async (req) => {
   if (dirty) await store.setJSON("presence", presence);
 
   // parties jouées (cumul)
-  const totals = (await store.get("totals", { type: "json" })) || { all: 0, ricochet: 0, candy: 0, corsair: 0 };
+  const totals = (await store.get("totals", { type: "json" })) || { all: 0, ricochet: 0, candy: 0, corsair: 0, hilo: 0 };
   if (id && game && spins) {
     totals.all = (totals.all || 0) + spins;
     totals[game] = (totals[game] || 0) + spins;

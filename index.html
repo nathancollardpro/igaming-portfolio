@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nathan Collard — Game Designer iGaming</title>
-<meta name="description" content="Nathan Collard, game designer iGaming. Trois jeux de casino originaux jouables dans le navigateur — Ricochet, Candy Monster, Corsair's Fortune — avec leurs maths et leurs GDD.">
+<meta name="description" content="Nathan Collard, game designer iGaming. Quatre jeux de casino originaux jouables dans le navigateur — Ricochet, Candy Monster, Hi-Lo Cards, Corsair's Fortune — avec leurs maths et leurs GDD.">
 <meta name="theme-color" content="#0f1923">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <script src="i18n.js"></script>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Nathan Collard — Game Designer">
 <meta property="og:title" content="Nathan Collard — Game Designer iGaming">
-<meta property="og:description" content="Trois jeux de casino originaux, jouables dans le navigateur, avec leurs maths et leurs GDD.">
+<meta property="og:description" content="Quatre jeux de casino originaux, jouables dans le navigateur, avec leurs maths et leurs GDD.">
 <meta property="og:image" content="https://kachingstudio.netlify.app/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -418,8 +418,8 @@ footer a:hover{color:var(--acc)}
 // ── TEXTES FR / EN ──
 KC.add({
   'meta.title':{fr:'Nathan Collard — Game Designer iGaming',en:'Nathan Collard — iGaming Game Designer'},
-  'meta.desc':{fr:"Nathan Collard, game designer iGaming. Trois jeux de casino originaux jouables dans le navigateur — Ricochet, Candy Monster, Corsair's Fortune — avec leurs maths et leurs GDD.",
-               en:"Nathan Collard, iGaming game designer. Three original casino games playable in the browser — Ricochet, Candy Monster, Corsair's Fortune — with their maths and GDDs."},
+  'meta.desc':{fr:"Nathan Collard, game designer iGaming. Quatre jeux de casino originaux jouables dans le navigateur — Ricochet, Candy Monster, Hi-Lo Cards, Corsair's Fortune — avec leurs maths et leurs GDD.",
+               en:"Nathan Collard, iGaming game designer. Four original casino games playable in the browser — Ricochet, Candy Monster, Hi-Lo Cards, Corsair's Fortune — with their maths and GDDs."},
   'live.title':{fr:'Visiteurs sur le site en ce moment (compteur réel)',en:'Visitors on the site right now (real count)'},
   'live.online.pl':{fr:'joueurs en ligne',en:'players online'},
   'live.online.sg':{fr:'joueur en ligne',en:'player online'},
@@ -499,6 +499,10 @@ KC.add({
   'g.corsair.desc':{fr:"Machine à sous 243 ways dans la cale d'un navire pirate, avec un capitaine qui réagit à chaque tirage. Les bonus Simple Treasure et Incredible Treasure se jouent au canon.",
                     en:"A 243-ways slot in the hold of a pirate ship, with a captain who reacts to every spin. The Simple Treasure and Incredible Treasure bonuses are played with a cannon."},
   'g.corsair.mech':{fr:'Slot + Hold & Win',en:'Slot + Hold & Win'},
+  'g.hilo.desc':{fr:"Quatre piles de cartes : choisis la tienne, annonce plus haut ou plus bas, encaisse quand tu veux. Après un cash-out, le plateau reste sur la table et se rachète au juste prix.",
+                 en:'Four card piles: pick yours, call higher or lower, cash out whenever you like. After a cash-out the board stays on the table and can be bought back at a fair price.'},
+  'g.hilo.mech':{fr:'Plus haut / plus bas sur 4 piles',en:'Higher / lower on 4 piles'},
+  'g.hilo.vol':{fr:'Au choix du joueur',en:"Player's choice"},
   'g.soon.name':{fr:'Prochain jeu',en:'Next game'},
   'g.soon.desc':{fr:'En conception.',en:'In design.'},
   'vol.lowext':{fr:'Faible à extrême',en:'Low to extreme'},
@@ -540,6 +544,8 @@ const GAMES=[
    facts:[['f.mech','g.ricochet.mech'],['f.max','×207'],['f.vol','vol.lowext']],gdd:'GDD_Ricochet.pdf'},
   {id:'candy',cat:'mini',url:'candy_monster.html',name:'Candy Monster',rtp:'98',img:'vitrine_candy.jpg',
    facts:[['f.mech','g.candy.mech'],['f.max',['×181 060','×181,060']],['f.vol','vol.lowext']],gdd:'GDD_CandyMonster.pdf'},
+  {id:'hilo',cat:'mini',url:'hilo_cards.html',name:'Hi-Lo Cards',rtp:'98',img:'vitrine_hilo.jpg',
+   facts:[['f.mech','g.hilo.mech'],['f.max',['×10 000','×10,000']],['f.vol','g.hilo.vol']],gdd:null},
   {id:'soon',cat:'mini',url:null,name:null,rtp:null,img:null,facts:[],gdd:null},
   {id:'corsair',cat:'slot',url:'corsairs_fortune.html',name:"Corsair's Fortune",rtp:'96',img:'vitrine_corsair.jpg',
    facts:[['f.mech','g.corsair.mech'],['f.max',['×15 000','×15,000']],['f.vol','vol.high']],gdd:null},
