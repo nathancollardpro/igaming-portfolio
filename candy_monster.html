@@ -1087,7 +1087,8 @@ function upd(){
 }
 
 // Canvas hover → show chance de gain tooltip for ladder slots
-cv.addEventListener('mousemove',e=>{
+cv.addEventListener('pointermove',e=>{
+  if(e.pointerType!=='mouse')return;   // pas d'info-bulle au doigt
   if(!MODES[mod])return;
   const rect=cv.getBoundingClientRect();
   const mx=(e.clientX-rect.left)*devicePixelRatio;
@@ -1129,16 +1130,16 @@ function toggleSnd(){sndOn=!sndOn;document.getElementById('sndBtn').textContent=
 
 function buildModes(){
   const g=document.getElementById('dg');g.innerHTML='';
-  const tt=document.getElementById('tt');
+  const tt=document.getElementById('tt');tt.classList.remove('show');
   Object.entries(MODES).forEach(([key,m],i)=>{
     const d=document.createElement('button');d.type='button';d.setAttribute('aria-pressed',key===mod?'true':'false');d.className='dbtn'+(key===mod?' act':'');
     d.innerHTML=`<span class="dname">${m.label.split(' ')[0]} ${KC.t('mode.'+key)}</span>`;
     d.style.setProperty('--mode-c',m.color);d.style.setProperty('--mode-bg',m.bg);
     d.onclick=()=>{if(phase!=='idle')return;mod=key;buildModes();};
     const bp=Math.round(m.busts[0]*100);
-    d.onmouseenter=()=>{tt.textContent=KC.t('c.ttRisk',{p:bp});tt.classList.add('show');};
-    d.onmousemove=(e)=>{tt.style.left=(e.clientX+14)+'px';tt.style.top=(e.clientY-38)+'px';};
-    d.onmouseleave=()=>tt.classList.remove('show');
+    d.onpointerenter=(e)=>{if(e.pointerType!=='mouse')return;tt.textContent=KC.t('c.ttRisk',{p:bp});tt.classList.add('show');};
+    d.onpointermove=(e)=>{if(e.pointerType!=='mouse')return;tt.style.left=(e.clientX+14)+'px';tt.style.top=(e.clientY-38)+'px';};
+    d.onpointerleave=()=>tt.classList.remove('show');
     g.appendChild(d);
   });
   renderOdds();
