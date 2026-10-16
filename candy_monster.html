@@ -43,6 +43,8 @@ canvas{display:block;width:100%;height:100%}
 .dbtn.act{border-color:var(--mode-c);background:var(--mode-bg)}
 .dbtn.act .dname{color:var(--mode-c)}
 .dbtn.act .dinfo{color:rgba(255,255,255,.45)}
+.dbtn:disabled{opacity:.3;cursor:not-allowed;filter:grayscale(1)}
+.dbtn:disabled:hover{border-color:var(--bdr);background:var(--bg)}
 .dname{font-size:11px;font-weight:700;color:#fff;display:block}
 .dinfo{font-size:10px;color:var(--dim);display:block;margin-top:2px}
 .crow{display:flex;gap:.75rem;align-items:flex-start}
@@ -729,7 +731,9 @@ function drawHungerBar(){
     const isDone=i<step&&phase!=='idle';
     const isCurrent=i===step&&phase==='active';
 
-    // Slot bg
+    // Slot bg : socle opaque couleur du sol, pour que le vomi passe derrière les pastilles
+    ctx.globalAlpha=1;ctx.fillStyle='rgb(72,37,90)';
+    ctx.beginPath();ctx.roundRect(cx2-pillW/2,rowY-pillH*.82,pillW,pillH,pillW*.18);ctx.fill();
     ctx.globalAlpha=isDone?.45:1;
     ctx.fillStyle=isDone?'rgba(0,231,1,.10)':isCurrent?'rgba(255,255,255,.08)':'rgba(255,255,255,.04)';
     ctx.beginPath();ctx.roundRect(cx2-pillW/2,rowY-pillH*.82,pillW,pillH,pillW*.18);ctx.fill();
@@ -927,6 +931,7 @@ function idle(){
     // Gentle bounce: small sine
     bounceOffset=Math.sin(wt*.055)*2.5;
     if(shakeAmt>0)shakeAmt*=.88;
+    if(phase!==modesPhase){modesPhase=phase;syncModes();}   // manche lancée : les autres difficultés se grisent
     drawAll();iid=requestAnimationFrame(lp);
   }lp();
 }
@@ -1128,6 +1133,8 @@ function addHist(mult,win){
 }
 function toggleSnd(){sndOn=!sndOn;document.getElementById('sndBtn').textContent=KC.t(sndOn?'ui.sndOn':'ui.sndOff');}
 
+let modesPhase=null;
+function syncModes(){document.querySelectorAll('#modeGrid .dbtn, .dbtn').forEach(b=>{b.disabled=phase==='active'&&b.getAttribute('aria-pressed')!=='true';});}
 function buildModes(){
   const g=document.getElementById('dg');g.innerHTML='';
   const tt=document.getElementById('tt');tt.classList.remove('show');
@@ -1135,7 +1142,12 @@ function buildModes(){
     const d=document.createElement('button');d.type='button';d.setAttribute('aria-pressed',key===mod?'true':'false');d.className='dbtn'+(key===mod?' act':'');
     d.innerHTML=`<span class="dname">${m.label.split(' ')[0]} ${KC.t('mode.'+key)}</span>`;
     d.style.setProperty('--mode-c',m.color);d.style.setProperty('--mode-bg',m.bg);
-    d.onclick=()=>{if(phase!=='idle')return;mod=key;buildModes();};
+    d.onclick=()=>{if(phase==='active'||busy)return;
+      if(phase==='busted'||phase==='cashedout'){if(resetTid){clearTimeout(resetTid);resetTid=null;}
+        phase='idle';step=0;currentMult=1.0;monState='idle';vomParts=[];confParts=[];rainbow=null;
+        document.getElementById('feedBtn').textContent=KC.t('ui.feed');document.getElementById('coBtn').disabled=true;}
+      mod=key;buildModes();};
+    d.disabled=phase==='active'&&key!==mod;
     const bp=Math.round(m.busts[0]*100);
     d.onpointerenter=(e)=>{if(e.pointerType!=='mouse')return;tt.textContent=KC.t('c.ttRisk',{p:bp});tt.classList.add('show');};
     d.onpointermove=(e)=>{if(e.pointerType!=='mouse')return;tt.style.left=(e.clientX+14)+'px';tt.style.top=(e.clientY-38)+'px';};

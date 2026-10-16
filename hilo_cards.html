@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hi-Lo Highway — jeu iGaming de Nathan Collard</title>
-<meta name="description" content="Hi-Lo Highway : quatre piles de cartes, plus haut ou plus bas sur la pile de ton choix, cash-out à tout moment et reprise du plateau. RTP 98 %.">
+<meta name="description" content="Hi-Lo Highway : quatre piles de cartes, plus haut ou plus bas sur la pile de ton choix, cash-out à tout moment. RTP 98 %.">
 <meta name="theme-color" content="#0b1622">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <script src="i18n.js"></script>
@@ -189,10 +189,6 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
 .plabel{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em}
 .lrow .cobtn{flex:1}
 .lrow .cobtn b{font-variant-numeric:tabular-nums}
-.resume{height:52px;background:transparent;border:2px solid #5cc8ff;color:#5cc8ff;font-size:13px;font-weight:700;font-family:'Inter',sans-serif;border-radius:8px;cursor:pointer;padding:0 16px;transition:all .12s;flex:1;line-height:1.2}
-.resume:hover:not(:disabled){background:rgba(92,200,255,.1)}
-.resume:disabled{opacity:.3;cursor:not-allowed}
-.resume small{display:block;font-size:11px;font-weight:600;opacity:.85}
 .odds td.na{color:var(--dim)}
 @media(max-width:760px){.cvarea.board{padding:12px 8px 14px}.piles{gap:6px}.mval{font-size:34px}.gb{padding:6px 5px;font-size:12px}.gb small{font-size:9px}}
 </style>
@@ -235,7 +231,6 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
     <div class="lrow">
       <button class="lbtn" id="mainBtn" onclick="mainAction()" data-i18n="ui.bet1">Miser</button>
       <button class="cobtn" id="coBtn" onclick="cashout()" disabled hidden></button>
-      <button class="resume" id="resBtn" onclick="resumeBoard()" hidden></button>
     </div>
   </div>
   <div class="srow">
@@ -261,7 +256,7 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
 // ── TEXTES FR / EN ──
 KC.add({
   'meta.title':{fr:'Hi-Lo Highway — jeu iGaming de Nathan Collard',en:'Hi-Lo Highway — an iGaming game by Nathan Collard'},
-  'meta.desc':{fr:'Hi-Lo Highway : quatre piles de cartes, plus haut ou plus bas sur la pile de ton choix, cash-out à tout moment et reprise du plateau. RTP 98 %.',en:'Hi-Lo Highway: four card piles, call higher or lower on the pile of your choice, cash out any time and buy back the board. 98% RTP.'},
+  'meta.desc':{fr:'Hi-Lo Highway : quatre piles de cartes, plus haut ou plus bas sur la pile de ton choix, cash-out à tout moment. RTP 98 %.',en:'Hi-Lo Highway: four card piles, call higher or lower on the pile of your choice, cash out any time. 98% RTP.'},
   'nav.back':{fr:'← Tous les jeux',en:'← All games'},
   'live.title':{fr:'Visiteurs sur le site en ce moment (compteur réel)',en:'Visitors on the site right now (real count)'},
   'live.online.pl':{fr:'joueurs en ligne',en:'players online'},
@@ -275,8 +270,6 @@ KC.add({
   'ui.newBoard':{fr:'Nouveau plateau',en:'New board'},
   'ui.cash':{fr:'Encaisser <b>{v} €</b>',en:'Cash out <b>{v} €</b>'},
   'ui.cash0':{fr:'Encaisser',en:'Cash out'},
-  'ui.resume':{fr:'Reprendre ce plateau',en:'Resume this board'},
-  'ui.resumeSub':{fr:'mise {v} € · ×{m}',en:'stake {v} € · ×{m}'},
   'ui.games':{fr:'Parties',en:'Rounds'},
   'ui.cashouts':{fr:'Encaissements',en:'Cash-outs'},
   'ui.best':{fr:'Meilleur gain',en:'Best win'},
@@ -292,7 +285,7 @@ KC.add({
   'm.lostHi':{fr:'Perdu : {c} n\'est pas plus haut que {t}.',en:'Lost: {c} is not higher than {t}.'},
   'm.lostLo':{fr:'Perdu : {c} n\'est pas plus bas que {t}.',en:'Lost: {c} is not lower than {t}.'},
   'm.tie':{fr:'Même rang ({c}) : perdu.',en:'Same rank ({c}): lost.'},
-  'm.cashed':{fr:'Encaissé <b>{v} €</b>. Reprends ce plateau ou repars à zéro.',en:'Cashed out <b>{v} €</b>. Resume this board or start fresh.'},
+  'm.cashed':{fr:'Encaissé <b>{v} €</b>. Un nouveau plateau t\'attend.',en:'Cashed out <b>{v} €</b>. A fresh board is waiting.'},
   'm.full':{fr:'Plateau complet ! Encaissé <b>{v} €</b>.',en:'Board complete! Cashed out <b>{v} €</b>.'},
   'm.capped':{fr:'Gain max atteint ! Encaissé <b>{v} €</b>.',en:'Max win reached! Cashed out <b>{v} €</b>.'},
   'm.funds':{fr:'Solde insuffisant : recharge depuis le portfolio.',en:'Not enough balance: top up from the portfolio.'},
@@ -308,8 +301,8 @@ KC.add({
           en:'Bet, then pick a pile and call whether the next card will be <b>higher</b> or <b>lower</b> than its top card. Ace = 1, King = 13; the same rank loses. Every right call raises the multiplier; a wrong one ends the round.'},
   'r.p2':{fr:"Choisir la pile, c'est choisir le risque : sur un As, « plus haut » gagne 12 fois sur 13 ; sur une Dame, 1 fois sur 13. Chaque pile monte jusqu'à 5 cartes ; le plateau complet est encaissé automatiquement.",
           en:'Picking the pile means picking the risk: on an Ace, "higher" wins 12 times out of 13; on a Queen, once in 13. Each pile holds up to 5 cards; a full board is cashed out automatically.'},
-  'r.p3':{fr:"<b>Encaisse</b> quand tu veux. Le plateau reste alors sur la table : tu peux repartir à zéro, ou <b>reprendre ce plateau</b> avec ton multiplicateur, en rachetant ta position au juste prix (mise × multiplicateur ÷ 0,98). Raccourcis : <kbd>Espace</kbd> pour miser, <kbd>Entrée</kbd> pour encaisser.",
-          en:'<b>Cash out</b> whenever you like. The board then stays on the table: start fresh, or <b>resume this board</b> with your multiplier by buying back your position at a fair price (stake × multiplier ÷ 0.98). Shortcuts: <kbd>Space</kbd> to bet, <kbd>Enter</kbd> to cash out.'},
+  'r.p3':{fr:"<b>Encaisse</b> quand tu veux. Raccourcis : <kbd>Espace</kbd> pour miser, <kbd>Entrée</kbd> pour encaisser.",
+          en:'<b>Cash out</b> whenever you like. Shortcuts: <kbd>Space</kbd> to bet, <kbd>Enter</kbd> to cash out.'},
   'r.odds':{fr:'Chances et gains par carte',en:'Odds and payouts per card'},
   'r.meta':{fr:"Sabot infini : chaque rang a toujours 1 chance sur 13. Le multiplicateur vaut 0,98 ÷ le produit des chances de tes paris gagnés, donc le RTP reste à <b>98 %</b> quels que soient tes choix et le moment où tu encaisses.",
             en:'Infinite shoe: every rank always has a 1-in-13 chance. The multiplier equals 0.98 ÷ the product of the chances of your winning calls, so RTP stays at <b>98%</b> whatever you pick and whenever you cash out.'},
@@ -377,19 +370,15 @@ function updGuess(){for(let p=0;p<NP;p++)for(const hi of [true,false]){const b=$
 /* ── AFFICHAGE ──────────────────────────────────────────────── */
 function setM(txt,cls,pop){const e=$('mval');e.textContent=txt;e.className='mval'+(cls?' '+cls:'');if(pop){void e.offsetWidth;e.classList.add('pop');}}
 function setSub(key,vars){$('msub').innerHTML=KC.t(key,vars);$('msub').dataset.k=key;$('msub').dataset.v=JSON.stringify(vars||{});}
-function updMain(){const mb=$('mainBtn'),co=$('coBtn'),rb=$('resBtn');
-  if(phase==='run'){mb.hidden=true;co.hidden=false;co.disabled=busy||wins===0;co.innerHTML=wins?KC.t('ui.cash',{v:fmtEur(base*m)}):KC.t('ui.cash0');rb.hidden=true;}
-  else{mb.hidden=false;co.hidden=true;mb.textContent=KC.t(phase==='cashed'?'ui.newBoard':'ui.bet1');mb.disabled=busy;
-    const canRes=phase==='cashed'&&!boardFull()&&anyGuessPossible();rb.hidden=!canRes;
-    if(canRes){const price=resumePrice();rb.innerHTML=KC.t('ui.resume')+'<small>'+KC.t('ui.resumeSub',{v:fmtEur(price),m:fmtM(m)})+'</small>';rb.disabled=busy||price>bal+1e-9;}}
+function updMain(){const mb=$('mainBtn'),co=$('coBtn');
+  if(phase==='run'){mb.hidden=true;co.hidden=false;co.disabled=busy||wins===0;co.innerHTML=wins?KC.t('ui.cash',{v:fmtEur(base*m)}):KC.t('ui.cash0');}
+  else{mb.hidden=false;co.hidden=true;mb.textContent=KC.t(phase==='cashed'?'ui.newBoard':'ui.bet1');mb.disabled=busy;}
   $('bi').disabled=phase==='run';}
 function upd(){$('bal').textContent=fmtEur(bal);$('sg').textContent=st.games;$('sw').textContent=st.wins;$('smx').textContent=st.best>0?fmtEur(st.best)+' €':'—';updMain();updGuess();}
 function addHist(x,win){hist.unshift({x,win});if(hist.length>16)hist.pop();renderHist();}
 function renderHist(){$('hl').innerHTML=hist.map(h=>`<span class="hp ${h.win?'w':'l'}">${h.win?'×'+fmtM(h.x):KC.t('h.lost')}</span>`).join('');}
 const boardFull=()=>piles.every(P=>P.length>=DEPTH);
 function anyGuessPossible(){for(let p=0;p<NP;p++){const P=piles[p];if(P.length>=DEPTH)continue;const r=P[P.length-1].r;for(const hi of [true,false]){const pw=pWin(r,hi);if(pw>0&&m/pw<=MAXW+1e-9)return true;}}return false;}
-// prix juste de la reprise : l'espérance de la position vaut base × m, on la rachète à 98 %
-const resumePrice=()=>Math.round(base*m/RTP*100)/100;
 
 /* ── MISES ──────────────────────────────────────────────────── */
 // Mise au centime près, jamais sous 0,01 €
@@ -402,8 +391,6 @@ function startRun(price){bal=Math.round((bal-price)*100)/100;stake=price;wins=0;
 function mainAction(){if(busy||phase==='run')return;ac();
   const b=getBet();if(b>bal){$('bi').value=Math.max(MINBET,floorCents(bal));setSub('m.funds');return;}
   base=b;m=RTP;dealBoard(true);startRun(b);setM('×—','dim');setSub('m.start');upd();}
-function resumeBoard(){if(busy||phase!=='cashed')return;ac();const price=resumePrice();if(price>bal){setSub('m.funds');return;}
-  startRun(price);setM('×'+fmtM(m),'',true);setSub('m.start');upd();}
 
 /* ── UN PARI ────────────────────────────────────────────────── */
 function guess(p,hi){const g=guessInfo(p,hi);if(!g.ok)return;ac();busy=true;
