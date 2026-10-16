@@ -286,14 +286,14 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:4px solid #ffe0
             <div class="fname">Simple Treasure<span class="fsub" data-i18n="b.simpleS">Bonus simple · 3 barils</span></div>
             <div class="fvol" id="volSimple"></div>
             <p class="fdesc" data-i18n="b.simpleD">Multiplicateurs ×2 à ×4, MEGA jusqu'à ×20.</p>
-            <button class="fbuy" type="button" id="fSimple"><span data-i18n="b.buy">ACHETER</span><small id="fSimpleP">85,00 €</small></button>
+            <button class="fbuy" type="button" id="fSimple"><span data-i18n="b.buy">ACHETER</span><small id="fSimpleP">100,00 €</small></button>
           </div>
           <div class="feat incred">
             <canvas id="artIncred" width="400" height="280" aria-hidden="true"></canvas>
             <div class="fname">Incredible Treasure<span class="fsub" data-i18n="b.incredS">Super bonus · 4 barils</span></div>
             <div class="fvol" id="volIncred"></div>
             <p class="fdesc" data-i18n="b.incredD">Pièces plus fortes, multiplicateurs ×3 à ×6, MEGA jusqu'à ×40.</p>
-            <button class="fbuy" type="button" id="fIncred"><span data-i18n="b.buy">ACHETER</span><small id="fIncredP">430,00 €</small></button>
+            <button class="fbuy" type="button" id="fIncred"><span data-i18n="b.buy">ACHETER</span><small id="fIncredP">500,00 €</small></button>
           </div>
         </div>
         <button class="demo" type="button" id="demoMega" data-i18n="b.demo">Démo : forcer 5 barils, Mega Start (hors RTP)</button>
@@ -350,9 +350,10 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:4px solid #ffe0
           <p>Le plateau compte 4 blocs de 3×3. Les 4 radeaux sont séparés par des allées de mer ; au carrefour, le capitaine tire au mortier vers le ciel et les boulets retombent sur les tonneaux. Le centre de chaque bloc est un multiplicateur, les 32 autres cases sont des tonneaux. À chaque tir, chaque tonneau a 5 % de chances de révéler une pièce, et chaque pièce remet le compteur à 3 tirs.</p>
           <p><b>Activation</b> : un bloc active son multiplicateur quand sa ligne du bas ou sa colonne de droite est remplie : le multiplicateur se déploie et multiplie aussitôt ses pièces. Sans activation, ses pièces paient leur valeur.</p>
           <p><b>Ponts</b> : quand les bords qui se font face entre deux blocs voisins sont remplis, un pont de planches enjambe l'allée et leurs multiplicateurs s'additionnent. 4 blocs reliés = <b>Grand Chelem</b>.</p>
+          <p><b>Boulets spéciaux</b> : à chaque tir, un <b>boulet doré</b> peut tomber sur un radeau qui a déjà des pièces et ajouter de 0,5× à 10× la mise à chacune (de 2× à 25× dans Incredible Treasure). Plus rare, un <b>boulet ramé</b> ajoute +1 à +2 à son multiplicateur (+1 à +3 dans Incredible Treasure). Si le radeau est relié par un pont, tout le groupe en profite.</p>
           <p><b>Simple Treasure</b> : multiplicateurs ×2 à ×4 (MEGA ×8 / ×12 / ×20). <b>Incredible Treasure</b> : pièces plus fortes, multiplicateurs ×3 à ×6 (MEGA ×15 / ×25 / ×40). <b>Mega Start</b> : Incredible Treasure avec 4 pièces déjà révélées et un multiplicateur MEGA garanti.</p>
           <h3>Menu bonus</h3>
-          <p><b>Scatter augmenté</b> : +25 % de mise, bonus 1,6 fois plus fréquent, même RTP. <b>Simple Treasure</b> s'achète 85× la mise, <b>Incredible Treasure</b> 430×.</p>
+          <p><b>Scatter augmenté</b> : +25 % de mise, bonus 1,5 fois plus fréquent, même RTP. <b>Simple Treasure</b> s'achète 100× la mise, <b>Incredible Treasure</b> 500×.</p>
           <h3>Mode auto</h3>
           <p>Le bouton <b>AUTO</b> enchaîne 10 à 250 tirages avec le même moteur et le même RTP. La limite de perte est obligatoire ; l'auto peut aussi s'arrêter sur un gros gain ou au déclenchement du bonus.</p>
           <h3>Commandes</h3>
@@ -394,11 +395,16 @@ const RC=[[8,6,6,6,7],[6,6,5,6,6],[5,5,6,5,5],[5,4,5,4,5],[4,4,4,4,4],[4,3,3,3,4
 const P={
   PAY_BASE:[[0.08,0.23,0.77],[0.10,0.29,0.97],[0.12,0.39,1.17],[0.15,0.48,1.55],[0.19,0.58,1.94],
             [0.29,0.97,2.91],[0.39,1.55,3.88],[0.77,2.33,6.79],[1.17,3.88,11.65],[1.55,4.85,15.53]],
-  PAY_SCALE:1.342,              // paytable d'avril ×1,342 (recalibrée le 15 oct. 2026 après le retrait du Wild du rouleau 1)
+  PAY_SCALE:1.201,              // paytable d'avril ×1,201 (16 oct. 2026 : le bonus paie plus avec les boulets spéciaux, le jeu de base un peu moins)
   SCAT_PAY:[2,10,100],
-  ANTE_MULT:16, ANTE_SCAT:[20,19,18,20,18], ANTE_COST:1.25,  // bande Ante = bande base ×16 (640 pos.) ; 16 → 18-20 barils
+  ANTE_MULT:16, ANTE_SCAT:[19,19,18,19,18], ANTE_COST:1.25,  // bande Ante = bande base ×16 (640 pos.) ; 16 → 18-19 barils
   P_REVEAL:0.05, RESPINS:3, MAX_WIN:15000,
-  BUY_STD:85, BUY_SUP:430,
+  BUY_STD:100, BUY_SUP:500,
+  // Boulets spéciaux du bonus (tirés à chaque tir, seulement s'il y a déjà des pièces sur un radeau)
+  // or : +valeur (× la mise) à chaque pièce du radeau touché · ramé : + au multiplicateur du radeau. Un pont partage l'effet.
+  BOOST:{P_ADD:0.025,P_MULT:0.006,
+         ADD:{std:[[0.5,46],[1,30],[2,15],[5,7],[10,2]],sup:[[2,58],[5,30],[10,10],[25,2]]},
+         MULT:{std:[[1,85],[2,15]],sup:[[1,65],[2,28],[3,7]]}},
   COINS:{std:[[0.5,65.3],[1,21],[2,7.5],[5,4.3],[10,1.3],[25,0.45],[50,0.1],[100,0.05]],
          sup:[[2,70.2],[5,19],[10,8],[25,2.1],[50,0.55],[100,0.15]]},
   MULT:{std:{lo:2,hi:4,mega:[[8,2.0],[12,0.8],[20,0.2]]},
@@ -481,7 +487,7 @@ function pick(tbl,rnd){const tot=tbl.reduce((a,t)=>a+t[1],0);let u=rnd()*tot;for
 function drawMult(t,rnd){const m=P.MULT[t];const u=rnd()*100;let c=0;for(const [v,p] of m.mega){c+=p;if(u<c)return {v,mega:true};}
   return {v:m.lo+Math.floor(rnd()*(m.hi-m.lo+1)),mega:false};}
 // Résolution d'une grille finale : activations, ponts, groupes, gain
-function resolve(grid,mults){
+function resolve(grid,mults,madd){
   const full=ids=>ids.every(i=>grid[i]!==null&&grid[i]!==undefined||CENTER.includes(i));
   const active=[0,1,2,3].map(b=>full(edge(b,'bottom'))||full(edge(b,'right')));
   const par=[0,1,2,3];const f=x=>par[x]===x?x:(par[x]=f(par[x]));
@@ -489,12 +495,14 @@ function resolve(grid,mults){
   bridges.forEach(([a,,b])=>{par[f(a)]=f(b);});
   const inBridge=[0,1,2,3].map(b=>bridges.some(([a,,c])=>a===b||c===b));
   const on=[0,1,2,3].map(b=>active[b]||inBridge[b]);
-  const gm={};[0,1,2,3].forEach(b=>{if(on[b]){const g=f(b);gm[g]=(gm[g]||0)+mults[b].v;}});
+  const mv=b=>mults[b].v+(madd?madd[b]:0);
+  const gm={};[0,1,2,3].forEach(b=>{if(on[b]){const g=f(b);gm[g]=(gm[g]||0)+mv(b);}});
   const applied=[0,1,2,3].map(b=>on[b]?gm[f(b)]:1);
   const sums=[0,1,2,3].map(b=>blockCells(b).reduce((a,i)=>a+(grid[i]||0),0));
   let x=sums.reduce((a,s,b)=>a+s*applied[b],0);
   const slam=bridges.length>=3&&new Set([0,1,2,3].map(f)).size===1;
-  return {active,bridges,on,applied,sums,x,slam};
+  const group=b=>[0,1,2,3].filter(k=>f(k)===f(b));
+  return {active,bridges,on,applied,sums,x,slam,group};
 }
 function bonus(type,rnd){
   const t=type==='std'?'std':'sup';
@@ -506,14 +514,22 @@ function bonus(type,rnd){
     const idx=shuffle(CELLS.map(x=>x.i),rnd).slice(0,P.MEGA_START_COINS);
     idx.forEach(i=>{grid[i]=pick(P.COINS.sup,rnd);start.push({i,v:grid[i]});});
   }
-  const turns=[];let left=P.RESPINS,filled=start.length;
+  const turns=[],madd=[0,0,0,0];let left=P.RESPINS,filled=start.length;
   while(left>0&&filled<32){
     const nw=[];for(const c of CELLS)if(grid[c.i]===null&&rnd()<P.P_REVEAL){const v=pick(P.COINS[t],rnd);grid[c.i]=v;nw.push({i:c.i,v});}
-    filled+=nw.length;left=nw.length?P.RESPINS:left-1;turns.push({nw,left});
+    filled+=nw.length;left=nw.length?P.RESPINS:left-1;
+    // boulet spécial : sur un radeau qui a déjà des pièces ; un pont formé partage l'effet à tout le groupe relié
+    let boost=null;const withCoins=[0,1,2,3].filter(b=>blockCells(b).some(i=>grid[i]!==null));
+    if(withCoins.length){const u=rnd(),B=P.BOOST;
+      if(u<B.P_MULT+B.P_ADD){const b=withCoins[Math.floor(rnd()*withCoins.length)],grp=resolve(grid,mults,madd).group(b);
+        if(u<B.P_MULT){const v=pick(B.MULT[t],rnd);madd[b]+=v;boost={k:'mult',b,v,blocks:grp};}
+        else{const v=pick(B.ADD[t],rnd),cells=[];grp.forEach(g=>blockCells(g).forEach(i=>{if(grid[i]!==null){grid[i]=Math.round((grid[i]+v)*100)/100;cells.push(i);}}));
+          boost={k:'add',b,v,blocks:grp,cells};}}}
+    turns.push({nw,left,boost});
   }
-  const res=resolve(grid,mults);
+  const res=resolve(grid,mults,madd);
   const x=Math.min(res.x,P.MAX_WIN);
-  return {type,mults,start,turns,grid,res,x,capped:res.x>P.MAX_WIN};
+  return {type,mults,madd,start,turns,grid,res,x,capped:res.x>P.MAX_WIN};
 }
 return {SYM,NAMES,RC,P,PAY,W,S,rebuild,get STRIPS_B(){return STRIPS_B},get STRIPS_A(){return STRIPS_A},
   evalWays,exactWays,scatDist,spin,bonus,resolve,BLOCKS,CELLS,CENTER,BRIDGES,edge,blockCells,mulberry,hasScat};
@@ -575,9 +591,10 @@ KC.add({
           <p>Le plateau compte 4 blocs de 3×3. Les 4 radeaux sont séparés par des allées de mer ; au carrefour, le capitaine tire au mortier vers le ciel et les boulets retombent sur les tonneaux. Le centre de chaque bloc est un multiplicateur, les 32 autres cases sont des tonneaux. À chaque tir, chaque tonneau a 5 % de chances de révéler une pièce, et chaque pièce remet le compteur à 3 tirs.</p>
           <p><b>Activation</b> : un bloc active son multiplicateur quand sa ligne du bas ou sa colonne de droite est remplie : le multiplicateur se déploie et multiplie aussitôt ses pièces. Sans activation, ses pièces paient leur valeur.</p>
           <p><b>Ponts</b> : quand les bords qui se font face entre deux blocs voisins sont remplis, un pont de planches enjambe l'allée et leurs multiplicateurs s'additionnent. 4 blocs reliés = <b>Grand Chelem</b>.</p>
+          <p><b>Boulets spéciaux</b> : à chaque tir, un <b>boulet doré</b> peut tomber sur un radeau qui a déjà des pièces et ajouter de 0,5× à 10× la mise à chacune (de 2× à 25× dans Incredible Treasure). Plus rare, un <b>boulet ramé</b> ajoute +1 à +2 à son multiplicateur (+1 à +3 dans Incredible Treasure). Si le radeau est relié par un pont, tout le groupe en profite.</p>
           <p><b>Simple Treasure</b> : multiplicateurs ×2 à ×4 (MEGA ×8 / ×12 / ×20). <b>Incredible Treasure</b> : pièces plus fortes, multiplicateurs ×3 à ×6 (MEGA ×15 / ×25 / ×40). <b>Mega Start</b> : Incredible Treasure avec 4 pièces déjà révélées et un multiplicateur MEGA garanti.</p>
           <h3>Menu bonus</h3>
-          <p><b>Scatter augmenté</b> : +25 % de mise, bonus 1,6 fois plus fréquent, même RTP. <b>Simple Treasure</b> s'achète 85× la mise, <b>Incredible Treasure</b> 430×.</p>
+          <p><b>Scatter augmenté</b> : +25 % de mise, bonus 1,5 fois plus fréquent, même RTP. <b>Simple Treasure</b> s'achète 100× la mise, <b>Incredible Treasure</b> 500×.</p>
           <h3>Mode auto</h3>
           <p>Le bouton <b>AUTO</b> enchaîne 10 à 250 tirages avec le même moteur et le même RTP. La limite de perte est obligatoire ; l'auto peut aussi s'arrêter sur un gros gain ou au déclenchement du bonus.</p>
           <h3>Commandes</h3>
@@ -592,9 +609,10 @@ KC.add({
           <p>The board has 4 blocks of 3×3. The 4 rafts are separated by sea lanes; at the crossroads, the captain fires his mortar into the sky and the cannonballs rain down on the barrels. The centre of each block is a multiplier; the other 32 cells are barrels. On every shot, each barrel has a 5% chance to reveal a coin, and every coin resets the counter to 3 shots.</p>
           <p><b>Activation</b>: a block activates its multiplier when its bottom row or right column is full: the multiplier spreads out and instantly multiplies its coins. Without activation, its coins pay face value.</p>
           <p><b>Bridges</b>: when the facing edges of two neighbouring blocks are full, a plank bridge spans the lane and their multipliers add together. 4 linked blocks = <b>Grand Slam</b>.</p>
+          <p><b>Special shots</b>: on any shot, a <b>golden ball</b> can land on a raft that already holds coins and add 0.5× to 10× the bet to each of them (2× to 25× in Incredible Treasure). Rarer, a <b>chain shot</b> adds +1 to +2 to its multiplier (+1 to +3 in Incredible Treasure). If the raft is bridged, the whole group benefits.</p>
           <p><b>Simple Treasure</b>: multipliers ×2 to ×4 (MEGA ×8 / ×12 / ×20). <b>Incredible Treasure</b>: bigger coins, multipliers ×3 to ×6 (MEGA ×15 / ×25 / ×40). <b>Mega Start</b>: Incredible Treasure with 4 coins already revealed and a guaranteed MEGA multiplier.</p>
           <h3>Bonus menu</h3>
-          <p><b>Scatter Boost</b>: +25% bet, bonus 1.6 times more frequent, same RTP. <b>Simple Treasure</b> costs 85× the bet, <b>Incredible Treasure</b> 430×.</p>
+          <p><b>Scatter Boost</b>: +25% bet, bonus 1.5 times more frequent, same RTP. <b>Simple Treasure</b> costs 100× the bet, <b>Incredible Treasure</b> 500×.</p>
           <h3>Autoplay</h3>
           <p>The <b>AUTO</b> button chains 10 to 250 spins with the same engine and the same RTP. A loss limit is mandatory; autoplay can also stop on a big win or when the bonus triggers.</p>
           <h3>Controls</h3>
@@ -621,6 +639,8 @@ KC.add({
   'bi.r2t':{fr:'MULTIPLICATEURS',en:'MULTIPLIERS'},
   'bi.r2':{fr:"Remplis la ligne du bas ou la colonne de droite d'un radeau : son multiplicateur se déploie et multiplie aussitôt toutes ses pièces.",en:"Fill a raft's bottom row or right column: its multiplier spreads out and instantly multiplies all of its coins."},
   'bi.r3t':{fr:'PONTS',en:'BRIDGES'},
+  'bi.r4t':{fr:'BOULETS SPÉCIAUX',en:'SPECIAL SHOTS'},
+  'bi.r4':{fr:"Un boulet doré ajoute de l'or à chaque pièce d'un radeau ; plus rare, un boulet ramé augmente son multiplicateur. Un pont partage l'effet.",en:'A golden ball adds gold to every coin on a raft; rarer, a chain shot raises its multiplier. A bridge shares the effect.'},
   'bi.r3':{fr:"Remplis deux bords face à face : un pont relie les radeaux et leurs multiplicateurs s'additionnent. 4 radeaux reliés = Grand Chelem.",en:'Fill two facing edges: a bridge links the rafts and their multipliers add up. 4 linked rafts = Grand Slam.'},
   'bi.std':{fr:"Multiplicateurs ×2 à ×4 · MEGA jusqu'à ×20 · gain max ×15 000",en:'Multipliers ×2 to ×4 · MEGA up to ×20 · max win ×15,000'},
   'bi.sup':{fr:"Pièces plus fortes · multiplicateurs ×3 à ×6 · MEGA jusqu'à ×40",en:'Bigger coins · multipliers ×3 to ×6 · MEGA up to ×40'},
@@ -668,6 +688,14 @@ KC.add({
   'cf.bonusSub':{fr:'Le canon tire tout seul · chaque pièce relance le compteur',en:'The cannon fires by itself · every coin resets the counter'},
   'cf.rare':{fr:'Multiplicateur rare',en:'Rare multiplier'},
   'cf.megaSay':{fr:'Un MEGA ! Mille sabords !',en:'A MEGA! Shiver me timbers!'},
+  'cf.boostAdd':{fr:'BOULET DORÉ +{v} €',en:'GOLDEN BALL +{v} €'},
+  'cf.boostMult':{fr:'BOULET RAMÉ +{v}',en:'CHAIN SHOT +{v}'},
+  'cf.boostRaft':{fr:'sur chaque pièce du radeau',en:'on every coin of the raft'},
+  'cf.boostLinked':{fr:'sur chaque pièce des radeaux reliés',en:'on every coin of the linked rafts'},
+  'cf.boostRaftM':{fr:'au multiplicateur du radeau',en:'to the raft multiplier'},
+  'cf.boostLinkedM':{fr:'au multiplicateur des radeaux reliés',en:'to the linked rafts multiplier'},
+  'cf.boostAddSay':{fr:'De l\'or en barre !',en:'Pure gold!'},
+  'cf.boostMultSay':{fr:'Boulet ramé, ça va faire mal !',en:'Chain shot, that\'ll hurt!'},
   'cf.3shots':{fr:'3 TIRS !',en:'3 SHOTS!'},
   'cf.hit':{fr:'Touché !',en:'Hit!'},
   'cf.wildPt':{fr:'Remplace tous les symboles, sauf le baril, sur les rouleaux 2 à 5',en:'Substitutes for every symbol except the keg, on reels 2 to 5'},
@@ -1691,7 +1719,7 @@ function drawBonus(c,t){
     const missA=B.miss&&B.miss.i===i?t-B.miss.t0:1e9,ra=t-(B.rattle||-1e9),rat=ra<B.rattleD?Math.sin(t/28+i*1.9)*2.2*Math.min(1,ra/120):0,jolt=(missA<450?Math.sin(missA/40)*6*(1-missA/450):0)+rat;
     c.save();c.translate(x+BC/2,y+BC*.8+p.dy+(B.shake?(Math.random()-.5)*B.shake:0));c.rotate(p.rot+jolt*.02);
     drawRaft(c,BC);
-    if(isC){c.translate(0,-BC*.42);const bi=CF.CENTER.indexOf(i),dd=B.deploy[bi],sm=dd&&t>=dd.t0?dd.to:B.shownM[bi];drawMedal(c,sm>1?{v:sm,mega:B.mults[bi].mega}:B.mults[bi],B.multShown[bi],sm>1,t,theme,sup);}
+    if(isC){c.translate(0,-BC*.42);const bi=CF.CENTER.indexOf(i),dd=B.deploy[bi],sm=dd&&t>=dd.t0?dd.to:B.shownM[bi];drawMedal(c,sm>1?{v:sm,mega:B.mults[bi].mega}:{v:B.mults[bi].v+(B.madd?B.madd[bi]:0),mega:B.mults[bi].mega},B.multShown[bi],sm>1,t,theme,sup);}
     else if(v===null)drawBarrelShape(c,jolt,-BC*.36,BC/112*1.02);
     else if(!B.collected[i]){const age=Math.max(0,t-(B.born[i]||0)),sc=age<260?.4+.6*easeOutBack(age/260):1,glow=age<700?1-age/700:0;
       const dim=B.focus!==null&&b&&B.focus!==b.b,bob=Math.sin(t/300+i)*2,dm=dispMult(B,b?b.b:-1,x+BC/2,y+BC*.45,t);
@@ -1750,6 +1778,7 @@ function drawBonus(c,t){
     c.fillText(KC.t('cf.hint1'),cxs,sd.y+346);c.fillText(KC.t('cf.hint2'),cxs,sd.y+370);}
   // canon + capitaine
   if(B.intro)drawIntro(c,t,B,theme,sup);
+  if(B.special)drawSpecial(c,t,B);
   if(B.banner){const a=t-B.banner.t0,d=B.banner.d;if(a<d){const al=Math.min(1,a/200,(d-a)/250),sc=a<220?.85+.15*easeOutBack(a/220):1;
     c.save();c.globalAlpha=al;const by=BY0+BC*2.35;c.fillStyle='rgba(4,9,16,.84)';c.fillRect(VX0,by,VX1-VX0,BC*1.35);
     c.translate(SW/2,by+BC*.66);c.scale(sc,sc);c.textAlign='center';c.font='900 '+(B.banner.big?84:66)+'px "Barlow Condensed",Arial';c.fillStyle=B.banner.col||theme;c.shadowColor=c.fillStyle;c.shadowBlur=18;c.fillText(B.banner.txt,0,0);c.shadowBlur=0;
@@ -1887,6 +1916,21 @@ function waitFire(){return new Promise(r=>{fireResolve=r;upd();});}
 function dispMult(B,blk,px,py,t){if(blk<0)return {m:1,pop:0};const d=B.deploy[blk];if(!d)return {m:B.shownM[blk],pop:0};
   const [mx,my]=(()=>{const [x,y]=cellXY(CF.CENTER[blk]);return [x+BC/2,y+BC*.45];})(),r=(t-d.t0)/(DEPLOY_T*sp())*BC*1.9,dist=Math.hypot(px-mx,py-my);
   if(t<d.t0||dist>r)return {m:d.from,pop:0};const since=(r-dist)/(BC*.9);return {m:d.to,pop:since<1?Math.sin(since*Math.PI):0};}
+// Boulet doré (additionneur) ou boulet ramé (multiplicateur) qui tombe du ciel sur le centre du radeau
+function drawSpecial(c,t,B){const S=B.special,a=Math.min(1,Math.max(0,(t-S.t0)/S.d)),[cx0,cy0]=cellXY(CF.CENTER[S.b]),tx=cx0+BC/2,ty=cy0+BC*.45,sc=BC/96;
+  const sy=VY0-80,py=sy+(ty-sy)*a*a,gold=S.k==='add';
+  // cible au sol
+  c.save();c.translate(tx,ty);c.rotate(-t/260);c.strokeStyle=gold?'rgba(255,211,77,.85)':'rgba(255,140,60,.85)';c.lineWidth=4*sc;c.setLineDash([9*sc,7*sc]);c.beginPath();c.arc(0,0,BC*(.75-.3*a),0,7);c.stroke();c.setLineDash([]);c.restore();
+  // traînée
+  const tr=c.createLinearGradient(tx,py-BC*2.2,tx,py);tr.addColorStop(0,'rgba(255,255,255,0)');tr.addColorStop(1,gold?'rgba(255,220,110,.7)':'rgba(255,150,70,.7)');
+  c.strokeStyle=tr;c.lineWidth=16*sc;c.lineCap='round';c.beginPath();c.moveTo(tx,py-BC*2.2*Math.min(1,a*3));c.lineTo(tx,py);c.stroke();
+  c.save();c.translate(tx,py);const glow=c.createRadialGradient(0,0,4,0,0,BC*.7);glow.addColorStop(0,gold?'rgba(255,230,140,.75)':'rgba(255,160,80,.7)');glow.addColorStop(1,'rgba(255,200,80,0)');
+  c.fillStyle=glow;c.beginPath();c.arc(0,0,BC*.7,0,7);c.fill();
+  if(gold){const g=c.createRadialGradient(-8*sc,-8*sc,2,0,0,26*sc);g.addColorStop(0,'#fff6c8');g.addColorStop(.5,'#f2c14e');g.addColorStop(1,'#8a5a08');
+    c.fillStyle=g;c.beginPath();c.arc(0,0,24*sc,0,7);c.fill();c.fillStyle='rgba(255,255,255,.9)';c.beginPath();c.arc(-8*sc,-9*sc,5*sc,0,7);c.fill();}
+  else{c.rotate(t/90);c.strokeStyle='#c9a46a';c.lineWidth=5*sc;c.beginPath();c.moveTo(-26*sc,0);c.lineTo(26*sc,0);c.stroke();
+    [-1,1].forEach(k=>{const g=c.createRadialGradient(k*28*sc-5*sc,-5*sc,2,k*28*sc,0,17*sc);g.addColorStop(0,'#8a8f98');g.addColorStop(1,'#1c1f24');c.fillStyle=g;c.beginPath();c.arc(k*28*sc,0,16*sc,0,7);c.fill();});}
+  c.restore();}
 function drawDeploys(c,t,B,theme){for(let b=0;b<4;b++){const d=B.deploy[b];if(!d||t<d.t0)continue;const a=(t-d.t0)/(DEPLOY_T*sp());
   if(a>1.4){B.shownM[b]=d.to;delete B.deploy[b];continue;}
   const [x,y]=blockXY(b),[mx,my]=(()=>{const [cx,cy]=cellXY(CF.CENTER[b]);return [cx+BC/2,cy+BC*.45];})(),r=Math.min(1,a)*BC*1.9;
@@ -1907,7 +1951,7 @@ function drawIntro(c,t,B,theme,sup){const I=B.intro,ain=Math.min(1,(t-I.t0)/250)
   const land=L===LAYOUTS.land,vw=VX1-VX0,vh=VY1-VY0,pw=Math.min(land?1080:820,vw-50),cx=(VX0+VX1)/2;
   c.save();c.globalAlpha=al;c.fillStyle='rgba(4,8,14,.82)';c.fillRect(VX0,VY0,vw,vh);
   const fsT=land?66:62,fsH=land?28:30,fsB=land?21:25,iconW=land?120:110,tx0=cx-pw/2+40+iconW+24,tw=pw-80-iconW-24;
-  const rows=[['bi.r1t','bi.r1'],['bi.r2t','bi.r2'],['bi.r3t','bi.r3']].map(([h,b])=>{c.font='500 '+fsB+'px Inter,Arial';return {h:KC.t(h),lines:wrapText(c,KC.t(b),tw)};});
+  const rows=[['bi.r1t','bi.r1'],['bi.r2t','bi.r2'],['bi.r3t','bi.r3'],['bi.r4t','bi.r4']].map(([h,b])=>{c.font='500 '+fsB+'px Inter,Arial';return {h:KC.t(h),lines:wrapText(c,KC.t(b),tw)};});
   const rowH=rows.map(r=>Math.max(iconW*.9,fsH+10+r.lines.length*fsB*1.35)),ph=60+fsT+40+rowH.reduce((a,b)=>a+b+22,0)+fsB*2.2+70,py=Math.max(VY0+20,(VY0+VY1)/2-ph/2-(land?20:0));
   const sc=.96+.04*ain;c.translate(cx,py+ph/2);c.scale(sc,sc);c.translate(-cx,-(py+ph/2));
   rr(c,cx-pw/2,py,pw,ph,26);const g=c.createLinearGradient(0,py,0,py+ph);g.addColorStop(0,'#3e2210');g.addColorStop(1,'#1e0f06');c.fillStyle=g;c.fill();
@@ -1918,6 +1962,12 @@ function drawIntro(c,t,B,theme,sup){const I=B.intro,ain=Math.min(1,(t-I.t0)/250)
     if(k===0){c.strokeStyle='rgba(255,200,120,.45)';c.lineWidth=8;c.beginPath();c.moveTo(18,-44);c.lineTo(0,6);c.stroke();c.fillStyle='rgba(0,0,0,.4)';c.beginPath();c.ellipse(0,34,26,8,0,0,7);c.fill();
       c.fillStyle='#111';c.beginPath();c.arc(0,10,15,0,7);c.fill();c.strokeStyle='#888';c.lineWidth=1.5;c.stroke();c.strokeStyle='rgba(255,90,60,.8)';c.setLineDash([6,5]);c.lineWidth=3;c.beginPath();c.arc(0,30,32,0,7);c.stroke();c.setLineDash([]);}
     else if(k===1){c.scale(1.15,1.15);drawMedal(c,{v:sup?5:3,mega:false},true,true,t,theme,sup);}
+    else if(k===3){// boulet doré + boulet ramé
+      const g=c.createRadialGradient(-26,-10,2,-18,0,26);g.addColorStop(0,'#fff6c8');g.addColorStop(.5,'#f2c14e');g.addColorStop(1,'#8a5a08');
+      c.fillStyle='rgba(255,210,90,.25)';c.beginPath();c.arc(-18,0,34,0,7);c.fill();c.fillStyle=g;c.beginPath();c.arc(-18,0,24,0,7);c.fill();
+      c.fillStyle='rgba(255,255,255,.9)';c.beginPath();c.arc(-25,-8,5,0,7);c.fill();
+      c.save();c.translate(30,6);c.rotate(-.5);c.strokeStyle='#c9a46a';c.lineWidth=4;c.beginPath();c.moveTo(-18,0);c.lineTo(18,0);c.stroke();
+      [-1,1].forEach(q=>{const gg=c.createRadialGradient(q*18-3,-3,2,q*18,0,12);gg.addColorStop(0,'#8a8f98');gg.addColorStop(1,'#1c1f24');c.fillStyle=gg;c.beginPath();c.arc(q*18,0,11,0,7);c.fill();});c.restore();}
     else{for(let q=0;q<5;q++){const gg=c.createLinearGradient(0,-30,0,30);gg.addColorStop(0,'#d6a062');gg.addColorStop(1,'#7a4a24');c.fillStyle=gg;rr(c,-50+q*21,-26,17,52,3);c.fill();}
       c.strokeStyle='#7dff8a';c.lineWidth=4;c.beginPath();c.moveTo(-54,-30);c.quadraticCurveTo(0,-18,54,-30);c.moveTo(-54,30);c.quadraticCurveTo(0,42,54,30);c.stroke();}
     c.restore();
@@ -1934,8 +1984,8 @@ const AIM_T=550,UP_T=300,FALL_T=450,FLIGHT=450,REST_HIT=800,REST_MISS=650,DEPLOY
 async function runBonus(B,bet){
   const sup=B.type!=='std',theme=sup?'#c77dff':'#f2c14e';
   const V={bet,type:B.type,mults:B.mults,multShown:[false,false,false,false],grid:new Array(36).fill(null),born:{},boom:{},left:P.RESPINS,resetT:0,shake:0,
-    banner:null,prompt:false,fireT:-1e9,shots:null,up:null,miss:null,phase:'play',focus:null,collected:{},flyers:null,stamp:null,pot:0,potShown:0,potT:-1e9,hits:0,deploy:{},shownM:[1,1,1,1],intro:null};
-  V.live=CF.resolve(V.grid,B.mults);
+    banner:null,prompt:false,fireT:-1e9,shots:null,up:null,miss:null,phase:'play',focus:null,collected:{},flyers:null,stamp:null,pot:0,potShown:0,potT:-1e9,hits:0,deploy:{},shownM:[1,1,1,1],intro:null,madd:[0,0,0,0],special:null};
+  V.live=CF.resolve(V.grid,B.mults,V.madd);
   Music.toBonus();
   await doWipe(BONUS_NAME(B.type),theme,()=>{scene='bonus';bonusView=V;winMsg=null;showWins=null;winCount=null;capReset();});
   capMood('mortar');
@@ -1946,7 +1996,7 @@ async function runBonus(B,bet){
   V.rattleD=0;
   for(let b=0;b<4;b++){await wait(260);V.multShown[b]=true;sfx.mult(b);const [x,y]=cc(CF.CENTER[b]);ring(x,y,B.mults[b].mega?'#ff8c3c':theme,BC*.7);burst(x,y,B.mults[b].mega?28:10,B.mults[b].mega?'#ff8c3c':null);
     if(B.mults[b].mega){sfx.activate();shake(6);V.banner={txt:'MEGA ×'+B.mults[b].v,sub:KC.t('cf.rare'),t0:performance.now(),d:1200*Math.max(.6,sp()),col:'#ff8c3c'};capSay(KC.t('cf.megaSay'),1600);await wait(900);}}
-  for(const {i,v} of B.start){const [x,y]=cc(i);V.boom[i]=performance.now();V.grid[i]=v;V.born[i]=performance.now()+90;debris(x,y);sfx.coin(0);ring(x,y,theme,BC*.45);V.live=CF.resolve(V.grid,B.mults);await wait(200);}
+  for(const {i,v} of B.start){const [x,y]=cc(i);V.boom[i]=performance.now();V.grid[i]=v;V.born[i]=performance.now()+90;debris(x,y);sfx.coin(0);ring(x,y,theme,BC*.45);V.live=CF.resolve(V.grid,B.mults,V.madd);await wait(200);}
   if(syncDeploys(V,CF.resolve(new Array(36).fill(null),B.mults)))await wait(DEPLOY_T);
   let lvl=0,flowSaid=false,bridgeSaid=false;
   const level=()=>{const filled=CF.CELLS.filter(x=>V.grid[x.i]!==null).length,lv=V.live.bridges.length?3:V.live.on.some(x=>x)?2:(filled>=5||(sup&&filled>=3))?1:0;
@@ -1976,7 +2026,7 @@ async function runBonus(B,bet){
       if(T.nw.length>=2&&Math.random()<.5)capSay(KC.t(Math.random()<.5?'cf.hit':'cf.bull'),1200);
     }else{const i=targets[0],[x,y]=cc(i);V.miss={i,t0:performance.now()};splash(x,y+BC*.35);ring(x,y+BC*.35,'rgba(200,235,255,.8)',BC*.5);sfx.splash();
       floatTxt(x,y-26,KC.t('cf.splash'),T.left===0?'#ff6b6b':'rgba(214,236,255,.9)',26,800);V.left=T.left;if(T.left===0)capMood('sad',900);}
-    V.live=CF.resolve(V.grid,B.mults);
+    V.live=CF.resolve(V.grid,B.mults,V.madd);
     const newOn=[0,1,2,3].filter(b=>V.live.on[b]&&!before.on[b]),newBr=V.live.bridges.length>before.bridges.length;
     newOn.forEach(b=>{const [x,y]=cc(CF.CENTER[b]);ring(x,y,theme,BC*1.6,800);burst(x,y,24,theme);});
     syncDeploys(V,before,newBr?450:0);
@@ -1984,6 +2034,17 @@ async function runBonus(B,bet){
       if(!bridgeSaid){bridgeSaid=true;capMood('ecstatic',1500);capSay(pickLine('bridge'),1600);}await wait(700);}
     else if(newOn.length){sfx.activate();shake(5);}
     level();V.shots=null;upd();
+    // 4) boulet spécial : tombe du ciel sur un radeau qui a déjà des pièces (un pont partage l'effet)
+    if(T.boost){const Bo=T.boost,gold=Bo.k==='add',col=gold?'#ffd34d':'#ff8c3c';
+      await wait(250);V.special={k:Bo.k,b:Bo.b,t0:performance.now(),d:700*sp()};sfx.whoosh();
+      await wait(700);V.special=null;const [bx,by]=cc(CF.CENTER[Bo.b]),before2=V.live;
+      shake(7);sfx.boom();sfx.activate();burst(bx,by,34,col);ring(bx,by,col,BC*1.6,750);
+      Bo.blocks.forEach(g=>{if(g!==Bo.b){const [gx,gy]=cc(CF.CENTER[g]);ring(gx,gy,col,BC*1.3,750);}});
+      if(gold){V.banner={txt:KC.t('cf.boostAdd',{v:fmt(Bo.v*bet)}),sub:KC.t(Bo.blocks.length>1?'cf.boostLinked':'cf.boostRaft'),t0:performance.now(),d:1400*Math.max(.6,sp()),col};capSay(KC.t('cf.boostAddSay'),1500);capMood('ecstatic',1200);
+        for(const i of Bo.cells){V.grid[i]=Math.round((V.grid[i]+Bo.v)*100)/100;V.born[i]=performance.now();const [x,y]=cc(i);
+          const bk=(CF.CELLS.find(e=>e.i===i)||{}).b,mm=bk!=null?V.shownM[bk]:1;floatTxt(x,y-30,'+'+fmt(Bo.v*mm*bet)+' €','#ffe08a',28,1000);ring(x,y,col,BC*.5,500);sfx.coin(2);await wait(55);}}
+      else{V.madd[Bo.b]+=Bo.v;V.banner={txt:KC.t('cf.boostMult',{v:Bo.v}),sub:KC.t(Bo.blocks.length>1?'cf.boostLinkedM':'cf.boostRaftM'),t0:performance.now(),d:1400*Math.max(.6,sp()),col};capSay(KC.t('cf.boostMultSay'),1500);capMood('ecstatic',1200);sfx.mult(3);}
+      V.live=CF.resolve(V.grid,B.mults,V.madd);if(syncDeploys(V,before2))await wait(DEPLOY_T);upd();await wait(800);}
     // 3) temps de lecture avant le tir suivant (≈ 0,8 s)
     await wait(T.nw.length?REST_HIT:REST_MISS);
   }
