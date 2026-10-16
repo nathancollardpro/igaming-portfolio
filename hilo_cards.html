@@ -175,22 +175,28 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
 .card.bad{box-shadow:0 0 0 3px var(--red),0 0 22px rgba(231,76,60,.6)}
 .pile.shake{animation:shake .4s}
 @keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
-.gb{width:100%;max-width:calc(var(--cw) + 18px);display:flex;align-items:center;justify-content:space-between;gap:4px;background:var(--bg2);border:1px solid rgba(255,255,255,.1);border-radius:8px;
-  padding:7px 8px;color:#fff;font:700 13px/1.1 'Inter',sans-serif;cursor:pointer;transition:background .12s,border-color .12s,transform .08s}
-.gb:hover:not(:disabled){border-color:var(--grn);background:var(--bg3)}
-.gb:active:not(:disabled){transform:scale(.97)}
-.gb:disabled{opacity:.32;cursor:not-allowed}
-.gb .ar{font-size:12px;color:var(--grn)}
-.gb.lo .ar{color:#5cc8ff}
+.gb{width:100%;max-width:calc(var(--cw) + 18px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;border:0;
+  padding:9px 4px 8px;color:#fff;font:800 15px/1.05 'Inter',sans-serif;cursor:pointer;transition:filter .12s,transform .08s;border-radius:6px}
+.gb .gl{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
 .gb .gm{font-variant-numeric:tabular-nums}
-.gb small{display:block;font-size:10px;font-weight:600;color:var(--dim);margin-top:2px;text-align:right}
-.gbw{display:flex;flex-direction:column;gap:6px;width:100%;align-items:center}
+.gb .gp{font-size:10px;font-weight:600;opacity:.75;font-variant-numeric:tabular-nums}
+.gb.hi{background:linear-gradient(180deg,#14803a,#0d5a28);clip-path:polygon(50% 0,100% 14px,100% 100%,0 100%,0 14px);padding-top:16px;border-radius:0 0 6px 6px}
+.gb.hi .gl{color:#9dffb6}
+.gb.lo{background:linear-gradient(180deg,#1a5b94,#123f69);clip-path:polygon(0 0,100% 0,100% calc(100% - 14px),50% 100%,0 calc(100% - 14px));padding-bottom:16px;border-radius:6px 6px 0 0}
+.gb.lo .gl{color:#a9dcff}
+.gb.eq{flex-direction:row;gap:5px;padding:5px 4px;font-size:12px;background:linear-gradient(180deg,#6a5615,#4a3c0e)}
+.gb.eq .gl{color:#ffd34d;font-size:9.5px}.gb.eq .gp{display:none}
+.gb:hover:not(:disabled){filter:brightness(1.18)}
+.gb:active:not(:disabled){transform:scale(.97)}
+.gb:disabled{background:#1a2733;cursor:not-allowed;color:#5d6f7f}
+.gb:disabled .gl{color:#5d6f7f}
+.gbw{display:flex;flex-direction:column;gap:5px;width:100%;align-items:center}
 .pile.full .gbw{visibility:hidden}
 .plabel{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em}
 .lrow .cobtn{flex:1}
 .lrow .cobtn b{font-variant-numeric:tabular-nums}
 .odds td.na{color:var(--dim)}
-@media(max-width:760px){.cvarea.board{padding:12px 8px 14px}.piles{gap:6px}.mval{font-size:34px}.gb{padding:6px 5px;font-size:12px}.gb small{font-size:9px}}
+@media(max-width:760px){.cvarea.board{padding:12px 8px 14px}.piles{gap:6px}.mval{font-size:34px}.gb{font-size:13px}.gb .gl{font-size:8.5px;letter-spacing:.04em}.gb.eq{font-size:10.5px;gap:3px}.gb.eq .gl{font-size:8px}}
 </style>
 <script src="live.js" defer></script>
 </head>
@@ -274,16 +280,18 @@ KC.add({
   'ui.cashouts':{fr:'Encaissements',en:'Cash-outs'},
   'ui.best':{fr:'Meilleur gain',en:'Best win'},
   'ui.hist':{fr:'Historique',en:'History'},
-  'ui.hi':{fr:'Plus haut',en:'Higher'},'ui.lo':{fr:'Plus bas',en:'Lower'},
+  'ui.hi':{fr:'Plus haut',en:'Higher'},'ui.lo':{fr:'Plus bas',en:'Lower'},'ui.eq':{fr:'Égal',en:'Same'},
   'ui.pile':{fr:'Pile {n}',en:'Pile {n}'},
   'ui.full':{fr:'Pleine',en:'Full'},
   'ui.max':{fr:'MAX',en:'MAX'},
+  'ui.betAriaEq':{fr:'Même rang que {c}, chance {p}, multiplicateur {m}',en:'Same rank as {c}, chance {p}, multiplier {m}'},
   'ui.betAria':{fr:'{d} que {c}, chance {p}, multiplicateur {m}',en:'{d} than {c}, chance {p}, multiplier {m}'},
   'm.idle':{fr:'Mise, puis choisis une pile : <b>plus haut</b> ou <b>plus bas</b> ?',en:'Place a bet, then pick a pile: <b>higher</b> or <b>lower</b>?'},
   'm.start':{fr:'Choisis une pile et annonce la prochaine carte.',en:'Pick a pile and call the next card.'},
   'm.run':{fr:'Gain potentiel <b>{v} €</b> · {n} carte(s) trouvée(s)',en:'Potential win <b>{v} €</b> · {n} card(s) right'},
   'm.lostHi':{fr:'Perdu : {c} n\'est pas plus haut que {t}.',en:'Lost: {c} is not higher than {t}.'},
   'm.lostLo':{fr:'Perdu : {c} n\'est pas plus bas que {t}.',en:'Lost: {c} is not lower than {t}.'},
+  'm.lostEq':{fr:'Perdu : {c} n\'est pas un {t}.',en:'Lost: {c} is not a {t}.'},
   'm.tie':{fr:'Même rang ({c}) : perdu.',en:'Same rank ({c}): lost.'},
   'm.cashed':{fr:'Encaissé <b>{v} €</b>. Un nouveau plateau t\'attend.',en:'Cashed out <b>{v} €</b>. A fresh board is waiting.'},
   'm.full':{fr:'Plateau complet ! Encaissé <b>{v} €</b>.',en:'Board complete! Cashed out <b>{v} €</b>.'},
@@ -297,8 +305,8 @@ KC.add({
   'r.vol':{fr:'Volatilité',en:'Volatility'},'r.volv':{fr:'Au choix du joueur',en:"Player's choice"},
   'r.board':{fr:'Plateau',en:'Board'},'r.boardv':{fr:'4 piles × 5 cartes',en:'4 piles × 5 cards'},
   'r.how':{fr:'Comment jouer',en:'How to play'},
-  'r.p1':{fr:"Mise, puis choisis une pile et annonce si la prochaine carte sera <b>plus haute</b> ou <b>plus basse</b> que la sienne. As = 1, Roi = 13 ; le même rang perd. Chaque bonne réponse fait monter le multiplicateur ; une mauvaise arrête la manche.",
-          en:'Bet, then pick a pile and call whether the next card will be <b>higher</b> or <b>lower</b> than its top card. Ace = 1, King = 13; the same rank loses. Every right call raises the multiplier; a wrong one ends the round.'},
+  'r.p1':{fr:"Mise, puis choisis une pile et annonce si la prochaine carte sera <b>plus haute</b> ou <b>plus basse</b> que la sienne. As = 1, Roi = 13 ; sur « plus haut » ou « plus bas », le même rang perd. Le pari <b>égal</b> gagne seulement sur le même rang (1 chance sur 13, ×12,74). Chaque bonne réponse fait monter le multiplicateur ; une mauvaise arrête la manche.",
+          en:'Bet, then pick a pile and call whether the next card will be <b>higher</b> or <b>lower</b> than its top card. Ace = 1, King = 13; on higher or lower, the same rank loses. The <b>same</b> call wins only on the same rank (1 in 13, ×12.74). Every right call raises the multiplier; a wrong one ends the round.'},
   'r.p2':{fr:"Choisir la pile, c'est choisir le risque : sur un As, « plus haut » gagne 12 fois sur 13 ; sur une Dame, 1 fois sur 13. Chaque pile monte jusqu'à 5 cartes ; le plateau complet est encaissé automatiquement.",
           en:'Picking the pile means picking the risk: on an Ace, "higher" wins 12 times out of 13; on a Queen, once in 13. Each pile holds up to 5 cards; a full board is cashed out automatically.'},
   'r.p3':{fr:"<b>Encaisse</b> quand tu veux. Raccourcis : <kbd>Espace</kbd> pour miser, <kbd>Entrée</kbd> pour encaisser.",
@@ -307,7 +315,7 @@ KC.add({
   'r.meta':{fr:"Sabot infini : chaque rang a toujours 1 chance sur 13. Le multiplicateur vaut 0,98 ÷ le produit des chances de tes paris gagnés, donc le RTP reste à <b>98 %</b> quels que soient tes choix et le moment où tu encaisses.",
             en:'Infinite shoe: every rank always has a 1-in-13 chance. The multiplier equals 0.98 ÷ the product of the chances of your winning calls, so RTP stays at <b>98%</b> whatever you pick and whenever you cash out.'},
   'r.gdd':{fr:'Lire le GDD (PDF)',en:'Read the GDD (PDF)'},
-  'o.card':{fr:'Carte',en:'Card'},'o.hi':{fr:'Plus haut',en:'Higher'},'o.lo':{fr:'Plus bas',en:'Lower'}
+  'o.card':{fr:'Carte',en:'Card'},'o.hi':{fr:'Plus haut',en:'Higher'},'o.eq':{fr:'Égal',en:'Same'},'o.lo':{fr:'Plus bas',en:'Lower'}
 });
 
 /* ── CONFIG ─────────────────────────────────────────────────── */
@@ -315,7 +323,9 @@ const RTP=.98,MAXW=10000,DEPTH=5,NP=4;
 const RANKS=['A','2','3','4','5','6','7','8','9','10','J','Q','K'],SUITS=['♠','♥','♦','♣'];
 const rankName=r=>RANKS[r-1];
 // chance que la prochaine carte gagne : sabot infini, même rang = perdu
-const pWin=(r,hi)=>(hi?13-r:r-1)/13;
+// k : 'hi' (plus haut), 'eq' (égal), 'lo' (plus bas) ; true/false acceptés pour hi/lo
+const pWin=(r,k)=>k==='eq'?1/13:(k===true||k==='hi')?(13-r)/13:(r-1)/13;
+const KINDS=['hi','eq','lo'];
 
 /* ── ÉTAT ───────────────────────────────────────────────────── */
 let bal=1000,sndOn=true,busy=false;
@@ -349,8 +359,8 @@ function sizeBoard(){const a=$('boardArea'),w=a.clientWidth-(innerWidth<=760?16:
   a.style.setProperty('--cw',cw+'px');a.style.setProperty('--ch',ch+'px');a.style.setProperty('--fan',(ch*.24)+'px');}
 function buildPiles(){const el=$('piles');el.innerHTML='';
   for(let p=0;p<NP;p++){const d=document.createElement('div');d.className='pile';d.id='pile'+p;
-    d.innerHTML=`<div class="stack" id="stack${p}"></div><div class="gbw"><button class="gb hi" id="hi${p}" type="button"></button><button class="gb lo" id="lo${p}" type="button"></button></div>`;
-    el.appendChild(d);$('hi'+p).onclick=()=>guess(p,true);$('lo'+p).onclick=()=>guess(p,false);}}
+    d.innerHTML=`<div class="stack" id="stack${p}"></div><div class="gbw">${KINDS.map(k=>`<button class="gb ${k}" id="${k}${p}" type="button"></button>`).join('')}</div>`;
+    el.appendChild(d);KINDS.forEach(k=>{$(k+p).onclick=()=>guess(p,k);});}}
 function renderStack(p,anim){const s=$('stack'+p),P=piles[p],fan=getComputedStyle($('boardArea')).getPropertyValue('--fan');
   s.innerHTML=(P.length<DEPTH?'<div class="slot" aria-hidden="true"></div>':'')+P.map((c,i)=>cardHTML(c,(i===P.length-1?'top':'old')+(anim&&i===P.length-1?' deal':''))).join('');
   const sl=s.querySelector('.slot');if(sl){sl.style.top=`calc(${fan} * ${P.length})`;sl.style.zIndex=0;}
@@ -362,10 +372,10 @@ function dealBoard(anim){piles=[0,1,2,3].map(()=>[draw()]);for(let p=0;p<NP;p++)
 /* ── BOUTONS DE PARI ────────────────────────────────────────── */
 function guessInfo(p,hi){const P=piles[p],top=P[P.length-1],pw=pWin(top.r,hi),next=pw>0?m/pw:Infinity;
   return {pw,next,ok:phase==='run'&&!busy&&pw>0&&P.length<DEPTH&&next<=MAXW+1e-9,full:P.length>=DEPTH,capped:pw>0&&next>MAXW+1e-9,top};}
-function updGuess(){for(let p=0;p<NP;p++)for(const hi of [true,false]){const b=$((hi?'hi':'lo')+p),g=guessInfo(p,hi);
+function updGuess(){for(let p=0;p<NP;p++)for(const k of KINDS){const b=$(k+p),g=guessInfo(p,k);
   const pct=g.pw>0?Math.round(g.pw*100)+KC.t('pct'):'—',mtxt=g.pw<=0?'—':g.capped?KC.t('ui.max'):'×'+fmtM(g.next);
-  b.innerHTML=`<span class="ar">${hi?'▲':'▼'}</span><span><span class="gm">${mtxt}</span><small>${pct}</small></span>`;
-  b.disabled=!g.ok;b.setAttribute('aria-label',KC.t('ui.pile',{n:p+1})+' · '+KC.t('ui.betAria',{d:KC.t(hi?'ui.hi':'ui.lo'),c:rankName(g.top.r),p:pct,m:mtxt}));b.title=KC.t(hi?'ui.hi':'ui.lo');}}
+  b.innerHTML=`<span class="gl">${KC.t('ui.'+k)}</span><span class="gm">${mtxt}</span><span class="gp">${pct}</span>`;
+  b.disabled=!g.ok;b.setAttribute('aria-label',KC.t('ui.pile',{n:p+1})+' · '+KC.t(k==='eq'?'ui.betAriaEq':'ui.betAria',{d:KC.t('ui.'+k),c:rankName(g.top.r),p:pct,m:mtxt}));b.title=KC.t('ui.'+k);}}
 
 /* ── AFFICHAGE ──────────────────────────────────────────────── */
 function setM(txt,cls,pop){const e=$('mval');e.textContent=txt;e.className='mval'+(cls?' '+cls:'');if(pop){void e.offsetWidth;e.classList.add('pop');}}
@@ -378,7 +388,7 @@ function upd(){$('bal').textContent=fmtEur(bal);$('sg').textContent=st.games;$('
 function addHist(x,win){hist.unshift({x,win});if(hist.length>16)hist.pop();renderHist();}
 function renderHist(){$('hl').innerHTML=hist.map(h=>`<span class="hp ${h.win?'w':'l'}">${h.win?'×'+fmtM(h.x):KC.t('h.lost')}</span>`).join('');}
 const boardFull=()=>piles.every(P=>P.length>=DEPTH);
-function anyGuessPossible(){for(let p=0;p<NP;p++){const P=piles[p];if(P.length>=DEPTH)continue;const r=P[P.length-1].r;for(const hi of [true,false]){const pw=pWin(r,hi);if(pw>0&&m/pw<=MAXW+1e-9)return true;}}return false;}
+function anyGuessPossible(){for(let p=0;p<NP;p++){const P=piles[p];if(P.length>=DEPTH)continue;const r=P[P.length-1].r;for(const k of KINDS){const pw=pWin(r,k);if(pw>0&&m/pw<=MAXW+1e-9)return true;}}return false;}
 
 /* ── MISES ──────────────────────────────────────────────────── */
 // Mise au centime près, jamais sous 0,01 €
@@ -393,9 +403,9 @@ function mainAction(){if(busy||phase==='run')return;ac();
   base=b;m=RTP;dealBoard(true);startRun(b);setM('×—','dim');setSub('m.start');upd();}
 
 /* ── UN PARI ────────────────────────────────────────────────── */
-function guess(p,hi){const g=guessInfo(p,hi);if(!g.ok)return;ac();busy=true;
+function guess(p,k){const g=guessInfo(p,k);if(!g.ok)return;ac();busy=true;
   document.querySelectorAll('.pile').forEach((e,i)=>e.classList.toggle('sel',i===p));
-  const c=draw(),top=g.top,won=hi?c.r>top.r:c.r<top.r;
+  const c=draw(),top=g.top,won=k==='eq'?c.r===top.r:k==='hi'?c.r>top.r:c.r<top.r;
   piles[p].push(c);renderStack(p,true);sfx.deal();upd();
   setTimeout(()=>{
     const el=$('stack'+p).querySelector('.card:last-child');
@@ -404,7 +414,7 @@ function guess(p,hi){const g=guessInfo(p,hi);if(!g.ok)return;ac();busy=true;
       if(boardFull())return finishCash('m.full');
       if(!anyGuessPossible())return finishCash('m.capped');
     }else{el.classList.add('bad');$('pile'+p).classList.add('shake');sfx.lose();setM(KC.t('h.lost').toUpperCase(),'lose',true);
-      setSub(c.r===top.r?'m.tie':hi?'m.lostHi':'m.lostLo',{c:rankName(c.r),t:rankName(top.r)});
+      setSub(k==='eq'?'m.lostEq':c.r===top.r?'m.tie':k==='hi'?'m.lostHi':'m.lostLo',{c:rankName(c.r),t:rankName(top.r)});
       phase='lost';addHist(0,false);busy=false;saveBal();setTimeout(()=>$('pile'+p).classList.remove('shake'),450);}
     document.querySelectorAll('.pile').forEach(e=>e.classList.remove('sel'));upd();
   },380);}
@@ -415,8 +425,8 @@ function finishCash(key){const pay=Math.round(base*m*100)/100;bal=Math.round((ba
 
 /* ── TABLEAU DES CHANCES ────────────────────────────────────── */
 function renderOdds(){const pc=p=>KC.dec((p*100).toFixed(1))+KC.t('pct'),cell=(r,hi)=>{const p=pWin(r,hi);return p>0?`<td>${pc(p)} · ×${KC.dec((1/p).toFixed(2))}</td>`:'<td class="na">—</td>';};
-  $('odds').innerHTML=`<thead><tr><th>${KC.t('o.card')}</th><th>${KC.t('o.hi')}</th><th>${KC.t('o.lo')}</th></tr></thead><tbody>`+
-    RANKS.map((R,i)=>`<tr><td>${R}</td>${cell(i+1,true)}${cell(i+1,false)}</tr>`).join('')+'</tbody>';}
+  $('odds').innerHTML=`<thead><tr><th>${KC.t('o.card')}</th><th>${KC.t('o.hi')}</th><th>${KC.t('o.eq')}</th><th>${KC.t('o.lo')}</th></tr></thead><tbody>`+
+    RANKS.map((R,i)=>`<tr><td>${R}</td>${cell(i+1,'hi')}${cell(i+1,'eq')}${cell(i+1,'lo')}</tr>`).join('')+'</tbody>';}
 
 /* ── DIVERS ─────────────────────────────────────────────────── */
 function toggleSnd(){sndOn=!sndOn;$('sndBtn').textContent=KC.t(sndOn?'ui.sndOn':'ui.sndOff');}
