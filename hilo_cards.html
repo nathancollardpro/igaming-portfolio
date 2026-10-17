@@ -165,6 +165,10 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
 .card .cr i{display:block;font-style:normal;font-size:.72em;margin-top:1px}
 .card .cs{position:absolute;left:0;right:0;top:50%;transform:translateY(-38%);text-align:center;font-size:calc(var(--cw) * .5);line-height:1}
 .card .cr2{left:auto;right:7%;top:auto;bottom:5%;transform:rotate(180deg)}
+.card.back{background:linear-gradient(160deg,#1d3a52,#0f2234);border:2px solid rgba(255,255,255,.18);cursor:pointer}
+.card.back .bk{position:absolute;inset:8%;border-radius:calc(var(--cw) * .06);border:2px solid rgba(0,231,1,.35);
+  background:repeating-linear-gradient(45deg,rgba(0,231,1,.10) 0 6px,transparent 6px 12px)}
+.card.back:hover .bk{border-color:rgba(0,231,1,.75)}
 .slot{position:absolute;left:0;width:var(--cw);height:var(--ch);border-radius:calc(var(--cw) * .09);border:2px dashed rgba(255,255,255,.14)}
 .card.old{filter:brightness(.82) saturate(.85)}
 .card.top{box-shadow:0 0 0 2px rgba(255,255,255,.0),0 6px 16px rgba(0,0,0,.45)}
@@ -289,8 +293,7 @@ KC.add({
   'ui.max':{fr:'MAX',en:'MAX'},
   'ui.betAriaEq':{fr:'Même rang que {c}, chance {p}, multiplicateur {m}',en:'Same rank as {c}, chance {p}, multiplier {m}'},
   'ui.betAria':{fr:'{d} que {c}, chance {p}, multiplicateur {m}',en:'{d} than {c}, chance {p}, multiplier {m}'},
-  'm.idle':{fr:'Touche <b>Plus haut</b>, <b>Égal</b> ou <b>Plus bas</b> sous une carte : ta mise part au premier choix.',en:'Tap <b>Higher</b>, <b>Same</b> or <b>Lower</b> under a card: your bet goes in with your first call.'},
-  'm.hintNew':{fr:'Un nouveau plateau arrive…',en:'A fresh board is coming…'},
+  'm.idle':{fr:'Touche une carte ou <b>Miser</b> : les cartes se retournent, puis annonce <b>plus haut</b>, <b>égal</b> ou <b>plus bas</b>.',en:'Tap a card or <b>Bet</b>: the cards turn over, then call <b>higher</b>, <b>same</b> or <b>lower</b>.'},
   'm.start':{fr:'Choisis une pile et annonce la prochaine carte.',en:'Pick a pile and call the next card.'},
   'm.run':{fr:'Gain potentiel <b>{v} €</b> · {n} carte(s) trouvée(s)',en:'Potential win <b>{v} €</b> · {n} card(s) right'},
   'm.lostHi':{fr:'Perdu : {c} n\'est pas plus haut que {t}.',en:'Lost: {c} is not higher than {t}.'},
@@ -309,8 +312,8 @@ KC.add({
   'r.vol':{fr:'Volatilité',en:'Volatility'},'r.volv':{fr:'Au choix du joueur',en:"Player's choice"},
   'r.board':{fr:'Plateau',en:'Board'},'r.boardv':{fr:'4 piles × 5 cartes',en:'4 piles × 5 cards'},
   'r.how':{fr:'Comment jouer',en:'How to play'},
-  'r.p1':{fr:"Choisis ta mise, puis touche un pari sous une des piles pour annoncer si la prochaine carte sera <b>plus haute</b> ou <b>plus basse</b> que la sienne. As = 1, Roi = 13 ; sur « plus haut » ou « plus bas », le même rang perd. Le pari <b>égal</b> gagne seulement sur le même rang (1 chance sur 13, ×12,74). Chaque bonne réponse fait monter le multiplicateur ; une mauvaise arrête la manche.",
-          en:'Set your bet, then tap a call under one of the piles to say whether the next card will be <b>higher</b> or <b>lower</b> than its top card. Ace = 1, King = 13; on higher or lower, the same rank loses. The <b>same</b> call wins only on the same rank (1 in 13, ×12.74). Every right call raises the multiplier; a wrong one ends the round.'},
+  'r.p1':{fr:"Choisis ta mise, puis touche une carte ou <b>Miser</b> : le plateau se retourne. Annonce ensuite, sous la pile de ton choix, si la prochaine carte sera <b>plus haute</b> ou <b>plus basse</b> que la sienne. As = 1, Roi = 13 ; sur « plus haut » ou « plus bas », le même rang perd. Le pari <b>égal</b> gagne seulement sur le même rang (1 chance sur 13, ×12,74). Chaque bonne réponse fait monter le multiplicateur ; une mauvaise arrête la manche.",
+          en:'Set your bet, then tap a card or <b>Bet</b>: the board turns over. Then, under the pile of your choice, call whether the next card will be <b>higher</b> or <b>lower</b> than its top card. Ace = 1, King = 13; on higher or lower, the same rank loses. The <b>same</b> call wins only on the same rank (1 in 13, ×12.74). Every right call raises the multiplier; a wrong one ends the round.'},
   'r.p2':{fr:"Choisir la pile, c'est choisir le risque : sur un As, « plus haut » gagne 12 fois sur 13 ; sur une Dame, 1 fois sur 13. Chaque pile monte jusqu'à 5 cartes ; le plateau complet est encaissé automatiquement.",
           en:'Picking the pile means picking the risk: on an Ace, "higher" wins 12 times out of 13; on a Queen, once in 13. Each pile holds up to 5 cards; a full board is cashed out automatically.'},
   'r.p3':{fr:"<b>Encaisse</b> quand tu veux. Raccourcis : <kbd>Espace</kbd> pour miser, <kbd>Entrée</kbd> pour encaisser.",
@@ -334,7 +337,7 @@ const KINDS=['hi','eq','lo'];
 /* ── ÉTAT ───────────────────────────────────────────────────── */
 let bal=1000,sndOn=true,busy=false;
 let piles=[];               // 4 piles de cartes {r,s}
-let fresh=true,freshTid=null;  // plateau neuf : on peut jouer directement en touchant un pari
+let hidden=true,freshTid=null;  // avant la mise, le plateau est face cachée : on ne le voit qu'une fois la mise engagée
 let phase='idle';           // idle | run | lost | cashed
 let base=10,stake=0,m=RTP;  // m : multiplicateur interne ; gain au cash-out = base × m
 let wins=0,lastPay=0;       // bonnes réponses de la manche en cours
@@ -358,7 +361,7 @@ const sfx={deal:()=>flick(),win:k=>{[660,880].forEach((f,i)=>tone(f*(1+Math.min(
 
 /* ── PLATEAU ────────────────────────────────────────────────── */
 const $=id=>document.getElementById(id);
-function cardHTML(c,cls){const red=c.s===1||c.s===2,R=rankName(c.r),S=SUITS[c.s];
+function cardHTML(c,cls){if(c.back)return `<div class="card back ${cls||''}" aria-hidden="true"><div class="bk"></div></div>`;const red=c.s===1||c.s===2,R=rankName(c.r),S=SUITS[c.s];
   return `<div class="card ${red?'red':''} ${cls||''}" aria-hidden="true"><div class="cr">${R}<i>${S}</i></div><div class="cs">${S}</div><div class="cr cr2">${R}<i>${S}</i></div></div>`;}
 function sizeBoard(){const a=$('boardArea'),w=a.clientWidth-(innerWidth<=760?16:28),gap=innerWidth<=760?6:12,col=(w-gap*3)/4,cw=Math.max(54,Math.min(104,col-8)),ch=cw*1.4;
   a.style.setProperty('--cw',cw+'px');a.style.setProperty('--ch',ch+'px');a.style.setProperty('--fan',(ch*.24)+'px');}
@@ -366,19 +369,19 @@ function buildPiles(){const el=$('piles');el.innerHTML='';
   for(let p=0;p<NP;p++){const d=document.createElement('div');d.className='pile';d.id='pile'+p;
     d.innerHTML=`<div class="stack" id="stack${p}"></div><div class="gbw">${KINDS.map(k=>`<button class="gb ${k}" id="${k}${p}" type="button"></button>`).join('')}</div>`;
     el.appendChild(d);KINDS.forEach(k=>{$(k+p).onclick=()=>guess(p,k);});$('stack'+p).onclick=()=>hintPile(p);}}
-function renderStack(p,anim){const s=$('stack'+p),P=piles[p],fan=getComputedStyle($('boardArea')).getPropertyValue('--fan');
+function renderStack(p,anim){const s=$('stack'+p),P=hidden?[{back:1}]:piles[p],fan=getComputedStyle($('boardArea')).getPropertyValue('--fan');
   s.innerHTML=(P.length<DEPTH?'<div class="slot" aria-hidden="true"></div>':'')+P.map((c,i)=>cardHTML(c,(i===P.length-1?'top':'old')+(anim&&i===P.length-1?' deal':''))).join('');
   const sl=s.querySelector('.slot');if(sl){sl.style.top=`calc(${fan} * ${P.length})`;sl.style.zIndex=0;}
   [...s.querySelectorAll('.card')].forEach((el,i)=>{el.style.top=`calc(${fan} * ${i})`;el.style.zIndex=i+1;});
   $('pile'+p).classList.toggle('full',P.length>=DEPTH);}
 function renderAll(){for(let p=0;p<NP;p++)renderStack(p,false);updGuess();}
-function dealBoard(anim){fresh=true;piles=[0,1,2,3].map(()=>[draw()]);for(let p=0;p<NP;p++)renderStack(p,anim);if(anim)sfx.deal();}
+function dealBoard(anim){hidden=false;piles=[0,1,2,3].map(()=>[draw()]);for(let p=0;p<NP;p++)renderStack(p,anim);if(anim)sfx.deal();}
 
 /* ── BOUTONS DE PARI ────────────────────────────────────────── */
 function guessInfo(p,hi){const P=piles[p],top=P[P.length-1],pw=pWin(top.r,hi),next=pw>0?m/pw:Infinity;
-  return {pw,next,ok:(phase==='run'||(phase==='idle'&&fresh))&&!busy&&pw>0&&P.length<DEPTH&&next<=MAXW+1e-9,full:P.length>=DEPTH,capped:pw>0&&next>MAXW+1e-9,top};}
+  return {pw,next,ok:phase==='run'&&!busy&&pw>0&&P.length<DEPTH&&next<=MAXW+1e-9,full:P.length>=DEPTH,capped:pw>0&&next>MAXW+1e-9,top};}
 function updGuess(){for(let p=0;p<NP;p++)for(const k of KINDS){const b=$(k+p),g=guessInfo(p,k);
-  const pct=g.pw>0?Math.round(g.pw*100)+KC.t('pct'):'—',mtxt=g.pw<=0?'—':g.capped?KC.t('ui.max'):'×'+fmtM(g.next);
+  const pct=hidden?'':g.pw>0?Math.round(g.pw*100)+KC.t('pct'):'—',mtxt=hidden?'?':g.pw<=0?'—':g.capped?KC.t('ui.max'):'×'+fmtM(g.next);   // face cachée : rien ne fuit
   b.innerHTML=`<span class="gl">${KC.t('ui.'+k)}</span><span class="gm">${mtxt}</span><span class="gp">${pct}</span>`;
   b.disabled=!g.ok;b.setAttribute('aria-label',KC.t('ui.pile',{n:p+1})+' · '+KC.t(k==='eq'?'ui.betAriaEq':'ui.betAria',{d:KC.t('ui.'+k),c:rankName(g.top.r),p:pct,m:mtxt}));b.title=KC.t('ui.'+k);}}
 
@@ -402,16 +405,13 @@ function getBet(){const v=parseFloat($('bi').value);return Math.max(MINBET,isNaN
 $('bi').addEventListener('change',()=>{$('bi').value=getBet();updMain();});
 function adj(f){if(phase==='run')return;$('bi').value=Math.max(MINBET,cents(getBet()*f));upd();}
 function allIn(){if(phase==='run')return;$('bi').value=Math.max(MINBET,floorCents(bal));upd();}
-function startRun(price){fresh=false;clearTimeout(freshTid);bal=Math.round((bal-price)*100)/100;stake=price;wins=0;phase='run';st.games++;window.KCLive&&KCLive.spin();saveBal();}
+function startRun(price){clearTimeout(freshTid);bal=Math.round((bal-price)*100)/100;stake=price;wins=0;phase='run';st.games++;window.KCLive&&KCLive.spin();saveBal();}
 function mainAction(){if(busy||phase==='run')return;ac();
   const b=getBet();if(b>bal){$('bi').value=Math.max(MINBET,floorCents(bal));setSub('m.funds');return;}
-  base=b;m=RTP;if(!(phase==='idle'&&fresh))dealBoard(true);startRun(b);setM('×—','dim');setSub('m.start');upd();}
+  base=b;m=RTP;dealBoard(true);startRun(b);setM('×—','dim');setSub('m.start');upd();}
 
 /* ── UN PARI ────────────────────────────────────────────────── */
-function guess(p,k){let g=guessInfo(p,k);if(!g.ok)return;ac();
-  if(phase==='idle'){const b=getBet();if(b>bal){$('bi').value=Math.max(MINBET,floorCents(bal));setSub('m.funds');upd();return;}
-    base=b;m=RTP;startRun(b);g=guessInfo(p,k);}
-  busy=true;
+function guess(p,k){const g=guessInfo(p,k);if(!g.ok)return;ac();busy=true;
   document.querySelectorAll('.pile').forEach((e,i)=>e.classList.toggle('sel',i===p));
   const c=draw(),top=g.top,won=k==='eq'?c.r===top.r:k==='hi'?c.r>top.r:c.r<top.r;
   piles[p].push(c);renderStack(p,true);sfx.deal();upd();
@@ -426,11 +426,12 @@ function guess(p,k){let g=guessInfo(p,k);if(!g.ok)return;ac();
       phase='lost';addHist(0,false);busy=false;saveBal();queueFresh();setTimeout(()=>$('pile'+p).classList.remove('shake'),450);}
     document.querySelectorAll('.pile').forEach(e=>e.classList.remove('sel'));upd();
   },380);}
+// fin de manche : le résultat reste affiché, puis le plateau se retourne face cachée
 function queueFresh(){clearTimeout(freshTid);freshTid=setTimeout(()=>{if(busy||(phase!=='lost'&&phase!=='cashed'))return;
-  m=RTP;dealBoard(true);phase='idle';setM('×—','dim');setSub('m.idle');upd();},2200);}
-// toucher une carte (et pas un bouton) : les paris de sa pile clignotent pour montrer où appuyer
-function hintPile(p){const w=$('pile'+p).querySelector('.gbw');if(!w)return;w.classList.remove('hint');void w.offsetWidth;w.classList.add('hint');
-  if(phase!=='run'&&!fresh)setSub('m.hintNew');}
+  hidden=true;phase='idle';m=RTP;renderAll();setM('×—','dim');setSub('m.idle');upd();},2200);}
+// toucher une carte : hors manche, c'est miser (le plateau se retourne) ; en manche, les paris de la pile clignotent
+function hintPile(p){if(phase!=='run'){mainAction();return;}
+  const w=$('pile'+p).querySelector('.gbw');if(!w)return;w.classList.remove('hint');void w.offsetWidth;w.classList.add('hint');}
 function cashout(){if(phase!=='run'||busy||wins===0)return;finishCash('m.cashed');}
 function finishCash(key){const pay=Math.round(base*m*100)/100;bal=Math.round((bal+pay)*100)/100;lastPay=pay;phase='cashed';st.wins++;st.best=Math.max(st.best,pay);
   addHist(m,true);sfx.cash();setM('×'+fmtM(m),'win',true);setSub(key,{v:fmtEur(pay)});saveBal();queueFresh();
@@ -457,7 +458,7 @@ KC.on(()=>{upd();renderOdds();renderHist();const s=$('msub');if(s.dataset.k)s.in
   if(phase==='lost')setM(KC.t('h.lost').toUpperCase(),'lose');});
 
 // démarrage : un plateau est déjà sur la table
-buildPiles();sizeBoard();dealBoard(false);setSub('m.idle');renderOdds();upd();
+buildPiles();sizeBoard();dealBoard(false);hidden=true;renderAll();setSub('m.idle');renderOdds();upd();
 </script>
 </body>
 </html>
