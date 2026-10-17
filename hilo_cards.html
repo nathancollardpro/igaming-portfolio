@@ -165,7 +165,7 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
 .card .cr i{display:block;font-style:normal;font-size:.72em;margin-top:1px}
 .card .cs{position:absolute;left:0;right:0;top:50%;transform:translateY(-38%);text-align:center;font-size:calc(var(--cw) * .5);line-height:1}
 .card .cr2{left:auto;right:7%;top:auto;bottom:5%;transform:rotate(180deg)}
-.card.back{background:linear-gradient(160deg,#1d3a52,#0f2234);border:2px solid rgba(255,255,255,.18);cursor:pointer}
+.card.back{background:linear-gradient(160deg,#1d3a52,#0f2234);border:2px solid rgba(255,255,255,.18)}
 .card.back .bk{position:absolute;inset:8%;border-radius:calc(var(--cw) * .06);border:2px solid rgba(0,231,1,.35);
   background:repeating-linear-gradient(45deg,rgba(0,231,1,.10) 0 6px,transparent 6px 12px)}
 .card.back:hover .bk{border-color:rgba(0,231,1,.75)}
@@ -198,6 +198,8 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
 .pile.full .gbw{visibility:hidden}
 .stack{cursor:pointer}
 .gbw.hint .gb:not(:disabled){animation:hintp .7s ease 2}
+#mainBtn.hint{animation:hintb .6s ease 3}
+@keyframes hintb{40%{transform:scale(1.04);box-shadow:0 0 0 4px rgba(0,231,1,.45),0 0 26px rgba(0,231,1,.55)}}
 @keyframes hintp{40%{transform:scale(1.08);filter:brightness(1.45)}}
 .plabel{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em}
 .lrow .cobtn{flex:1}
@@ -293,7 +295,8 @@ KC.add({
   'ui.max':{fr:'MAX',en:'MAX'},
   'ui.betAriaEq':{fr:'Même rang que {c}, chance {p}, multiplicateur {m}',en:'Same rank as {c}, chance {p}, multiplier {m}'},
   'ui.betAria':{fr:'{d} que {c}, chance {p}, multiplicateur {m}',en:'{d} than {c}, chance {p}, multiplier {m}'},
-  'm.idle':{fr:'Touche une carte ou <b>Miser</b> : les cartes se retournent, puis annonce <b>plus haut</b>, <b>égal</b> ou <b>plus bas</b>.',en:'Tap a card or <b>Bet</b>: the cards turn over, then call <b>higher</b>, <b>same</b> or <b>lower</b>.'},
+  'm.idle':{fr:'Appuie sur <b>Miser</b> : les cartes se retournent, puis annonce <b>plus haut</b>, <b>égal</b> ou <b>plus bas</b>.',en:'Press <b>Bet</b>: the cards turn over, then call <b>higher</b>, <b>same</b> or <b>lower</b>.'},
+  'm.needBet':{fr:'Appuie d\'abord sur <b>Miser</b> pour retourner les cartes.',en:'Press <b>Bet</b> first to turn the cards over.'},
   'm.start':{fr:'Choisis une pile et annonce la prochaine carte.',en:'Pick a pile and call the next card.'},
   'm.run':{fr:'Gain potentiel <b>{v} €</b> · {n} carte(s) trouvée(s)',en:'Potential win <b>{v} €</b> · {n} card(s) right'},
   'm.lostHi':{fr:'Perdu : {c} n\'est pas plus haut que {t}.',en:'Lost: {c} is not higher than {t}.'},
@@ -312,8 +315,8 @@ KC.add({
   'r.vol':{fr:'Volatilité',en:'Volatility'},'r.volv':{fr:'Au choix du joueur',en:"Player's choice"},
   'r.board':{fr:'Plateau',en:'Board'},'r.boardv':{fr:'4 piles × 5 cartes',en:'4 piles × 5 cards'},
   'r.how':{fr:'Comment jouer',en:'How to play'},
-  'r.p1':{fr:"Choisis ta mise, puis touche une carte ou <b>Miser</b> : le plateau se retourne. Annonce ensuite, sous la pile de ton choix, si la prochaine carte sera <b>plus haute</b> ou <b>plus basse</b> que la sienne. As = 1, Roi = 13 ; sur « plus haut » ou « plus bas », le même rang perd. Le pari <b>égal</b> gagne seulement sur le même rang (1 chance sur 13, ×12,74). Chaque bonne réponse fait monter le multiplicateur ; une mauvaise arrête la manche.",
-          en:'Set your bet, then tap a card or <b>Bet</b>: the board turns over. Then, under the pile of your choice, call whether the next card will be <b>higher</b> or <b>lower</b> than its top card. Ace = 1, King = 13; on higher or lower, the same rank loses. The <b>same</b> call wins only on the same rank (1 in 13, ×12.74). Every right call raises the multiplier; a wrong one ends the round.'},
+  'r.p1':{fr:"Choisis ta mise, puis appuie sur <b>Miser</b> : le plateau se retourne. Annonce ensuite, sous la pile de ton choix, si la prochaine carte sera <b>plus haute</b> ou <b>plus basse</b> que la sienne. As = 1, Roi = 13 ; sur « plus haut » ou « plus bas », le même rang perd. Le pari <b>égal</b> gagne seulement sur le même rang (1 chance sur 13, ×12,74). Chaque bonne réponse fait monter le multiplicateur ; une mauvaise arrête la manche.",
+          en:'Set your bet, then press <b>Bet</b>: the board turns over. Then, under the pile of your choice, call whether the next card will be <b>higher</b> or <b>lower</b> than its top card. Ace = 1, King = 13; on higher or lower, the same rank loses. The <b>same</b> call wins only on the same rank (1 in 13, ×12.74). Every right call raises the multiplier; a wrong one ends the round.'},
   'r.p2':{fr:"Choisir la pile, c'est choisir le risque : sur un As, « plus haut » gagne 12 fois sur 13 ; sur une Dame, 1 fois sur 13. Chaque pile monte jusqu'à 5 cartes ; le plateau complet est encaissé automatiquement.",
           en:'Picking the pile means picking the risk: on an Ace, "higher" wins 12 times out of 13; on a Queen, once in 13. Each pile holds up to 5 cards; a full board is cashed out automatically.'},
   'r.p3':{fr:"<b>Encaisse</b> quand tu veux. Raccourcis : <kbd>Espace</kbd> pour miser, <kbd>Entrée</kbd> pour encaisser.",
@@ -429,8 +432,9 @@ function guess(p,k){const g=guessInfo(p,k);if(!g.ok)return;ac();busy=true;
 // fin de manche : le résultat reste affiché, puis le plateau se retourne face cachée
 function queueFresh(){clearTimeout(freshTid);freshTid=setTimeout(()=>{if(busy||(phase!=='lost'&&phase!=='cashed'))return;
   hidden=true;phase='idle';m=RTP;renderAll();setM('×—','dim');setSub('m.idle');upd();},2200);}
-// toucher une carte : hors manche, c'est miser (le plateau se retourne) ; en manche, les paris de la pile clignotent
-function hintPile(p){if(phase!=='run'){mainAction();return;}
+// toucher une carte : hors manche, le bouton Miser clignote (c'est lui qui lance la manche) ; en manche, les paris de la pile clignotent
+function hintPile(p){if(phase!=='run'){const mb=$('mainBtn');mb.classList.remove('hint');void mb.offsetWidth;mb.classList.add('hint');setSub('m.needBet');
+    try{mb.scrollIntoView({block:'nearest',behavior:'smooth'});}catch(e){}return;}
   const w=$('pile'+p).querySelector('.gbw');if(!w)return;w.classList.remove('hint');void w.offsetWidth;w.classList.add('hint');}
 function cashout(){if(phase!=='run'||busy||wins===0)return;finishCash('m.cashed');}
 function finishCash(key){const pay=Math.round(base*m*100)/100;bal=Math.round((bal+pay)*100)/100;lastPay=pay;phase='cashed';st.wins++;st.best=Math.max(st.best,pay);
