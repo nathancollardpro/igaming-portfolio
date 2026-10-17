@@ -192,6 +192,9 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
 .gb:disabled .gl{color:#5d6f7f}
 .gbw{display:flex;flex-direction:column;gap:5px;width:100%;align-items:center}
 .pile.full .gbw{visibility:hidden}
+.stack{cursor:pointer}
+.gbw.hint .gb:not(:disabled){animation:hintp .7s ease 2}
+@keyframes hintp{40%{transform:scale(1.08);filter:brightness(1.45)}}
 .plabel{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em}
 .lrow .cobtn{flex:1}
 .lrow .cobtn b{font-variant-numeric:tabular-nums}
@@ -286,7 +289,8 @@ KC.add({
   'ui.max':{fr:'MAX',en:'MAX'},
   'ui.betAriaEq':{fr:'Même rang que {c}, chance {p}, multiplicateur {m}',en:'Same rank as {c}, chance {p}, multiplier {m}'},
   'ui.betAria':{fr:'{d} que {c}, chance {p}, multiplicateur {m}',en:'{d} than {c}, chance {p}, multiplier {m}'},
-  'm.idle':{fr:'Mise, puis choisis une pile : <b>plus haut</b> ou <b>plus bas</b> ?',en:'Place a bet, then pick a pile: <b>higher</b> or <b>lower</b>?'},
+  'm.idle':{fr:'Touche <b>Plus haut</b>, <b>Égal</b> ou <b>Plus bas</b> sous une carte : ta mise part au premier choix.',en:'Tap <b>Higher</b>, <b>Same</b> or <b>Lower</b> under a card: your bet goes in with your first call.'},
+  'm.hintNew':{fr:'Un nouveau plateau arrive…',en:'A fresh board is coming…'},
   'm.start':{fr:'Choisis une pile et annonce la prochaine carte.',en:'Pick a pile and call the next card.'},
   'm.run':{fr:'Gain potentiel <b>{v} €</b> · {n} carte(s) trouvée(s)',en:'Potential win <b>{v} €</b> · {n} card(s) right'},
   'm.lostHi':{fr:'Perdu : {c} n\'est pas plus haut que {t}.',en:'Lost: {c} is not higher than {t}.'},
@@ -305,8 +309,8 @@ KC.add({
   'r.vol':{fr:'Volatilité',en:'Volatility'},'r.volv':{fr:'Au choix du joueur',en:"Player's choice"},
   'r.board':{fr:'Plateau',en:'Board'},'r.boardv':{fr:'4 piles × 5 cartes',en:'4 piles × 5 cards'},
   'r.how':{fr:'Comment jouer',en:'How to play'},
-  'r.p1':{fr:"Mise, puis choisis une pile et annonce si la prochaine carte sera <b>plus haute</b> ou <b>plus basse</b> que la sienne. As = 1, Roi = 13 ; sur « plus haut » ou « plus bas », le même rang perd. Le pari <b>égal</b> gagne seulement sur le même rang (1 chance sur 13, ×12,74). Chaque bonne réponse fait monter le multiplicateur ; une mauvaise arrête la manche.",
-          en:'Bet, then pick a pile and call whether the next card will be <b>higher</b> or <b>lower</b> than its top card. Ace = 1, King = 13; on higher or lower, the same rank loses. The <b>same</b> call wins only on the same rank (1 in 13, ×12.74). Every right call raises the multiplier; a wrong one ends the round.'},
+  'r.p1':{fr:"Choisis ta mise, puis touche un pari sous une des piles pour annoncer si la prochaine carte sera <b>plus haute</b> ou <b>plus basse</b> que la sienne. As = 1, Roi = 13 ; sur « plus haut » ou « plus bas », le même rang perd. Le pari <b>égal</b> gagne seulement sur le même rang (1 chance sur 13, ×12,74). Chaque bonne réponse fait monter le multiplicateur ; une mauvaise arrête la manche.",
+          en:'Set your bet, then tap a call under one of the piles to say whether the next card will be <b>higher</b> or <b>lower</b> than its top card. Ace = 1, King = 13; on higher or lower, the same rank loses. The <b>same</b> call wins only on the same rank (1 in 13, ×12.74). Every right call raises the multiplier; a wrong one ends the round.'},
   'r.p2':{fr:"Choisir la pile, c'est choisir le risque : sur un As, « plus haut » gagne 12 fois sur 13 ; sur une Dame, 1 fois sur 13. Chaque pile monte jusqu'à 5 cartes ; le plateau complet est encaissé automatiquement.",
           en:'Picking the pile means picking the risk: on an Ace, "higher" wins 12 times out of 13; on a Queen, once in 13. Each pile holds up to 5 cards; a full board is cashed out automatically.'},
   'r.p3':{fr:"<b>Encaisse</b> quand tu veux. Raccourcis : <kbd>Espace</kbd> pour miser, <kbd>Entrée</kbd> pour encaisser.",
@@ -330,6 +334,7 @@ const KINDS=['hi','eq','lo'];
 /* ── ÉTAT ───────────────────────────────────────────────────── */
 let bal=1000,sndOn=true,busy=false;
 let piles=[];               // 4 piles de cartes {r,s}
+let fresh=true,freshTid=null;  // plateau neuf : on peut jouer directement en touchant un pari
 let phase='idle';           // idle | run | lost | cashed
 let base=10,stake=0,m=RTP;  // m : multiplicateur interne ; gain au cash-out = base × m
 let wins=0,lastPay=0;       // bonnes réponses de la manche en cours
@@ -360,18 +365,18 @@ function sizeBoard(){const a=$('boardArea'),w=a.clientWidth-(innerWidth<=760?16:
 function buildPiles(){const el=$('piles');el.innerHTML='';
   for(let p=0;p<NP;p++){const d=document.createElement('div');d.className='pile';d.id='pile'+p;
     d.innerHTML=`<div class="stack" id="stack${p}"></div><div class="gbw">${KINDS.map(k=>`<button class="gb ${k}" id="${k}${p}" type="button"></button>`).join('')}</div>`;
-    el.appendChild(d);KINDS.forEach(k=>{$(k+p).onclick=()=>guess(p,k);});}}
+    el.appendChild(d);KINDS.forEach(k=>{$(k+p).onclick=()=>guess(p,k);});$('stack'+p).onclick=()=>hintPile(p);}}
 function renderStack(p,anim){const s=$('stack'+p),P=piles[p],fan=getComputedStyle($('boardArea')).getPropertyValue('--fan');
   s.innerHTML=(P.length<DEPTH?'<div class="slot" aria-hidden="true"></div>':'')+P.map((c,i)=>cardHTML(c,(i===P.length-1?'top':'old')+(anim&&i===P.length-1?' deal':''))).join('');
   const sl=s.querySelector('.slot');if(sl){sl.style.top=`calc(${fan} * ${P.length})`;sl.style.zIndex=0;}
   [...s.querySelectorAll('.card')].forEach((el,i)=>{el.style.top=`calc(${fan} * ${i})`;el.style.zIndex=i+1;});
   $('pile'+p).classList.toggle('full',P.length>=DEPTH);}
 function renderAll(){for(let p=0;p<NP;p++)renderStack(p,false);updGuess();}
-function dealBoard(anim){piles=[0,1,2,3].map(()=>[draw()]);for(let p=0;p<NP;p++)renderStack(p,anim);if(anim)sfx.deal();}
+function dealBoard(anim){fresh=true;piles=[0,1,2,3].map(()=>[draw()]);for(let p=0;p<NP;p++)renderStack(p,anim);if(anim)sfx.deal();}
 
 /* ── BOUTONS DE PARI ────────────────────────────────────────── */
 function guessInfo(p,hi){const P=piles[p],top=P[P.length-1],pw=pWin(top.r,hi),next=pw>0?m/pw:Infinity;
-  return {pw,next,ok:phase==='run'&&!busy&&pw>0&&P.length<DEPTH&&next<=MAXW+1e-9,full:P.length>=DEPTH,capped:pw>0&&next>MAXW+1e-9,top};}
+  return {pw,next,ok:(phase==='run'||(phase==='idle'&&fresh))&&!busy&&pw>0&&P.length<DEPTH&&next<=MAXW+1e-9,full:P.length>=DEPTH,capped:pw>0&&next>MAXW+1e-9,top};}
 function updGuess(){for(let p=0;p<NP;p++)for(const k of KINDS){const b=$(k+p),g=guessInfo(p,k);
   const pct=g.pw>0?Math.round(g.pw*100)+KC.t('pct'):'—',mtxt=g.pw<=0?'—':g.capped?KC.t('ui.max'):'×'+fmtM(g.next);
   b.innerHTML=`<span class="gl">${KC.t('ui.'+k)}</span><span class="gm">${mtxt}</span><span class="gp">${pct}</span>`;
@@ -397,13 +402,16 @@ function getBet(){const v=parseFloat($('bi').value);return Math.max(MINBET,isNaN
 $('bi').addEventListener('change',()=>{$('bi').value=getBet();updMain();});
 function adj(f){if(phase==='run')return;$('bi').value=Math.max(MINBET,cents(getBet()*f));upd();}
 function allIn(){if(phase==='run')return;$('bi').value=Math.max(MINBET,floorCents(bal));upd();}
-function startRun(price){bal=Math.round((bal-price)*100)/100;stake=price;wins=0;phase='run';st.games++;window.KCLive&&KCLive.spin();saveBal();}
+function startRun(price){fresh=false;clearTimeout(freshTid);bal=Math.round((bal-price)*100)/100;stake=price;wins=0;phase='run';st.games++;window.KCLive&&KCLive.spin();saveBal();}
 function mainAction(){if(busy||phase==='run')return;ac();
   const b=getBet();if(b>bal){$('bi').value=Math.max(MINBET,floorCents(bal));setSub('m.funds');return;}
-  base=b;m=RTP;dealBoard(true);startRun(b);setM('×—','dim');setSub('m.start');upd();}
+  base=b;m=RTP;if(!(phase==='idle'&&fresh))dealBoard(true);startRun(b);setM('×—','dim');setSub('m.start');upd();}
 
 /* ── UN PARI ────────────────────────────────────────────────── */
-function guess(p,k){const g=guessInfo(p,k);if(!g.ok)return;ac();busy=true;
+function guess(p,k){let g=guessInfo(p,k);if(!g.ok)return;ac();
+  if(phase==='idle'){const b=getBet();if(b>bal){$('bi').value=Math.max(MINBET,floorCents(bal));setSub('m.funds');upd();return;}
+    base=b;m=RTP;startRun(b);g=guessInfo(p,k);}
+  busy=true;
   document.querySelectorAll('.pile').forEach((e,i)=>e.classList.toggle('sel',i===p));
   const c=draw(),top=g.top,won=k==='eq'?c.r===top.r:k==='hi'?c.r>top.r:c.r<top.r;
   piles[p].push(c);renderStack(p,true);sfx.deal();upd();
@@ -415,12 +423,17 @@ function guess(p,k){const g=guessInfo(p,k);if(!g.ok)return;ac();busy=true;
       if(!anyGuessPossible())return finishCash('m.capped');
     }else{el.classList.add('bad');$('pile'+p).classList.add('shake');sfx.lose();setM(KC.t('h.lost').toUpperCase(),'lose',true);
       setSub(k==='eq'?'m.lostEq':c.r===top.r?'m.tie':k==='hi'?'m.lostHi':'m.lostLo',{c:rankName(c.r),t:rankName(top.r)});
-      phase='lost';addHist(0,false);busy=false;saveBal();setTimeout(()=>$('pile'+p).classList.remove('shake'),450);}
+      phase='lost';addHist(0,false);busy=false;saveBal();queueFresh();setTimeout(()=>$('pile'+p).classList.remove('shake'),450);}
     document.querySelectorAll('.pile').forEach(e=>e.classList.remove('sel'));upd();
   },380);}
+function queueFresh(){clearTimeout(freshTid);freshTid=setTimeout(()=>{if(busy||(phase!=='lost'&&phase!=='cashed'))return;
+  m=RTP;dealBoard(true);phase='idle';setM('×—','dim');setSub('m.idle');upd();},2200);}
+// toucher une carte (et pas un bouton) : les paris de sa pile clignotent pour montrer où appuyer
+function hintPile(p){const w=$('pile'+p).querySelector('.gbw');if(!w)return;w.classList.remove('hint');void w.offsetWidth;w.classList.add('hint');
+  if(phase!=='run'&&!fresh)setSub('m.hintNew');}
 function cashout(){if(phase!=='run'||busy||wins===0)return;finishCash('m.cashed');}
 function finishCash(key){const pay=Math.round(base*m*100)/100;bal=Math.round((bal+pay)*100)/100;lastPay=pay;phase='cashed';st.wins++;st.best=Math.max(st.best,pay);
-  addHist(m,true);sfx.cash();setM('×'+fmtM(m),'win',true);setSub(key,{v:fmtEur(pay)});saveBal();
+  addHist(m,true);sfx.cash();setM('×'+fmtM(m),'win',true);setSub(key,{v:fmtEur(pay)});saveBal();queueFresh();
   document.querySelectorAll('.pile').forEach(e=>e.classList.remove('sel'));upd();}
 
 /* ── TABLEAU DES CHANCES ────────────────────────────────────── */
