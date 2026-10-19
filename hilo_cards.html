@@ -392,7 +392,7 @@ function updGuess(){for(let p=0;p<NP;p++)for(const k of KINDS){const b=$(k+p),g=
 function setM(txt,cls,pop){const e=$('mval');e.textContent=txt;e.className='mval'+(cls?' '+cls:'');if(pop){void e.offsetWidth;e.classList.add('pop');}}
 function setSub(key,vars){$('msub').innerHTML=KC.t(key,vars);$('msub').dataset.k=key;$('msub').dataset.v=JSON.stringify(vars||{});}
 function updMain(){const mb=$('mainBtn'),co=$('coBtn');
-  if(phase==='run'){mb.hidden=true;co.hidden=false;co.disabled=busy||wins===0;co.innerHTML=wins?KC.t('ui.cash',{v:fmtEur(base*m)}):KC.t('ui.cash0');}
+  if(phase==='run'){mb.hidden=true;co.hidden=false;co.disabled=busy||wins===0;co.innerHTML=wins?KC.t('ui.cash',{v:fmtEur(floorCents(base*m))}):KC.t('ui.cash0');}
   else{mb.hidden=false;co.hidden=true;mb.textContent=KC.t(phase==='cashed'?'ui.newBoard':'ui.bet1');mb.disabled=busy;}
   $('bi').disabled=phase==='run';}
 function upd(){$('bal').textContent=fmtEur(bal);$('sg').textContent=st.games;$('sw').textContent=st.wins;$('smx').textContent=st.best>0?fmtEur(st.best)+' €':'—';updMain();updGuess();}
@@ -402,8 +402,8 @@ const boardFull=()=>piles.every(P=>P.length>=DEPTH);
 function anyGuessPossible(){for(let p=0;p<NP;p++){const P=piles[p];if(P.length>=DEPTH)continue;const r=P[P.length-1].r;for(const k of KINDS){const pw=pWin(r,k);if(pw>0&&m/pw<=MAXW+1e-9)return true;}}return false;}
 
 /* ── MISES ──────────────────────────────────────────────────── */
-// Mise au centime près, jamais sous 0,01 €
-const MINBET=0.01,cents=v=>Math.round(v*100)/100,floorCents=v=>Math.max(0,Math.floor(v*100+1e-9)/100);
+// Mise au centime près, jamais sous 1 € ; gains arrondis au centime inférieur (RTP jamais au-dessus de la cible)
+const MINBET=1,cents=v=>Math.round(v*100)/100,floorCents=v=>Math.max(0,Math.floor(v*100+1e-9)/100);
 function getBet(){const v=parseFloat($('bi').value.replace(',','.'));return Math.max(MINBET,isNaN(v)?MINBET:cents(v));}
 $('bi').addEventListener('change',()=>{$('bi').value=getBet();updMain();});
 function adj(f){if(phase==='run')return;$('bi').value=Math.max(MINBET,cents(getBet()*f));upd();}
@@ -420,7 +420,7 @@ function guess(p,k){const g=guessInfo(p,k);if(!g.ok)return;ac();busy=true;
   piles[p].push(c);renderStack(p,true);sfx.deal();upd();
   setTimeout(()=>{
     const el=$('stack'+p).querySelector('.card:last-child');
-    if(won){wins++;m=g.next;el.classList.add('good');sfx.win(wins);setM('×'+fmtM(m),'win',true);setSub('m.run',{v:fmtEur(base*m),n:wins});
+    if(won){wins++;m=g.next;el.classList.add('good');sfx.win(wins);setM('×'+fmtM(m),'win',true);setSub('m.run',{v:fmtEur(floorCents(base*m)),n:wins});
       busy=false;
       if(boardFull())return finishCash('m.full');
       if(!anyGuessPossible())return finishCash('m.capped');
@@ -437,7 +437,7 @@ function hintPile(p){if(phase!=='run'){const mb=$('mainBtn');mb.classList.remove
     try{mb.scrollIntoView({block:'nearest',behavior:'smooth'});}catch(e){}return;}
   const w=$('pile'+p).querySelector('.gbw');if(!w)return;w.classList.remove('hint');void w.offsetWidth;w.classList.add('hint');}
 function cashout(){if(phase!=='run'||busy||wins===0)return;finishCash('m.cashed');}
-function finishCash(key){const pay=Math.round(base*m*100)/100;bal=Math.round((bal+pay)*100)/100;lastPay=pay;phase='cashed';st.wins++;st.best=Math.max(st.best,pay);
+function finishCash(key){const pay=floorCents(base*m);bal=Math.round((bal+pay)*100)/100;lastPay=pay;phase='cashed';st.wins++;st.best=Math.max(st.best,pay);
   addHist(m,true);sfx.cash();setM('×'+fmtM(m),'win',true);setSub(key,{v:fmtEur(pay)});saveBal();queueFresh();
   document.querySelectorAll('.pile').forEach(e=>e.classList.remove('sel'));upd();}
 

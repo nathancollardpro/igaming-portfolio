@@ -807,7 +807,7 @@ function drawMultiplierOverlay(){
     multTxt=KC.t('c.lostBig');multCol='#e74c3c';subTxt=KC.t('c.lost',{v:fmtEur(currentBet)});subCol='rgba(231,76,60,.6)';
   } else {
     multTxt='×'+KC.dec(currentMult.toFixed(2));multCol='#00e701';
-    subTxt='+'+fmtEur(currentBet*(currentMult-1))+' €  Cash Out !';subCol='rgba(0,231,1,.7)';
+    subTxt='+'+fmtEur(floorCents(currentBet*currentMult)-currentBet)+' €  Cash Out !';subCol='rgba(0,231,1,.7)';
   }
 
   const fs=H*.108*pulseFactor;
@@ -940,8 +940,8 @@ function idle(){
 function getMult(s){const m=MODES[mod].mults;return s>0&&s<=m.length?m[s-1]:1.0;}
 function getBustProb(s){const b=MODES[mod].busts;return s<b.length?b[s]:b[b.length-1];}
 
-// Mise au centime près, jamais sous 0,01 €
-const MINBET=0.01,cents=v=>Math.round(v*100)/100,floorCents=v=>Math.max(0,Math.floor(v*100+1e-9)/100);
+// Mise au centime près, jamais sous 1 € ; gains arrondis au centime inférieur (RTP jamais au-dessus de la cible)
+const MINBET=1,cents=v=>Math.round(v*100)/100,floorCents=v=>Math.max(0,Math.floor(v*100+1e-9)/100);
 function getBet(){const v=parseFloat(document.getElementById('bi').value.replace(',','.'));return Math.max(MINBET,isNaN(v)?MINBET:cents(v));}
 document.getElementById('bi').addEventListener('change',()=>{document.getElementById('bi').value=getBet();});
 function adj(f){document.getElementById('bi').value=Math.max(MINBET,cents(getBet()*f));}
@@ -1007,7 +1007,7 @@ function finishFeed(){
   // Max atteint — gain automatique
   if(step>=maxStep){
     monState='win';createConfetti();playWin(currentMult);
-    const win=cents(currentBet*currentMult);
+    const win=floorCents(currentBet*currentMult);
     bal=cents(bal+win);
     phase='cashedout';
     st.best=Math.max(st.best,win);
@@ -1054,7 +1054,7 @@ function endBust(){
 
 function cashout(){
   if(phase!=='active'||step===0||busy)return;
-  const win=cents(currentBet*currentMult);
+  const win=floorCents(currentBet*currentMult);
   bal=cents(bal+win);
   phase='cashedout';
   monState='win';createConfetti();
@@ -1083,7 +1083,7 @@ function upd(){
   // Gain potentiel near cash out
   const gp=document.getElementById('gainPot');
   if(phase==='active'&&step>0){
-    const gain=(currentBet*(currentMult-1));
+    const gain=floorCents(currentBet*currentMult)-currentBet;
     gp.textContent='+'+fmtEur(gain)+' €';
     gp.style.opacity='1';
   } else {
