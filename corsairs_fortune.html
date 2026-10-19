@@ -468,7 +468,10 @@ function spin(ante,rnd,force){
   let ns=0;for(let r=0;r<3;r++)for(let c=0;c<5;c++)if(grid[r][c]===S)ns++;
   const scatX=ns>=3?P.SCAT_PAY[ns-3]:0;
   const type=ns===3?'std':ns===4?'sup':ns===5?'mega':null;
-  return {stops,grid,ways:w.wins,waysX:w.x,ns,scatX,type,bonus:type?bonus(type,rnd):null};
+  const B=type?bonus(type,rnd):null;
+  // Gain max ×15 000 sur la manche entière : le bonus est limité à ce qui reste après les gains des rouleaux
+  if(B){B.cap=P.MAX_WIN-(w.x+scatX);if(B.res.x>B.cap){B.x=B.cap;B.capped=true;}}
+  return {stops,grid,ways:w.wins,waysX:w.x,ns,scatX,type,bonus:B};
 }
 
 // ── Cannon Hold : plateau 6×6 = 4 blocs 3×3 (A haut-gauche, B haut-droite, C bas-gauche, D bas-droite)
@@ -529,7 +532,7 @@ function bonus(type,rnd){
   }
   const res=resolve(grid,mults,madd);
   const x=Math.min(res.x,P.MAX_WIN);
-  return {type,mults,madd,start,turns,grid,res,x,capped:res.x>P.MAX_WIN};
+  return {type,mults,madd,start,turns,grid,res,x,capped:res.x>P.MAX_WIN,cap:P.MAX_WIN};
 }
 return {SYM,NAMES,RC,P,PAY,W,S,rebuild,get STRIPS_B(){return STRIPS_B},get STRIPS_A(){return STRIPS_A},
   evalWays,exactWays,scatDist,spin,bonus,resolve,BLOCKS,CELLS,CENTER,BRIDGES,edge,blockCells,mulberry,hasScat};
@@ -1769,8 +1772,8 @@ function drawBonus(c,t){
     c.shadowColor=theme;c.shadowBlur=30;const g=c.createLinearGradient(0,-54,0,54);g.addColorStop(0,'#8a5428');g.addColorStop(1,'#4a2810');rr(c,-160,-54,320,108,16);c.fillStyle=g;c.fill();c.shadowBlur=0;
     c.lineWidth=3;c.strokeStyle=theme;c.stroke();chest(c,-112,10,.62);
     c.textAlign='center';c.font='800 14px "Barlow Condensed",Arial';c.fillStyle=theme;c.fillText(KC.t('cf.treasure'),24,-22);
-    const s=fmt(Math.min(B.potShown,P.MAX_WIN)*bet)+' €';c.font='900 '+(s.length>12?30:38)+'px "Barlow Condensed",Arial';c.fillStyle='#fff';c.fillText(s,24,18);
-    c.font='600 11px Inter,Arial';c.fillStyle='rgba(255,255,255,.65)';c.fillText('×'+(Math.round(Math.min(B.potShown,P.MAX_WIN)*100)/100).toLocaleString(KC.loc())+KC.t('cf.xBet'),24,38);c.restore();}
+    const s=fmt(Math.min(B.potShown,B.cap)*bet)+' €';c.font='900 '+(s.length>12?30:38)+'px "Barlow Condensed",Arial';c.fillStyle='#fff';c.fillText(s,24,18);
+    c.font='600 11px Inter,Arial';c.fillStyle='rgba(255,255,255,.65)';c.fillText('×'+(Math.round(Math.min(B.potShown,B.cap)*100)/100).toLocaleString(KC.loc())+KC.t('cf.xBet'),24,38);c.restore();}
   // panneau latéral : tirs, pièces, gain
   const sd=L.bonus.side,filled=CF.CELLS.filter(x=>B.grid[x.i]!==null).length,h=land?380:300;
   rr(c,sd.x,sd.y,sd.w,h,20);const pg=c.createLinearGradient(0,sd.y,0,sd.y+h);pg.addColorStop(0,'rgba(40,22,8,.9)');pg.addColorStop(1,'rgba(16,8,3,.9)');c.fillStyle=pg;c.fill();c.strokeStyle=theme;c.lineWidth=3;c.stroke();
@@ -1781,7 +1784,7 @@ function drawBonus(c,t){
     if(i<B.left&&t-B.resetT<400){c.strokeStyle=`rgba(255,255,255,${1-(t-B.resetT)/400})`;c.lineWidth=4;c.beginPath();c.arc(x,y,20+(t-B.resetT)/14,0,7);c.stroke();}}
   c.font='800 26px "Barlow Condensed",Arial';c.fillStyle='rgba(243,234,213,.85)';c.fillText(KC.t('cf.coins')+'  '+filled+' / 32',cxs,sd.y+150);
   c.font='800 26px "Barlow Condensed",Arial';c.fillStyle=theme;c.fillText(KC.t(B.phase==='resolve'?'cf.treasure':'cf.curWin'),cxs,sd.y+(land?214:204));
-  const gv=B.phase==='resolve'?Math.min(B.potShown,P.MAX_WIN):Math.min(live.x,P.MAX_WIN);
+  const gv=B.phase==='resolve'?Math.min(B.potShown,B.cap):Math.min(live.x,B.cap);
   c.font='900 '+(land?60:54)+'px "Barlow Condensed",Arial';c.fillStyle='#fff';c.fillText(fmt(gv*bet)+' €',cxs,sd.y+(land?276:262));
   if(land){c.font='600 20px Inter,Arial';c.fillStyle='rgba(243,234,213,.65)';c.fillText('×'+(Math.round(gv*100)/100).toLocaleString(KC.loc())+KC.t('cf.xBet'),cxs,sd.y+312);
     c.fillText(KC.t('cf.hint1'),cxs,sd.y+346);c.fillText(KC.t('cf.hint2'),cxs,sd.y+370);}
