@@ -345,7 +345,7 @@ let phase='idle';           // idle | run | lost | cashed
 let base=10,stake=0,m=RTP;  // m : multiplicateur interne ; gain au cash-out = base × m
 let wins=0,lastPay=0;       // bonnes réponses de la manche en cours
 let st={games:0,wins:0,best:0},hist=[];
-const fmtEur=v=>KC.num(v,2);
+const fmtEur=v=>Number(v).toLocaleString(KC.loc(),{minimumFractionDigits:2,maximumFractionDigits:8});
 const fmtM=v=>KC.dec(v>=1000?Math.round(v).toLocaleString(KC.loc()):v>=100?v.toFixed(1):v.toFixed(2));
 
 /* ── HASARD ─────────────────────────────────────────────────── */
@@ -402,15 +402,15 @@ const boardFull=()=>piles.every(P=>P.length>=DEPTH);
 function anyGuessPossible(){for(let p=0;p<NP;p++){const P=piles[p];if(P.length>=DEPTH)continue;const r=P[P.length-1].r;for(const k of KINDS){const pw=pWin(r,k);if(pw>0&&m/pw<=MAXW+1e-9)return true;}}return false;}
 
 /* ── MISES ──────────────────────────────────────────────────── */
-// Mise au centime près, jamais sous 0,01 €
-const MINBET=0.01,cents=v=>Math.round(v*100)/100,floorCents=v=>Math.max(0,Math.floor(v*100+1e-9)/100);
-function getBet(){const v=parseFloat($('bi').value.replace(',','.'));return Math.max(MINBET,isNaN(v)?MINBET:cents(v));}
+// Mise jamais sous 0,20 € ; gains non arrondis (8 décimales, comme les casinos crypto), donc RTP exact
+const MINBET=0.2,amt=v=>Math.round(v*1e8)/1e8,amtFloor=v=>Math.max(0,Math.floor(v*1e8+1e-3)/1e8);
+function getBet(){const v=parseFloat($('bi').value.replace(',','.'));return Math.max(MINBET,isNaN(v)?MINBET:amt(v));}
 $('bi').addEventListener('change',()=>{$('bi').value=getBet();updMain();});
-function adj(f){if(phase==='run')return;$('bi').value=Math.max(MINBET,cents(getBet()*f));upd();}
-function allIn(){if(phase==='run')return;$('bi').value=Math.max(MINBET,floorCents(bal));upd();}
-function startRun(price){clearTimeout(freshTid);bal=Math.round((bal-price)*100)/100;stake=price;wins=0;phase='run';st.games++;window.KCLive&&KCLive.spin();saveBal();}
+function adj(f){if(phase==='run')return;$('bi').value=Math.max(MINBET,amt(getBet()*f));upd();}
+function allIn(){if(phase==='run')return;$('bi').value=Math.max(MINBET,amtFloor(bal));upd();}
+function startRun(price){clearTimeout(freshTid);bal=amt(bal-price);stake=price;wins=0;phase='run';st.games++;window.KCLive&&KCLive.spin();saveBal();}
 function mainAction(){if(busy||phase==='run')return;ac();
-  const b=getBet();if(b>bal){$('bi').value=Math.max(MINBET,floorCents(bal));setSub('m.funds');return;}
+  const b=getBet();if(b>bal){$('bi').value=Math.max(MINBET,amtFloor(bal));setSub('m.funds');return;}
   base=b;m=RTP;dealBoard(true);startRun(b);setM('×—','dim');setSub('m.start');upd();}
 
 /* ── UN PARI ────────────────────────────────────────────────── */
@@ -437,7 +437,7 @@ function hintPile(p){if(phase!=='run'){const mb=$('mainBtn');mb.classList.remove
     try{mb.scrollIntoView({block:'nearest',behavior:'smooth'});}catch(e){}return;}
   const w=$('pile'+p).querySelector('.gbw');if(!w)return;w.classList.remove('hint');void w.offsetWidth;w.classList.add('hint');}
 function cashout(){if(phase!=='run'||busy||wins===0)return;finishCash('m.cashed');}
-function finishCash(key){const pay=Math.round(base*m*100)/100;bal=Math.round((bal+pay)*100)/100;lastPay=pay;phase='cashed';st.wins++;st.best=Math.max(st.best,pay);
+function finishCash(key){const pay=amt(base*m);bal=amt(bal+pay);lastPay=pay;phase='cashed';st.wins++;st.best=Math.max(st.best,pay);
   addHist(m,true);sfx.cash();setM('×'+fmtM(m),'win',true);setSub(key,{v:fmtEur(pay)});saveBal();queueFresh();
   document.querySelectorAll('.pile').forEach(e=>e.classList.remove('sel'));upd();}
 
@@ -449,7 +449,7 @@ function renderOdds(){const pc=p=>KC.dec((p*100).toFixed(1))+KC.t('pct'),cell=(r
 /* ── DIVERS ─────────────────────────────────────────────────── */
 function toggleSnd(){sndOn=!sndOn;$('sndBtn').textContent=KC.t(sndOn?'ui.sndOn':'ui.sndOff');}
 const NC_KEY='nc_portfolio_balance';
-(function initBal(){try{const v=parseFloat(localStorage.getItem(NC_KEY));if(!isNaN(v)&&v>0)bal=Math.round(v*100)/100;}catch(e){}})();
+(function initBal(){try{const v=parseFloat(localStorage.getItem(NC_KEY));if(!isNaN(v)&&v>0)bal=amt(v);}catch(e){}})();
 function saveBal(){try{localStorage.setItem(NC_KEY,bal);}catch(e){}}
 function saveAndBack(e){e.preventDefault();saveBal();try{sessionStorage.setItem('nc_came_from_game','1');}catch(_){}window.location.href='index.html';}
 window.addEventListener('beforeunload',saveBal);

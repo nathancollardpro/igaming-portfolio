@@ -272,7 +272,7 @@ const MODES=[
   {n:'Difficile',i:'Perte 70%',mx:'Max x75',   p:[0.7015957,0.1484043,0.08,0.04,0.02,0.007,0.002,0.001],   m:[0,1.88,2.75,4.15,6.50,10.00,20.00,75.00]},
   {n:'Expert',   i:'Perte 85%',mx:'Max x207',  p:[0.8501061,0.0798939,0.04,0.015,0.008,0.004,0.002,0.0005,0.0003,0.0002],m:[0,3.63,5.18,8.29,12.43,20.72,36.26,62.16,103.59,207.19]}
 ];
-const fmtEur=v=>KC.num(v,2);
+const fmtEur=v=>Number(v).toLocaleString(KC.loc(),{minimumFractionDigits:2,maximumFractionDigits:8});
 let bal=1000,mod=0,busy=false,fast=false,sndOn=true;
 let st={games:0,wins:0},hist=[];
 let activeRips=[];
@@ -996,12 +996,12 @@ function animate(bounces,done){
 
 /* ── GAME ──────────────────────────────────────────────────────── */
 function roll(){const mo=MODES[mod],r=Math.random();let cum=0;for(let i=0;i<mo.p.length;i++){cum+=mo.p[i];if(r<cum)return i;}return mo.p.length-1;}
-// Mise au centime près, jamais sous 0,01 €
-const MINBET=0.01,cents=v=>Math.round(v*100)/100,floorCents=v=>Math.max(0,Math.floor(v*100+1e-9)/100);
-function getBet(){const v=parseFloat(document.getElementById('bi').value.replace(',','.'));return Math.max(MINBET,isNaN(v)?MINBET:cents(v));}
+// Mise jamais sous 0,20 € ; gains non arrondis (8 décimales, comme les casinos crypto), donc RTP exact
+const MINBET=0.2,amt=v=>Math.round(v*1e8)/1e8,amtFloor=v=>Math.max(0,Math.floor(v*1e8+1e-3)/1e8);
+function getBet(){const v=parseFloat(document.getElementById('bi').value.replace(',','.'));return Math.max(MINBET,isNaN(v)?MINBET:amt(v));}
 document.getElementById('bi').addEventListener('change',()=>{document.getElementById('bi').value=getBet();});
-function adj(f){document.getElementById('bi').value=Math.max(MINBET,cents(getBet()*f));}
-function allIn(){document.getElementById('bi').value=Math.max(MINBET,floorCents(bal));}
+function adj(f){document.getElementById('bi').value=Math.max(MINBET,amt(getBet()*f));}
+function allIn(){document.getElementById('bi').value=Math.max(MINBET,amtFloor(bal));}
 function setUI(on){document.getElementById('lb').disabled=!on;document.getElementById('bi').disabled=!on;}
 function upd(){
   document.getElementById('bal').textContent=fmtEur(bal);
@@ -1019,10 +1019,10 @@ function toggleSnd(){sndOn=!sndOn;document.getElementById('sndBtn').textContent=
 function launch(){
   if(busy)return;
   const bet=getBet();
-  if(bet>bal){document.getElementById('bi').value=Math.max(MINBET,floorCents(bal));return;}
+  if(bet>bal){document.getElementById('bi').value=Math.max(MINBET,amtFloor(bal));return;}
   busy=true;setUI(false);ensureAC();
-  const mo=MODES[mod],b=roll(),mult=mo.m[b],pay=cents(bet*mult),win=mult>0;
-  bal=cents(bal-bet);upd();window.KCLive&&KCLive.spin();
+  const mo=MODES[mod],b=roll(),mult=mo.m[b],pay=amt(bet*mult),win=mult>0;
+  bal=amt(bal-bet);upd();window.KCLive&&KCLive.spin();
   animate(b,()=>{
     // Set result display AFTER animation ends
     const rm=document.getElementById('rm'),rs=document.getElementById('rs'),ro=document.getElementById('ro');
@@ -1031,7 +1031,7 @@ function launch(){
     lastRes={win,pay,bet};rs.textContent=win?'+'+fmtEur(pay-bet)+' €':'−'+fmtEur(bet)+' €';
     rs.className='rsub '+(win?'w':'l');
     ro.classList.add('show');
-    if(win){bal=cents(bal+pay);winSound(mult);}
+    if(win){bal=amt(bal+pay);winSound(mult);}
     st.games++;if(win)st.wins++;
     addHist(mult,win);upd();
     busy=false;setUI(true);idle();
@@ -1060,7 +1060,7 @@ buildDiff();
 const NC_KEY='nc_portfolio_balance';
 (function initBal(){
   const v=parseFloat(localStorage.getItem(NC_KEY));
-  if(!isNaN(v)&&v>0){bal=Math.round(v*100)/100;}
+  if(!isNaN(v)&&v>0){bal=amt(v);}
   upd();
 })();
 function saveBal(){localStorage.setItem(NC_KEY,bal);sessionStorage.setItem('nc_came_from_game','1');}
