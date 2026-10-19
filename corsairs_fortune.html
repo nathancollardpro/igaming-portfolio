@@ -296,7 +296,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:4px solid #ffe0
             <button class="fbuy" type="button" id="fIncred"><span data-i18n="b.buy">ACHETER</span><small id="fIncredP">500,00 €</small></button>
           </div>
         </div>
-        <button class="demo" type="button" id="demoMega" data-i18n="b.demo">Démo : forcer 5 barils, Mega Start (hors RTP)</button>
+        <button class="demo" type="button" id="demoMega" data-i18n="b.demo">Démo : forcer 5 barils, Mega Start (gratuit, gain non crédité)</button>
       </div>
     </div>
 
@@ -574,7 +574,7 @@ KC.add({
   'b.incredS':{fr:'Super bonus · 4 barils',en:'Super bonus · 4 barrels'},
   'b.incredD':{fr:"Pièces plus fortes, multiplicateurs ×3 à ×6, MEGA jusqu'à ×40.",en:'Bigger coins, multipliers ×3 to ×6, MEGA up to ×40.'},
   'b.buy':{fr:'ACHETER',en:'BUY'},
-  'b.demo':{fr:'Démo : forcer 5 barils, Mega Start (hors RTP)',en:'Demo: force 5 barrels, Mega Start (outside RTP)'},
+  'b.demo':{fr:'Démo : forcer 5 barils, Mega Start (gratuit, gain non crédité)',en:'Demo: force 5 barrels, Mega Start (free, win not credited)'},
   'c.title':{fr:'Confirmer',en:'Confirm'},
   'c.no':{fr:'Annuler',en:'Cancel'},
   'c.yes':{fr:'Acheter',en:'Buy'},
@@ -1857,9 +1857,11 @@ function slamStop(){if(!spinPhase)return;slammed=true;const now=performance.now(
   reels.forEach((R,i)=>{if(R.spinning&&!R.dur){R.stopAt=Math.min(R.stopAt,now+i*35);R.antic=false;R.baiting=false;}});}
 function noFunds(){capMood('sad',1600);capSay(KC.t('cf.noFunds'),2800);const el=document.getElementById('balV');el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');}
 
+let demoRun=false;   // démo forcée : ni mise débitée, ni gain crédité, hors statistiques
 async function play(force){
-  if(busy)return;closePanels();const bet=getBet(),c=cost();if(bal<c){noFunds();return;}
-  ac();busy=true;spinPhase=true;slammed=false;bal=Math.round((bal-c)*100)/100;stats.spins++;stats.wag+=c;saveBal();window.KCLive&&KCLive.spin();
+  if(busy)return;closePanels();const bet=getBet(),c=cost();demoRun=!!force;if(!demoRun&&bal<c){noFunds();return;}
+  ac();busy=true;spinPhase=true;slammed=false;
+  if(!demoRun){bal=Math.round((bal-c)*100)/100;stats.spins++;stats.wag+=c;saveBal();window.KCLive&&KCLive.spin();}
   showWins=null;winMsg=null;winCount=null;setWin(null);capMood(Math.random()<.125?'point':'watch');upd();
   const res=CF.spin(ante,rnd,force);                 // ← résultat complet figé avant l'animation
   const strips=ante?CF.STRIPS_A:CF.STRIPS_B,teaseF=[1,.8,.62][speedLvl];
@@ -1918,7 +1920,8 @@ async function buyBonus(type){
 }
 function finish(totalX,bet,c,isBonus){
   const won=Math.round(totalX*bet*100)/100;lastRoundWin=won;
-  bal=Math.round((bal+won)*100)/100;stats.won+=won;saveBal();setWin(won>0?won:null,won>0);
+  if(!demoRun){bal=Math.round((bal+won)*100)/100;stats.won+=won;saveBal();}
+  setWin(won>0?won:null,won>0);demoRun=false;
   busy=false;if(!CAP.until)capMood('idle');if(CAP.inHand&&!CAP.swAct)capSheathe();upd();
 }
 function waitFire(){return new Promise(r=>{fireResolve=r;upd();});}
@@ -2107,7 +2110,7 @@ function upd(){
   $('fBoostP').textContent=fmt(bet*P.ANTE_COST)+' € / spin';
   const fb=$('fBoost');fb.firstChild.nodeValue=KC.t(ante?'cf.deactivate':'cf.activate');fb.classList.toggle('on',ante);fb.disabled=busy;
   $('fSimpleP').textContent=fmt(bet*P.BUY_STD)+' €';$('fIncredP').textContent=fmt(bet*P.BUY_SUP)+' €';
-  $('fSimple').disabled=busy||bal<bet*P.BUY_STD;$('fIncred').disabled=busy||bal<bet*P.BUY_SUP;$('demoMega').disabled=busy||bal<cost();
+  $('fSimple').disabled=busy||bal<bet*P.BUY_STD;$('fIncred').disabled=busy||bal<bet*P.BUY_SUP;$('demoMega').disabled=busy;
   $('autoBtn').disabled=busy&&!AUTO.on;
   }
   $('sRtp').textContent=stats.wag?KC.dec((stats.won/stats.wag*100).toFixed(1))+KC.t('pct'):'—';
