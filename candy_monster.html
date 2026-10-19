@@ -52,7 +52,7 @@ canvas{display:block;width:100%;height:100%}
 .bwrap{display:flex;align-items:center;background:var(--bg);border:1px solid var(--bdr);border-radius:8px;padding:0 10px;height:40px;gap:6px;transition:border-color .15s}
 .bwrap:focus-within{border-color:rgba(0,231,1,.35)}
 .cur{font-size:12px;color:var(--dim)}
-input[type=number]{background:none;border:none;outline:none;color:#fff;font-size:14px;font-weight:700;font-family:'Inter',sans-serif;width:100%}
+input[type=number],#bi{background:none;border:none;outline:none;color:#fff;font-size:14px;font-weight:700;font-family:'Inter',sans-serif;width:100%}
 input[type=number]::-webkit-inner-spin-button{display:none}
 .bbtns{display:flex;gap:4px;margin-top:5px}
 .bbtn{flex:1;background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;color:var(--dim);font-size:11px;font-family:'Inter',sans-serif;padding:4px 0;cursor:pointer;transition:all .12s}
@@ -175,7 +175,7 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
     <div class="crow">
       <div class="cblk">
         <div class="clbl" data-i18n="ui.bet">Mise</div>
-        <div class="bwrap"><span class="cur">€</span><input type="number" id="bi" value="10" min="0.01" step="0.01" inputmode="decimal"></div>
+        <div class="bwrap"><span class="cur">€</span><input type="text" id="bi" value="10" inputmode="decimal" autocomplete="off"></div>
         <div class="bbtns">
           <button class="bbtn" onclick="adj(.5)">½</button>
           <button class="bbtn" onclick="adj(2)">×2</button>
@@ -942,7 +942,7 @@ function getBustProb(s){const b=MODES[mod].busts;return s<b.length?b[s]:b[b.leng
 
 // Mise au centime près, jamais sous 0,01 €
 const MINBET=0.01,cents=v=>Math.round(v*100)/100,floorCents=v=>Math.max(0,Math.floor(v*100+1e-9)/100);
-function getBet(){const v=parseFloat(document.getElementById('bi').value);return Math.max(MINBET,isNaN(v)?MINBET:cents(v));}
+function getBet(){const v=parseFloat(document.getElementById('bi').value.replace(',','.'));return Math.max(MINBET,isNaN(v)?MINBET:cents(v));}
 document.getElementById('bi').addEventListener('change',()=>{document.getElementById('bi').value=getBet();});
 function adj(f){document.getElementById('bi').value=Math.max(MINBET,cents(getBet()*f));}
 function allIn(){document.getElementById('bi').value=Math.max(MINBET,floorCents(bal));}
@@ -976,7 +976,7 @@ function onFeedClick(){
     // Start new game
     currentBet=getBet();
     if(currentBet>bal){document.getElementById('bi').value=Math.max(MINBET,floorCents(bal));return;}
-    bal-=currentBet;upd();window.KCLive&&KCLive.spin();
+    bal=cents(bal-currentBet);upd();window.KCLive&&KCLive.spin();
     phase='active';step=0;currentMult=1.0;
     document.getElementById('coBtn').disabled=false;
     document.getElementById('feedBtn').textContent=KC.t('ui.feedMore');
@@ -1007,8 +1007,8 @@ function finishFeed(){
   // Max atteint — gain automatique
   if(step>=maxStep){
     monState='win';createConfetti();playWin(currentMult);
-    const win=currentBet*currentMult;
-    bal+=win;
+    const win=cents(currentBet*currentMult);
+    bal=cents(bal+win);
     phase='cashedout';
     st.best=Math.max(st.best,win);
     st.games++;st.wins++;
@@ -1054,8 +1054,8 @@ function endBust(){
 
 function cashout(){
   if(phase!=='active'||step===0||busy)return;
-  const win=currentBet*currentMult;
-  bal+=win;
+  const win=cents(currentBet*currentMult);
+  bal=cents(bal+win);
   phase='cashedout';
   monState='win';createConfetti();
   playWin(currentMult);

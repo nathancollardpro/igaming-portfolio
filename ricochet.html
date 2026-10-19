@@ -49,7 +49,7 @@ canvas{display:block;width:100%;height:100%}
 .bwrap{display:flex;align-items:center;background:var(--bg);border:1px solid var(--bdr);border-radius:8px;padding:0 10px;height:40px;gap:6px;transition:border-color .15s}
 .bwrap:focus-within{border-color:rgba(0,231,1,.35)}
 .cur{font-size:12px;color:var(--dim);font-weight:500}
-input[type=number]{background:none;border:none;outline:none;color:#fff;font-size:14px;font-weight:700;font-family:'Inter',sans-serif;width:100%}
+input[type=number],#bi{background:none;border:none;outline:none;color:#fff;font-size:14px;font-weight:700;font-family:'Inter',sans-serif;width:100%}
 input[type=number]::-webkit-inner-spin-button{display:none}
 .bbtns{display:flex;gap:4px;margin-top:5px}
 .bbtn{flex:1;background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;color:var(--dim);font-size:11px;font-family:'Inter',sans-serif;padding:4px 0;cursor:pointer;transition:background .12s,color .12s}
@@ -184,7 +184,7 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
     <div class="crow">
       <div class="cblk">
         <div class="clbl" data-i18n="ui.bet">Mise</div>
-        <div class="bwrap"><span class="cur">€</span><input type="number" id="bi" value="10" min="0.01" step="0.01" inputmode="decimal"></div>
+        <div class="bwrap"><span class="cur">€</span><input type="text" id="bi" value="10" inputmode="decimal" autocomplete="off"></div>
         <div class="bbtns">
           <button class="bbtn" onclick="adj(.5)">½</button>
           <button class="bbtn" onclick="adj(2)">×2</button>
@@ -998,7 +998,7 @@ function animate(bounces,done){
 function roll(){const mo=MODES[mod],r=Math.random();let cum=0;for(let i=0;i<mo.p.length;i++){cum+=mo.p[i];if(r<cum)return i;}return mo.p.length-1;}
 // Mise au centime près, jamais sous 0,01 €
 const MINBET=0.01,cents=v=>Math.round(v*100)/100,floorCents=v=>Math.max(0,Math.floor(v*100+1e-9)/100);
-function getBet(){const v=parseFloat(document.getElementById('bi').value);return Math.max(MINBET,isNaN(v)?MINBET:cents(v));}
+function getBet(){const v=parseFloat(document.getElementById('bi').value.replace(',','.'));return Math.max(MINBET,isNaN(v)?MINBET:cents(v));}
 document.getElementById('bi').addEventListener('change',()=>{document.getElementById('bi').value=getBet();});
 function adj(f){document.getElementById('bi').value=Math.max(MINBET,cents(getBet()*f));}
 function allIn(){document.getElementById('bi').value=Math.max(MINBET,floorCents(bal));}
@@ -1021,8 +1021,8 @@ function launch(){
   const bet=getBet();
   if(bet>bal){document.getElementById('bi').value=Math.max(MINBET,floorCents(bal));return;}
   busy=true;setUI(false);ensureAC();
-  const mo=MODES[mod],b=roll(),mult=mo.m[b],pay=bet*mult,win=mult>0;
-  bal-=bet;upd();window.KCLive&&KCLive.spin();
+  const mo=MODES[mod],b=roll(),mult=mo.m[b],pay=cents(bet*mult),win=mult>0;
+  bal=cents(bal-bet);upd();window.KCLive&&KCLive.spin();
   animate(b,()=>{
     // Set result display AFTER animation ends
     const rm=document.getElementById('rm'),rs=document.getElementById('rs'),ro=document.getElementById('ro');
@@ -1031,7 +1031,7 @@ function launch(){
     lastRes={win,pay,bet};rs.textContent=win?'+'+fmtEur(pay-bet)+' €':'−'+fmtEur(bet)+' €';
     rs.className='rsub '+(win?'w':'l');
     ro.classList.add('show');
-    if(win){bal+=pay;winSound(mult);}
+    if(win){bal=cents(bal+pay);winSound(mult);}
     st.games++;if(win)st.wins++;
     addHist(mult,win);upd();
     busy=false;setUI(true);idle();

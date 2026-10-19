@@ -51,7 +51,7 @@ canvas{display:block;width:100%;height:100%}
 .bwrap{display:flex;align-items:center;background:var(--bg);border:1px solid var(--bdr);border-radius:8px;padding:0 10px;height:40px;gap:6px;transition:border-color .15s}
 .bwrap:focus-within{border-color:rgba(0,231,1,.35)}
 .cur{font-size:12px;color:var(--dim)}
-input[type=number]{background:none;border:none;outline:none;color:#fff;font-size:14px;font-weight:700;font-family:'Inter',sans-serif;width:100%}
+input[type=number],#bi{background:none;border:none;outline:none;color:#fff;font-size:14px;font-weight:700;font-family:'Inter',sans-serif;width:100%}
 input[type=number]::-webkit-inner-spin-button{display:none}
 .bbtns{display:flex;gap:4px;margin-top:5px}
 .bbtn{flex:1;background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;color:var(--dim);font-size:11px;font-family:'Inter',sans-serif;padding:4px 0;cursor:pointer;transition:all .12s}
@@ -234,7 +234,7 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
     <div class="crow">
       <div class="cblk">
         <div class="clbl" data-i18n="ui.bet">Mise</div>
-        <div class="bwrap"><span class="cur">€</span><input type="number" id="bi" value="10" min="0.01" step="0.01" inputmode="decimal"></div>
+        <div class="bwrap"><span class="cur">€</span><input type="text" id="bi" value="10" inputmode="decimal" autocomplete="off"></div>
         <div class="bbtns">
           <button class="bbtn" onclick="adj(.5)">½</button>
           <button class="bbtn" onclick="adj(2)">×2</button>
@@ -404,7 +404,7 @@ function anyGuessPossible(){for(let p=0;p<NP;p++){const P=piles[p];if(P.length>=
 /* ── MISES ──────────────────────────────────────────────────── */
 // Mise au centime près, jamais sous 0,01 €
 const MINBET=0.01,cents=v=>Math.round(v*100)/100,floorCents=v=>Math.max(0,Math.floor(v*100+1e-9)/100);
-function getBet(){const v=parseFloat($('bi').value);return Math.max(MINBET,isNaN(v)?MINBET:cents(v));}
+function getBet(){const v=parseFloat($('bi').value.replace(',','.'));return Math.max(MINBET,isNaN(v)?MINBET:cents(v));}
 $('bi').addEventListener('change',()=>{$('bi').value=getBet();updMain();});
 function adj(f){if(phase==='run')return;$('bi').value=Math.max(MINBET,cents(getBet()*f));upd();}
 function allIn(){if(phase==='run')return;$('bi').value=Math.max(MINBET,floorCents(bal));upd();}
