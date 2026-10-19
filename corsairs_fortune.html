@@ -371,10 +371,10 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:4px solid #ffe0
             <div><span data-i18n="n.max">Gain max</span><strong data-i18n="n.maxv">×15 000</strong></div>
             <div><span data-i18n="n.vol">Volatilité</span><strong data-i18n="n.volv">Élevée</strong></div>
             <div><span>Bonus</span><strong>1 / 266 spins</strong></div>
-            <div><span data-i18n="n.withBoost">Avec scatter augmenté</span><strong>1 / 163 spins</strong></div>
+            <div><span data-i18n="n.withBoost">Avec scatter augmenté</span><strong>1 / 173 spins</strong></div>
             <div><span data-i18n="n.session">RTP de la session</span><strong id="sRtp">—</strong></div>
           </div>
-          <p style="margin-top:16px" data-i18n="n.foot">Volatilité affichée en éclairs : écart-type des gains rapporté à la mise de base. Le RTP du jeu de base est calculé exactement ; ceux des bonus sont mesurés sur 1 million de simulations par type.</p>
+          <p style="margin-top:16px" data-i18n="n.foot">Volatilité affichée en éclairs : écart-type des gains rapporté à la mise de base. Le RTP du jeu de base est calculé exactement ; ceux des bonus sont mesurés par simulation (3 millions de bonus Simple, 2 millions de bonus Incredible, 600 000 Mega Start).</p>
           <a class="back" href="GDD_CorsairsFortune.pdf" target="_blank" rel="noopener" data-i18n="n.gdd">Lire le GDD (PDF)</a>
           <a class="back" style="margin-left:24px" href="index.html#projets" data-i18n="n.back">← Retour au portfolio de Nathan Collard</a>
         </div>
@@ -627,8 +627,8 @@ KC.add({
   'n.volv':{fr:'Élevée',en:'High'},
   'n.withBoost':{fr:'Avec scatter augmenté',en:'With Scatter Boost'},
   'n.session':{fr:'RTP de la session',en:'Session RTP'},
-  'n.foot':{fr:'Volatilité affichée en éclairs : écart-type des gains rapporté à la mise de base. Le RTP du jeu de base est calculé exactement ; ceux des bonus sont mesurés sur 1 million de simulations par type.',
-            en:'Volatility shown as lightning bolts: standard deviation of wins relative to the base bet. The base game RTP is calculated exactly; bonus RTPs are measured over 1 million simulations per type.'},
+  'n.foot':{fr:'Volatilité affichée en éclairs : écart-type des gains rapporté à la mise de base. Le RTP du jeu de base est calculé exactement ; ceux des bonus sont mesurés par simulation (3 millions de bonus Simple, 2 millions de bonus Incredible, 600 000 Mega Start).',
+            en:'Volatility shown as lightning bolts: standard deviation of wins relative to the base bet. The base game RTP is calculated exactly; bonus RTPs are measured by simulation (3 million Simple, 2 million Incredible and 600,000 Mega Start bonuses).'},
   'n.gdd':{fr:'Lire le GDD (PDF)',en:'Read the GDD (PDF)'},
   'n.back':{fr:'← Retour au portfolio de Nathan Collard',en:"← Back to Nathan Collard's portfolio"},
   // canvas et messages
@@ -1623,8 +1623,8 @@ function drawReels(c,t){
 }
 function drawBaseScene(c,t){
   drawHold(c,t);drawLogo(c,t);
-  const g=L.gmax;if(L===LAYOUTS.land){plaque(c,g.x,g.y,g.w,KC.t('cf.maxWin'),KC.t('cf.maxv'),'#f2c14e');plaque(c,g.x,g.y+92,g.w,'BONUS',ante?'1 / 163 SPINS':'1 / 266 SPINS','#ffb36b');}
-  else plaque(c,g.x,g.y,g.w,KC.t('cf.maxWin')+' · BONUS',KC.t('cf.maxv')+(ante?' · 1/163':' · 1/266'),'#f2c14e');
+  const g=L.gmax;if(L===LAYOUTS.land){plaque(c,g.x,g.y,g.w,KC.t('cf.maxWin'),KC.t('cf.maxv'),'#f2c14e');}
+  else plaque(c,g.x,g.y,g.w,KC.t('cf.maxWin'),KC.t('cf.maxv'),'#f2c14e');
   // zoom léger pendant le tease
   const tz=teaseOn?easeOutCubic(Math.min(1,(t-teaseT0)/600)):0,zs=1+.025*tz;
   c.save();const cx=GX+CW*2.5,cy=GY+CH*1.5;c.translate(cx,cy);c.scale(zs,zs);c.translate(-cx,-cy);
