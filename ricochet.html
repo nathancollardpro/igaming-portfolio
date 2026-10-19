@@ -385,6 +385,9 @@ function genScene(){
     const tx=lX+lRX*dist*Math.cos(baseA);
     const ty=lY+lRY*dist*Math.sin(baseA);
     if(tx<8||tx>W-8||ty<H*.10||ty>H-4)continue;
+    // Keep every tree base on the ground, below the front hill line (sky ends at H*.21)
+    const hY=H*.21;
+    if(ty<hY*.90-Math.sin(tx/W*Math.PI*2.6+.4)*hY*.38+H*.02)continue;
     const h=rnd(22,60)*(H/270);
     treeData.push({x:tx,y:ty,h,type:Math.random()>.42?'pine':'round',phase:rnd(0,Math.PI*2),seed:Math.random()});
   }
