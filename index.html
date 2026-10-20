@@ -17,6 +17,7 @@
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://nathancollardpro.github.io/igaming-portfolio/">
 <meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="en_GB">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -140,8 +141,8 @@ header{display:flex;align-items:center;justify-content:space-between;gap:.75rem;
 
 /* ── PROJETS ── */
 .proj-hero{padding:2.4rem var(--pad) 2.2rem;border-bottom:1px solid var(--bdr);display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:2.5rem;align-items:center}
-@media(max-width:980px){.proj-hero{grid-template-columns:1fr}.who{display:none}}
 .who{background:var(--bg2);border-radius:14px;padding:1.4rem;display:grid;grid-template-columns:84px 1fr;gap:1rem 1.1rem;align-items:center}
+@media(max-width:980px){.proj-hero{grid-template-columns:1fr}.who{display:none}}
 .who img{width:84px;height:84px;border-radius:10px;object-fit:cover;border:2px solid var(--acc)}
 .who-name{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:900;color:#fff;text-transform:uppercase;line-height:1}
 .who-role{font-size:.88rem;color:var(--acc);margin-top:.3rem}
@@ -212,7 +213,7 @@ footer a:hover{color:var(--acc)}
 <header>
   <a class="logo-area" href="#projets" onclick="switchTab('projets');return false;">
     <span class="logo-name">Nathan Collard</span>
-    <span class="logo-role">Game Designer iGaming</span>
+    <span class="logo-role" data-i18n="logo.role">Game Designer iGaming</span>
   </a>
   <div class="bal-wrap">
     <div class="live-chip" data-live="online" hidden data-i18n-attr="title:live.title"><span class="live-dot" aria-hidden="true"></span><b data-n>0</b><span class="lbl-long" data-i18n-pl="live.online.pl" data-i18n-sg="live.online.sg">joueurs en ligne</span></div>
@@ -465,9 +466,10 @@ KC.add({
   'edu.bac':{fr:'Baccalauréat Scientifique',en:'French Baccalauréat, Science track'},
   'edu.bac.school':{fr:'Lycée la Martinière Duchère — 2016 / 2017',en:'Lycée la Martinière Duchère, Lyon — 2016 / 2017'},
   'hero.h1a':{fr:'iGaming',en:'iGaming'},
+  'logo.role':{fr:'Game Designer iGaming',en:'iGaming Game Designer'},
   'hero.h1b':{fr:'démontré en direct',en:'shown, not told'},
   'hero.p':{fr:"Game designer spécialisé en économie de jeu et en maths de casino, je cherche un poste de game designer dans un studio iGaming. Chaque jeu ci-dessous illustre des mécaniques iGaming réelles — RTP, house edge, cash-out, courbes de risque.",
-            en:"Game designer specialised in game economies and casino maths, I'm looking for a game designer role at an iGaming studio. Every game below demonstrates real iGaming mechanics — RTP, house edge, cash-out, risk curves."},
+            en:"As a game designer specialised in game economies and casino maths, I'm looking for a game designer role at an iGaming studio. Every game below demonstrates real iGaming mechanics — RTP, house edge, cash-out, risk curves."},
   'cta.mail':{fr:'Me contacter',en:'Contact me'},
   'cta.subject':{fr:'Contact depuis votre portfolio',en:'Contact from your portfolio'},
   'cta.path':{fr:'Mon parcours',en:'My background'},
@@ -486,8 +488,8 @@ KC.add({
   'f.mech':{fr:'Mécanique',en:'Mechanic'},
   'f.max':{fr:'Gain max',en:'Max win'},
   'f.vol':{fr:'Volatilité',en:'Volatility'},
-  'g.ricochet.desc':{fr:"Un galet ricoche sur le lac : chaque rebond fait grimper le multiplicateur. Quatre modes de risque, du ×4,44 au ×207, tous calibrés autour de 98 % de RTP.",
-                     en:'A stone skips across the lake: every bounce raises the multiplier. Four risk modes, from ×4.44 to ×207, all calibrated around 98% RTP.'},
+  'g.ricochet.desc':{fr:"Un galet ricoche sur le lac : plus il rebondit, plus le multiplicateur est haut. Quatre modes de risque, du ×4,44 au ×207,19, tous à 98 % de RTP exact.",
+                     en:'A stone skips across the lake: the more it bounces, the higher the multiplier. Four risk modes, from ×4.44 to ×207.19, all at exactly 98% RTP.'},
   'g.ricochet.mech':{fr:'Multiplicateur à rebonds',en:'Bounce multiplier'},
   'g.candy.desc':{fr:"Nourris le monstre bonbon après bonbon pour faire monter le multiplicateur, et encaisse avant qu'il ne recrache tout. Un cash-out à risque croissant en quatre modes.",
                   en:'Feed the monster one sweet at a time to push the multiplier up, and cash out before he spits it all back. A rising-risk cash-out game in four modes.'},
@@ -495,9 +497,9 @@ KC.add({
   'g.corsair.desc':{fr:"Machine à sous 243 ways dans la cale d'un navire pirate, avec un capitaine qui réagit à chaque tirage. Les bonus Simple Treasure et Incredible Treasure se jouent au canon.",
                     en:"A 243-ways slot in the hold of a pirate ship, with a captain who reacts to every spin. The Simple Treasure and Incredible Treasure bonuses are played with a cannon."},
   'g.corsair.mech':{fr:'Slot + Hold & Win',en:'Slot + Hold & Win'},
-  'g.hilo.desc':{fr:"Quatre piles de cartes : choisis la tienne, annonce plus haut ou plus bas, encaisse quand tu veux.",
-                 en:'Four card piles: pick yours, call higher or lower, cash out whenever you like.'},
-  'g.hilo.mech':{fr:'Plus haut / plus bas sur 4 piles',en:'Higher / lower on 4 piles'},
+  'g.hilo.desc':{fr:"Quatre piles de cartes : choisis la tienne, annonce plus haut, égal ou plus bas, encaisse quand tu veux.",
+                 en:'Four card piles: pick yours, call higher, same or lower, cash out whenever you like.'},
+  'g.hilo.mech':{fr:'Plus haut / égal / plus bas sur 4 piles',en:'Higher / same / lower on 4 piles'},
   'g.hilo.vol':{fr:'Au choix du joueur',en:"Player's choice"},
   'g.soon.name':{fr:'Prochain jeu',en:'Next game'},
   'g.soon.desc':{fr:'En conception.',en:'In design.'},
@@ -537,9 +539,9 @@ document.querySelector('.tabs-nav').addEventListener('keydown',e=>{
 // ── JEUX : deux catégories, mini-jeux et machines à sous ──
 const GAMES=[
   {id:'ricochet',cat:'mini',url:'ricochet.html',name:'Ricochet',rtp:'98',img:'vitrine_ricochet.jpg',
-   facts:[['f.mech','g.ricochet.mech'],['f.max','×207'],['f.vol','vol.lowext']],gdd:'GDD_Ricochet.pdf'},
+   facts:[['f.mech','g.ricochet.mech'],['f.max',['×207,19','×207.19']],['f.vol','vol.lowext']],gdd:'GDD_Ricochet.pdf'},
   {id:'candy',cat:'mini',url:'candy_monster.html',name:'Candy Monster',rtp:'98',img:'vitrine_candy.jpg',
-   facts:[['f.mech','g.candy.mech'],['f.max',['×181 060','×181,060']],['f.vol','vol.lowext']],gdd:'GDD_CandyMonster.pdf'},
+   facts:[['f.mech','g.candy.mech'],['f.max',['×181 060,88','×181,060.88']],['f.vol','vol.lowext']],gdd:'GDD_CandyMonster.pdf'},
   {id:'hilo',cat:'mini',url:'hilo_cards.html',name:'Hi-Lo Highway',rtp:'98',img:'vitrine_hilo.jpg',
    facts:[['f.mech','g.hilo.mech'],['f.max',['×10 000','×10,000']],['f.vol','g.hilo.vol']],gdd:'GDD_HiLoHighway.pdf'},
   {id:'soon',cat:'mini',url:null,name:null,rtp:null,img:null,facts:[],gdd:null},

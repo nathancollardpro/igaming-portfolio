@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ricochet — jeu iGaming de Nathan Collard</title>
-<meta name="description" content="Ricochet : un galet ricoche sur le lac et chaque rebond fait grimper le multiplicateur. Quatre modes de risque, jusqu'à ×207, RTP 98 %.">
+<meta name="description" content="Ricochet : un galet ricoche sur le lac et plus il rebondit, plus le multiplicateur est haut. Quatre modes de risque, jusqu'à ×207,19, RTP 98 %.">
 <meta name="theme-color" content="#0b1622">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <script src="i18n.js"></script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ricochet — un jeu de Nathan Collard">
-<meta property="og:description" content="Ricochet : un galet ricoche sur le lac et chaque rebond fait grimper le multiplicateur. Quatre modes de risque, jusqu'à ×207, RTP 98 %.">
+<meta property="og:description" content="Ricochet : un galet ricoche sur le lac et plus il rebondit, plus le multiplicateur est haut. Quatre modes de risque, jusqu'à ×207,19, RTP 98 %.">
 <meta property="og:image" content="https://nathancollardpro.github.io/igaming-portfolio/vitrine_ricochet.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <style>
@@ -212,7 +212,7 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
   </div>
 </div>
 <section class="grules" aria-label="Règles et chiffres" data-i18n-attr="aria-label:r.aria">
-<dl class="gfacts"><div><dt>RTP</dt><dd data-i18n="r.rtpv">98 %</dd></div><div><dt data-i18n="r.max">Gain max</dt><dd>×207</dd></div><div><dt data-i18n="r.vol">Volatilité</dt><dd data-i18n="r.volv">Faible à extrême</dd></div><div><dt data-i18n="r.modes">Modes</dt><dd>4</dd></div></dl>
+<dl class="gfacts"><div><dt>RTP</dt><dd data-i18n="r.rtpv">98 %</dd></div><div><dt data-i18n="r.max">Gain max</dt><dd data-i18n="r.maxv">×207,19</dd></div><div><dt data-i18n="r.vol">Volatilité</dt><dd data-i18n="r.volv">Faible à extrême</dd></div><div><dt data-i18n="r.modes">Modes</dt><dd>4</dd></div></dl>
 <div><h2 data-i18n="r.how">Comment jouer</h2>
 <p data-i18n="r.p1">Choisis ta mise et un mode de risque, puis lance le galet. Le nombre de rebonds est tiré avant le lancer, et l'animation ne fait que le montrer. Chaque rebond correspond au multiplicateur du tableau ; si le galet coule sans rebondir, la mise est perdue.</p>
 <p data-i18n-html="r.p2"><b>Pari rapide</b> accélère l'animation. Raccourci : <kbd>Espace</kbd> pour lancer.</p></div>
@@ -226,7 +226,8 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
 // ── TEXTES FR / EN ──
 KC.add({
   'meta.title':{fr:'Ricochet — jeu iGaming de Nathan Collard',en:'Ricochet — an iGaming game by Nathan Collard'},
-  'meta.desc':{fr:"Ricochet : un galet ricoche sur le lac et chaque rebond fait grimper le multiplicateur. Quatre modes de risque, jusqu'à ×207, RTP 98 %.",en:'Ricochet: a stone skips across the lake and every bounce raises the multiplier. Four risk modes, up to ×207, 98% RTP.'},
+  'r.maxv':{fr:'×207,19',en:'×207.19'},
+  'meta.desc':{fr:"Ricochet : un galet ricoche sur le lac et plus il rebondit, plus le multiplicateur est haut. Quatre modes de risque, jusqu'à ×207,19, RTP 98 %.",en:'Ricochet: a stone skips across the lake and the more it bounces, the higher the multiplier. Four risk modes, up to ×207.19, 98% RTP.'},
   'nav.back':{fr:'← Tous les jeux',en:'← All games'},
   'live.title':{fr:'Visiteurs sur le site en ce moment (compteur réel)',en:'Visitors on the site right now (real count)'},
   'live.online.pl':{fr:'joueurs en ligne',en:'players online'},
@@ -270,7 +271,7 @@ const MODES=[
   {n:'Facile',   i:'Perte 40%',mx:'Max x4.44', p:[0.3998387,0.3201613,0.16,0.08,0.03,0.01],             m:[0,1.24,1.65,2.27,3.10,4.44]},
   {n:'Moyen',    i:'Perte 55%',mx:'Max x25',   p:[0.552963,0.217037,0.12,0.06,0.03,0.015,0.004,0.001],   m:[0,1.35,1.80,2.65,4.20,7.00,14.00,25.00]},
   {n:'Difficile',i:'Perte 70%',mx:'Max x75',   p:[0.7015957,0.1484043,0.08,0.04,0.02,0.007,0.002,0.001],   m:[0,1.88,2.75,4.15,6.50,10.00,20.00,75.00]},
-  {n:'Expert',   i:'Perte 85%',mx:'Max x207',  p:[0.8501061,0.0798939,0.04,0.015,0.008,0.004,0.002,0.0005,0.0003,0.0002],m:[0,3.63,5.18,8.29,12.43,20.72,36.26,62.16,103.59,207.19]}
+  {n:'Expert',   i:'Perte 85%',mx:'Max x207.19',  p:[0.8501061,0.0798939,0.04,0.015,0.008,0.004,0.002,0.0005,0.0003,0.0002],m:[0,3.63,5.18,8.29,12.43,20.72,36.26,62.16,103.59,207.19]}
 ];
 const fmtEur=v=>Number(v).toLocaleString(KC.loc(),{minimumFractionDigits:2,maximumFractionDigits:8});
 let bal=1000,mod=0,busy=false,fast=false,sndOn=true;

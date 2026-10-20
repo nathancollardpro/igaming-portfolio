@@ -23,7 +23,7 @@
     fetch(API,{method:'POST',headers:{'content-type':'text/plain'},body:body,keepalive:true,cache:'no-store'})
       .then(function(r){if(!r.ok)throw 0;return r.json();}).then(render).catch(function(){pending+=s;});}
   window.KCLive={spin:function(n){pending+=(n||1);},on:function(f){subs.push(f);if(last)f(last);},refresh:function(){if(last)render(last);}};
-  if(location.protocol==='file:')return;
+  if(location.protocol==='file:'||/github\.io$/.test(location.hostname))return; // pas de serveur /api/live sur GitHub Pages
   send();setInterval(function(){if(!document.hidden)send();},25000);
   document.addEventListener('visibilitychange',function(){if(!document.hidden)send();});
   window.addEventListener('pagehide',function(){send(true);});
