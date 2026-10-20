@@ -29,7 +29,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-he
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.25rem;border-bottom:1px solid var(--bdr);background:var(--bg)}
 .balgrp{display:flex;align-items:center;gap:10px}
 .ballbl{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em}
-.balval{font-size:15px;font-weight:700;color:#fff}
+.balval{font-size:15px;font-weight:700;color:#fff;white-space:nowrap}
 .balval span{color:var(--grn)}
 .snd{background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;padding:4px 10px;font-size:11px;color:var(--dim);cursor:pointer;font-family:'Inter',sans-serif;transition:background .12s,color .12s}
 .snd:hover{background:var(--bg4);color:var(--txt)}
@@ -53,6 +53,7 @@ input[type=number],#bi{background:none;border:none;outline:none;color:#fff;font-
 input[type=number]::-webkit-inner-spin-button{display:none}
 .bbtns{display:flex;gap:4px;margin-top:5px}
 .bbtn{flex:1;background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;color:var(--dim);font-size:11px;font-family:'Inter',sans-serif;padding:4px 0;cursor:pointer;transition:background .12s,color .12s}
+.funds{font-size:11px;line-height:1.35;color:#ff6b6b;margin:4px 0 2px}
 .bbtn:hover{background:var(--bg4);color:var(--txt)}
 .dgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;position:relative}
 .dbtn{background:var(--bg);border:1px solid var(--bdr);border-radius:8px;padding:7px 4px;text-align:center;cursor:pointer;transition:all .12s}
@@ -185,6 +186,7 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
       <div class="cblk">
         <div class="clbl" data-i18n="ui.bet">Mise</div>
         <div class="bwrap"><span class="cur">€</span><input type="text" id="bi" value="10" inputmode="decimal" autocomplete="off"></div>
+        <div class="funds" id="fundsMsg" hidden data-i18n="m.funds">Solde insuffisant : recharge depuis le portfolio.</div>
         <div class="bbtns">
           <button class="bbtn" onclick="adj(.5)">½</button>
           <button class="bbtn" onclick="adj(2)">×2</button>
@@ -236,6 +238,7 @@ KC.add({
   'g.cvAria':{fr:'Le lac de Ricochet : le galet, ses rebonds et le résultat',en:'The Ricochet lake: the stone, its bounces and the result'},
   'ui.balance':{fr:'Balance',en:'Balance'},
   'ui.sndOn':{fr:'Son ON',en:'Sound ON'},
+  'm.funds':{fr:'Solde insuffisant : recharge depuis le portfolio.',en:'Not enough balance: top up from the portfolio.'},
   'ui.sndOff':{fr:'Son OFF',en:'Sound OFF'},
   'ui.bet':{fr:'Mise',en:'Bet'},
   'ui.diff':{fr:'Difficulté',en:'Difficulty'},
@@ -998,11 +1001,17 @@ function animate(bounces,done){
 /* ── GAME ──────────────────────────────────────────────────────── */
 function roll(){const mo=MODES[mod],r=Math.random();let cum=0;for(let i=0;i<mo.p.length;i++){cum+=mo.p[i];if(r<cum)return i;}return mo.p.length-1;}
 // Mise jamais sous 0,20 € ; gains non arrondis (8 décimales, comme les casinos crypto), donc RTP exact
-const MINBET=0.2,amt=v=>Math.round(v*1e8)/1e8,amtFloor=v=>Math.max(0,Math.floor(v*1e8+1e-3)/1e8);
-function getBet(){const v=parseFloat(document.getElementById('bi').value.replace(',','.'));return Math.max(MINBET,isNaN(v)?MINBET:amt(v));}
-document.getElementById('bi').addEventListener('change',()=>{document.getElementById('bi').value=getBet();});
-function adj(f){document.getElementById('bi').value=Math.max(MINBET,amt(getBet()*f));}
-function allIn(){document.getElementById('bi').value=Math.max(MINBET,amtFloor(bal));}
+const MINBET=0.2,amt=v=>Math.round(v*1e8)/1e8;
+// Lit « 400,35 », « 1 000,50 » ou « 1,000.50 » : espaces retirés ; si virgule et point sont présents, le dernier est la décimale.
+function parseAmt(s){s=String(s).replace(/[\s\u00a0\u202f]/g,'');const c=s.lastIndexOf(','),d=s.lastIndexOf('.');
+  if(c>=0&&d>=0)s=c>d?s.replace(/\./g,'').replace(',','.'):s.replace(/,/g,'');
+  else if((s.match(/[.,]/g)||[]).length>1)s=s.replace(/[.,]/g,'');else s=s.replace(',','.');return parseFloat(s);}
+const showBet=v=>isFinite(v)&&document.documentElement.lang==='fr'?String(v).replace('.',','):String(v);
+function getBet(){const v=parseAmt(document.getElementById('bi').value);return Math.max(MINBET,isNaN(v)?MINBET:amt(v));}
+document.getElementById('bi').addEventListener('change',()=>{document.getElementById('bi').value=showBet(getBet());});
+let fundsTid;function noFunds(){const e=document.getElementById('fundsMsg');e.hidden=false;clearTimeout(fundsTid);fundsTid=setTimeout(()=>{e.hidden=true;},4000);}
+function adj(f){document.getElementById('bi').value=showBet(Math.max(MINBET,amt(getBet()*f)));}
+function allIn(){document.getElementById('bi').value=showBet(Math.max(MINBET,bal));}
 function setUI(on){document.getElementById('lb').disabled=!on;document.getElementById('bi').disabled=!on;}
 function upd(){
   document.getElementById('bal').textContent=fmtEur(bal);
@@ -1020,7 +1029,7 @@ function toggleSnd(){sndOn=!sndOn;document.getElementById('sndBtn').textContent=
 function launch(){
   if(busy)return;
   const bet=getBet();
-  if(bet>bal){document.getElementById('bi').value=Math.max(MINBET,amtFloor(bal));return;}
+  if(bet>bal){document.getElementById('bi').value=showBet(Math.max(MINBET,bal));noFunds();return;}
   busy=true;setUI(false);ensureAC();
   const mo=MODES[mod],b=roll(),mult=mo.m[b],pay=amt(bet*mult),win=mult>0;
   bal=amt(bal-bet);upd();window.KCLive&&KCLive.spin();
@@ -1061,7 +1070,7 @@ buildDiff();
 const NC_KEY='nc_portfolio_balance';
 (function initBal(){
   const v=parseFloat(localStorage.getItem(NC_KEY));
-  if(!isNaN(v)&&v>0){bal=amt(v);}
+  if(!isNaN(v)&&v>=MINBET){bal=amt(v);}
   upd();
 })();
 function saveBal(){localStorage.setItem(NC_KEY,bal);sessionStorage.setItem('nc_came_from_game','1');}

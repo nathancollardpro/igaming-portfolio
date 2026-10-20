@@ -510,7 +510,7 @@ KC.add({
 // ── BALANCE ──
 const NC_KEY='nc_portfolio_balance',INIT=1000;
 function getBal(){try{const v=parseFloat(localStorage.getItem(NC_KEY));return isNaN(v)?INIT:v;}catch(e){return INIT;}}
-var fmtBal=function(v){return KC.num(v,2);};
+var fmtBal=function(v){return Number(v).toLocaleString(KC.loc(),{minimumFractionDigits:2,maximumFractionDigits:8});};
 function setBal(v){try{localStorage.setItem(NC_KEY,v);}catch(e){}document.getElementById('balVal').textContent=fmtBal(v);}
 function reloadBal(){var v=getBal()+INIT;setBal(v);showToast(KC.t('bal.reloaded',{v:fmtBal(v)}));}
 function resetBal(){setBal(INIT);showToast(KC.t('bal.wasreset'));}

@@ -792,8 +792,8 @@ function setBonusGeom(){const b=L.bonus;BC=b.BC;BG=b.BG;BX0=b.BX0;BY0=b.BY0;POT=
 function stageTransform(c){c.setTransform(DPR*SCALE,0,0,DPR*SCALE,DPR*OX,DPR*OY);}
 
 // ═════════════════════════ SOLDE PARTAGÉ ═════════════════════════
-const NC_KEY='nc_portfolio_balance';
-(function initBal(){try{const v=parseFloat(localStorage.getItem(NC_KEY));if(!isNaN(v)&&v>0){bal=Math.round(v*100)/100;}}catch(e){}})();
+const NC_KEY='nc_portfolio_balance',amt=v=>Math.round(v*1e8)/1e8;   // même précision que les 3 autres jeux (8 décimales)
+(function initBal(){try{const v=parseFloat(localStorage.getItem(NC_KEY));if(!isNaN(v)&&v>0){bal=amt(v);}}catch(e){}})();
 function saveBal(){try{localStorage.setItem(NC_KEY,bal);sessionStorage.setItem('nc_came_from_game','1');}catch(e){}}
 window.addEventListener('beforeunload',saveBal);
 document.getElementById('lobbyBtn').addEventListener('click',e=>{e.preventDefault();saveBal();window.location.href='index.html#projets';});
@@ -1861,7 +1861,7 @@ let demoRun=false;   // démo forcée : ni mise débitée, ni gain crédité, ho
 async function play(force){
   if(busy)return;closePanels();const bet=getBet(),c=cost();demoRun=!!force;if(!demoRun&&bal<c){noFunds();return;}
   ac();busy=true;spinPhase=true;slammed=false;
-  if(!demoRun){bal=Math.round((bal-c)*100)/100;stats.spins++;stats.wag+=c;saveBal();window.KCLive&&KCLive.spin();}
+  if(!demoRun){bal=amt(bal-c);stats.spins++;stats.wag+=c;saveBal();window.KCLive&&KCLive.spin();}
   showWins=null;winMsg=null;winCount=null;setWin(null);capMood(Math.random()<.125?'point':'watch');upd();
   const res=CF.spin(ante,rnd,force);                 // ← résultat complet figé avant l'animation
   const strips=ante?CF.STRIPS_A:CF.STRIPS_B,teaseF=[1,.8,.62][speedLvl];
@@ -1900,7 +1900,7 @@ async function play(force){
   if(totalX>=15)await showBig(totalX,bet);
   if(res.bonus){
     if(AUTO.on&&AUTO.cfg.bonus)stopAuto('bonus');
-    stats.bonus++;upd();
+    if(!demoRun)stats.bonus++;upd();
     winMsg={txt:KC.t('cf.trig'+(res.ns===5?5:res.ns===4?4:3)),col:'#ff8c3c',force:true};
     capJoy(2600);sfx.roar();
     await wait(1700);
@@ -1910,7 +1910,7 @@ async function play(force){
 }
 async function buyBonus(type){
   if(busy)return;const bet=getBet(),c=Math.round(bet*(type==='std'?P.BUY_STD:P.BUY_SUP)*100)/100;if(bal<c){noFunds();return;}
-  closePanels();ac();busy=true;bal=Math.round((bal-c)*100)/100;stats.wag+=c;stats.bonus++;saveBal();window.KCLive&&KCLive.spin();
+  closePanels();ac();busy=true;bal=amt(bal-c);stats.wag+=c;stats.bonus++;saveBal();window.KCLive&&KCLive.spin();
   showWins=null;winMsg=null;winCount=null;setWin(null);upd();
   sfx.buy();capMood('happy',2000);capSay(pickLine('buy'),2200,'buy');CAP.flap=performance.now()+1400;
   const B=CF.bonus(type,rnd);                        // ← bonus complet figé avant l'animation
@@ -1919,9 +1919,9 @@ async function buyBonus(type){
   finish(B.x,bet,c,true);
 }
 function finish(totalX,bet,c,isBonus){
-  const won=Math.round(totalX*bet*100)/100;lastRoundWin=won;
-  if(!demoRun){bal=Math.round((bal+won)*100)/100;stats.won+=won;saveBal();}
-  setWin(won>0?won:null,won>0);demoRun=false;
+  const won=amt(totalX*bet);lastRoundWin=won;
+  if(!demoRun){bal=amt(bal+won);stats.won+=won;saveBal();}
+  setWin(won>0?won:null,won>0&&!demoRun);demoRun=false;
   busy=false;if(!CAP.until)capMood('idle');if(CAP.inHand&&!CAP.swAct)capSheathe();upd();
 }
 function waitFire(){return new Promise(r=>{fireResolve=r;upd();});}
