@@ -247,7 +247,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:4px solid #ffe0
 
     <div id="hud">
       <div class="hud-grp g-left">
-        <a class="rbtn" id="lobbyBtn" href="index.html#projets" aria-label="Retour au portfolio" data-i18n-attr="aria-label:h.lobby"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></a>
+        <a class="rbtn" id="lobbyBtn" href="index.html#igaming" aria-label="Retour au portfolio" data-i18n-attr="aria-label:h.lobby"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></a>
         <button class="rbtn" id="optBtn" type="button" aria-haspopup="dialog" aria-label="Options son et vitesse" data-i18n-attr="aria-label:h.optAria"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <button class="rbtn" id="infoBtn" type="button" aria-haspopup="dialog" aria-label="Règles et table des gains" data-i18n-attr="aria-label:h.infoAria"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg></button>
       </div>
@@ -376,7 +376,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:4px solid #ffe0
           </div>
           <p style="margin-top:16px" data-i18n="n.foot">Volatilité affichée en éclairs : écart-type des gains rapporté à la mise de base. Le RTP du jeu de base est calculé exactement ; ceux des bonus sont mesurés par simulation (3 millions de bonus Simple, 2 millions de bonus Incredible, 600 000 Mega Start).</p>
           <a class="back" href="GDD_CorsairsFortune.pdf" target="_blank" rel="noopener" data-i18n="n.gdd">Lire le GDD (PDF)</a>
-          <a class="back" style="margin-left:24px" href="index.html#projets" data-i18n="n.back">← Retour au portfolio de Nathan Collard</a>
+          <a class="back" style="margin-left:24px" href="index.html#igaming" data-i18n="n.back">← Retour au portfolio de Nathan Collard</a>
         </div>
       </div>
     </div>
@@ -796,7 +796,7 @@ const NC_KEY='nc_portfolio_balance',amt=v=>Math.round(v*1e8)/1e8;   // même pr�
 (function initBal(){try{const v=parseFloat(localStorage.getItem(NC_KEY));if(!isNaN(v)&&v>0){bal=amt(v);}}catch(e){}})();
 function saveBal(){try{localStorage.setItem(NC_KEY,bal);sessionStorage.setItem('nc_came_from_game','1');}catch(e){}}
 window.addEventListener('beforeunload',saveBal);
-document.getElementById('lobbyBtn').addEventListener('click',e=>{e.preventDefault();saveBal();window.location.href='index.html#projets';});
+document.getElementById('lobbyBtn').addEventListener('click',e=>{e.preventDefault();saveBal();window.location.href='index.html#igaming';});
 
 // ═════════════════════════ PRÉFÉRENCES ═════════════════════════
 const OPTS={music:60,sfx:80,speed:0};

@@ -211,7 +211,7 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
 </head>
 <body>
 <nav class="gnav" aria-label="Navigation">
-  <a id="backBtn" href="index.html#projets" onclick="saveAndBack(event)" data-i18n="nav.back">← Tous les jeux</a>
+  <a id="backBtn" href="index.html#igaming" onclick="saveAndBack(event)" data-i18n="nav.back">← Tous les jeux</a>
   <span class="glive" data-live="online" hidden data-i18n-attr="title:live.title"><i class="ldot" aria-hidden="true"></i><b data-n>0</b> <em data-i18n-pl="live.online.pl" data-i18n-sg="live.online.sg">joueurs en ligne</em></span>
   <span>Nathan Collard · Game Designer</span>
   <div data-lang-switch></div>
@@ -456,7 +456,7 @@ function toggleSnd(){sndOn=!sndOn;$('sndBtn').textContent=KC.t(sndOn?'ui.sndOn':
 const NC_KEY='nc_portfolio_balance';
 (function initBal(){try{const v=parseFloat(localStorage.getItem(NC_KEY));if(!isNaN(v)&&v>=MINBET)bal=amt(v);}catch(e){}})();
 function saveBal(){try{localStorage.setItem(NC_KEY,bal);}catch(e){}}
-function saveAndBack(e){e.preventDefault();saveBal();try{sessionStorage.setItem('nc_came_from_game','1');}catch(_){}window.location.href='index.html';}
+function saveAndBack(e){e.preventDefault();saveBal();try{sessionStorage.setItem('nc_came_from_game','1');}catch(_){}window.location.href='index.html#igaming';}
 window.addEventListener('beforeunload',saveBal);
 $('bi').addEventListener('input',()=>updMain());
 document.addEventListener('keydown',e=>{if(e.repeat)return;const a=document.activeElement;if(a&&/^(INPUT|BUTTON|A|SELECT|TEXTAREA)$/.test(a.tagName))return;

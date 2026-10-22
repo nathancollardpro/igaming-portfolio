@@ -155,7 +155,7 @@ button.dbtn{font-family:inherit;color:inherit;width:100%}
 </head>
 <body>
 <nav class="gnav" aria-label="Navigation">
-  <a id="backBtn" href="index.html#projets" onclick="saveAndBack(event)" data-i18n="nav.back">← Tous les jeux</a>
+  <a id="backBtn" href="index.html#igaming" onclick="saveAndBack(event)" data-i18n="nav.back">← Tous les jeux</a>
   <span class="glive" data-live="online" hidden data-i18n-attr="title:live.title"><i class="ldot" aria-hidden="true"></i><b data-n>0</b> <em data-i18n-pl="live.online.pl" data-i18n-sg="live.online.sg">joueurs en ligne</em></span>
   <span>Nathan Collard · Game Designer</span>
   <div data-lang-switch></div>
@@ -1074,7 +1074,7 @@ const NC_KEY='nc_portfolio_balance';
   upd();
 })();
 function saveBal(){localStorage.setItem(NC_KEY,bal);sessionStorage.setItem('nc_came_from_game','1');}
-function saveAndBack(e){e.preventDefault();saveBal();window.location.href='index.html';}
+function saveAndBack(e){e.preventDefault();saveBal();window.location.href='index.html#igaming';}
 window.addEventListener('beforeunload',saveBal);
 
 // ── Tableau des probabilités du mode choisi ──

@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nathan Collard — Game Designer iGaming</title>
-<meta name="description" content="Nathan Collard, game designer iGaming. Quatre jeux de casino originaux jouables dans le navigateur — Ricochet, Candy Monster, Hi-Lo Highway, Corsair's Fortune — avec leurs maths et leurs GDD.">
+<title>Nathan Collard — Game Designer</title>
+<meta name="description" content="Nathan Collard, game designer spécialisé en économie de jeu et en maths : 2+ ans en jeu mobile F2P (F1 Mobile Racing, Paradox Interactive) et quatre jeux iGaming originaux jouables dans le navigateur.">
 <meta name="theme-color" content="#0f1923">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <script src="i18n.js"></script>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Nathan Collard — Game Designer">
-<meta property="og:title" content="Nathan Collard — Game Designer iGaming">
-<meta property="og:description" content="Quatre jeux de casino originaux, jouables dans le navigateur, avec leurs maths et leurs GDD.">
+<meta property="og:title" content="Nathan Collard — Game Designer">
+<meta property="og:description" content="Game designer, économie de jeu et maths : projets mobiles F2P et quatre jeux iGaming originaux jouables dans le navigateur.">
 <meta property="og:image" content="https://nathancollardpro.github.io/igaming-portfolio/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -140,16 +140,7 @@ header{display:flex;align-items:center;justify-content:space-between;gap:.75rem;
 .edu-val{font-size:.9rem;font-weight:600;color:var(--acc);margin-top:.15rem}
 
 /* ── PROJETS ── */
-.proj-hero{padding:2.4rem var(--pad) 2.2rem;border-bottom:1px solid var(--bdr);display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:2.5rem;align-items:center}
-.who{background:var(--bg2);border-radius:14px;padding:1.4rem;display:grid;grid-template-columns:84px 1fr;gap:1rem 1.1rem;align-items:center}
-@media(max-width:980px){.proj-hero{grid-template-columns:1fr}.who{display:none}}
-.who img{width:84px;height:84px;border-radius:10px;object-fit:cover;border:2px solid var(--acc)}
-.who-name{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:900;color:#fff;text-transform:uppercase;line-height:1}
-.who-role{font-size:.88rem;color:var(--acc);margin-top:.3rem}
-.who ul{grid-column:1/-1;list-style:none;display:flex;flex-direction:column;gap:.55rem;border-top:1px solid var(--bdr);padding-top:1rem}
-.who li{display:flex;justify-content:space-between;gap:1rem;font-size:.88rem;color:var(--txt)}
-.who li b{color:#fff;font-weight:600}
-.who li span{color:var(--dim);white-space:nowrap}
+.proj-hero{padding:2.4rem var(--pad) 2.2rem;border-bottom:1px solid var(--bdr);display:grid;grid-template-columns:minmax(0,1fr);gap:2.5rem;align-items:center}
 .proj-h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(2.4rem,6vw,4rem);font-weight:900;color:#fff;line-height:.95;letter-spacing:.01em;text-transform:uppercase}
 .proj-h1 span{color:var(--acc)}
 .proj-p{margin-top:1rem;font-size:1.02rem;color:var(--txt);max-width:620px;line-height:1.65}
@@ -189,6 +180,38 @@ a.game-card:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 18px 44px 
   .card-rtp{font-size:.62rem;top:.4rem;right:.4rem;padding:.15rem .45rem}
 }
 
+
+/* ── ACCUEIL ── */
+.home-hero{padding:2.6rem var(--pad) 2rem;border-bottom:1px solid var(--bdr)}
+.home-grid{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2rem;align-items:center;max-width:1100px}
+@media(max-width:620px){.home-grid{grid-template-columns:1fr;gap:1.3rem}}
+.home-photo{width:132px;height:132px;border-radius:14px;object-fit:cover;border:2px solid var(--acc);display:block}
+.home-p{margin-top:1rem;font-size:1.02rem;color:var(--txt);max-width:680px;line-height:1.65}
+.doors{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;padding:2rem var(--pad) .6rem;max-width:1100px}
+@media(max-width:700px){.doors{grid-template-columns:1fr}}
+.door{display:flex;flex-direction:column;background:var(--bg2);border:1px solid var(--bdr);border-radius:14px;overflow:hidden;text-decoration:none;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.door:hover{transform:translateY(-3px);border-color:rgba(255,214,0,.45);box-shadow:0 16px 40px rgba(0,0,0,.45)}
+.door-img{height:150px;overflow:hidden;background:#0b131c;display:flex}
+.door-img img{flex:1;min-width:0;height:100%;object-fit:cover;display:block}
+.door-body{padding:1.1rem 1.2rem 1.25rem;display:flex;flex-direction:column;gap:.45rem;flex:1}
+.door-kicker{font-size:.78rem;color:var(--dim);letter-spacing:.04em}
+.door-title{font-family:'Barlow Condensed',sans-serif;font-size:1.7rem;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:.02em;line-height:1}
+.door-desc{font-size:.93rem;line-height:1.55;color:var(--txt)}
+.door-go{margin-top:auto;padding-top:.5rem;font-weight:700;font-size:.9rem;color:var(--acc)}
+.home-tags{padding-top:1.4rem}
+
+/* ── JEU VIDÉO ── */
+.jv-list{display:flex;flex-direction:column;gap:2.4rem;padding:1.8rem var(--pad) 3rem;max-width:1100px}
+.jv-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:.3rem 1rem;margin-top:1rem}
+.jv-name{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:.02em;line-height:1.05}
+.jv-role{font-size:.9rem;color:var(--acc);font-weight:600}
+.jv-sub{margin-top:1.2rem;font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.04em}
+.jv-sub small{font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:500;color:var(--dim);text-transform:none;letter-spacing:0}
+.tl-meta{font-size:.88rem;color:var(--dim);margin-top:.3rem}
+.tl-link{display:inline-block;margin-top:.5rem;font-size:.88rem;font-weight:600;color:var(--acc);text-decoration:none}
+.tl-link:hover{text-decoration:underline}
+body:not([data-tab="igaming"]) .bal-wrap{display:none}
+
 /* TOAST */
 .toast{position:fixed;bottom:1.4rem;right:1.4rem;left:auto;background:var(--bg3);border:1px solid rgba(255,214,0,.3);border-radius:9px;padding:.7rem 1rem;font-size:.85rem;color:var(--acc);transform:translateY(60px);opacity:0;transition:transform .28s ease,opacity .28s ease;z-index:200;pointer-events:none}
 .toast.show{transform:none;opacity:1}
@@ -211,9 +234,9 @@ footer a:hover{color:var(--acc)}
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <header>
-  <a class="logo-area" href="#projets" onclick="switchTab('projets');return false;">
+  <a class="logo-area" href="#accueil" onclick="switchTab('accueil');return false;">
     <span class="logo-name">Nathan Collard</span>
-    <span class="logo-role" data-i18n="logo.role">Game Designer iGaming</span>
+    <span class="logo-role" data-i18n="logo.role">Game Designer · jeu vidéo &amp; iGaming</span>
   </a>
   <div class="bal-wrap">
     <div class="live-chip" data-live="online" hidden data-i18n-attr="title:live.title"><span class="live-dot" aria-hidden="true"></span><b data-n>0</b><span class="lbl-long" data-i18n-pl="live.online.pl" data-i18n-sg="live.online.sg">joueurs en ligne</span></div>
@@ -229,34 +252,54 @@ footer a:hover{color:var(--acc)}
 
 <div class="subbar">
   <nav class="tabs-nav" role="tablist" aria-label="Sections">
-    <button class="tab-btn" role="tab" id="t-moi" aria-controls="tab-moi" aria-selected="false" onclick="switchTab('moi')" data-i18n="tab.moi">Moi</button>
-    <button class="tab-btn" role="tab" id="t-exp" aria-controls="tab-exp" aria-selected="false" onclick="switchTab('exp')" data-i18n="tab.exp">Exp&eacute;riences</button>
-    <button class="tab-btn" role="tab" id="t-projets" aria-controls="tab-projets" aria-selected="true" onclick="switchTab('projets')" data-i18n="tab.projets">Projets</button>
+    <button class="tab-btn" role="tab" id="t-accueil" aria-controls="tab-accueil" aria-selected="true" onclick="switchTab('accueil')" data-i18n="tab.accueil">Accueil</button>
+    <button class="tab-btn" role="tab" id="t-jv" aria-controls="tab-jv" aria-selected="false" onclick="switchTab('jv')" data-i18n="tab.jv">Jeu vidéo</button>
+    <button class="tab-btn" role="tab" id="t-igaming" aria-controls="tab-igaming" aria-selected="false" onclick="switchTab('igaming')" data-i18n="tab.igaming">iGaming</button>
+    <button class="tab-btn" role="tab" id="t-parcours" aria-controls="tab-parcours" aria-selected="false" onclick="switchTab('parcours')" data-i18n="tab.parcours">Parcours</button>
   </nav>
   <div data-lang-switch></div>
 </div>
 
 <main>
-<!-- ══ MOI ══════════════════════════════════════ -->
-<section id="tab-moi" class="tab-panel" role="tabpanel" aria-labelledby="t-moi">
-  <div class="moi-hero">
-    <div class="moi-grid">
-      <img class="moi-photo" src="photo_nathan.jpg" width="120" height="120" data-i18n-attr="alt:photo.alt" alt="Portrait de Nathan Collard">
+<!-- ══ ACCUEIL ══════════════════════════════════ -->
+<section id="tab-accueil" class="tab-panel active" role="tabpanel" aria-labelledby="t-accueil">
+  <div class="home-hero">
+    <div class="home-grid">
+      <img class="home-photo" src="photo_nathan.jpg" width="132" height="132" data-i18n-attr="alt:photo.alt" alt="Portrait de Nathan Collard">
       <div>
-        <h2 class="moi-name">Game Designer<br><span>Nathan Collard</span></h2>
-        <p class="moi-title" data-i18n="moi.place">Paray-le-Monial, France · Permis B</p>
-        <div class="moi-contact">
-          <a href="mailto:nathancollardpro@hotmail.com"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>nathancollardpro@hotmail.com</a>
-          <a href="https://linkedin.com/in/collard-nathan" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>LinkedIn</a>
+        <h1 class="proj-h1"><b class="h1a">Nathan Collard</b><br><span data-i18n="home.h1b">Game designer</span></h1>
+        <p class="moi-title" data-i18n="home.tag">Économie de jeu &amp; maths · 2+ ans d'expérience</p>
+        <p class="home-p" data-i18n="moi.about">Game Designer avec 2+ ans d'expérience en jeu mobile F2P, et des maths de casino démontrées sur des jeux originaux. Passionné par l'économie de jeu, l'équilibrage mathématique et la création de mécaniques engageantes. Je conçois des systèmes qui allient tension, lisibilité et rétention — du GDD à la calibration RTP.</p>
+        <div class="proj-cta">
+      <a class="btn btn-primary" id="ctaMail" href="mailto:nathancollardpro@hotmail.com?subject=Contact%20depuis%20votre%20portfolio"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span data-i18n="cta.mail">Me contacter</span></a>
+          <a class="btn btn-ghost" href="https://linkedin.com/in/collard-nathan" target="_blank" rel="noopener">LinkedIn</a>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="moi-about">
-    <p data-i18n="moi.about">Game Designer avec 2+ ans d'expérience en jeu mobile F2P, et des maths de casino démontrées sur des jeux originaux. Passionné par l'économie de jeu, l'équilibrage mathématique et la création de mécaniques engageantes. Je conçois des systèmes qui allient tension, lisibilité et rétention — du GDD à la calibration RTP.</p>
+  <div class="doors">
+    <a class="door" href="#jeu-video" onclick="switchTab('jv');return false;">
+      <div class="door-img"><img src="banner_f1.jpg" alt="" width="900" height="92" style="object-position:left center"></div>
+      <div class="door-body">
+        <span class="door-kicker" data-i18n="door.jv.k">2 projets mobiles F2P · en studio</span>
+        <h2 class="door-title" data-i18n="tab.jv">Jeu vidéo</h2>
+        <p class="door-desc" data-i18n="door.jv.d">F1 Mobile Racing (Eden Games × EA / Codemasters) et un nouveau projet Playrion × Paradox Interactive : onboarding, game feel, économie live-ops, systèmes de récompenses.</p>
+        <span class="door-go" data-i18n="door.jv.go">Voir les projets →</span>
+      </div>
+    </a>
+    <a class="door" href="#igaming" onclick="switchTab('igaming');return false;">
+      <div class="door-img"><img src="vitrine_ricochet.jpg" alt="" width="600" height="800"><img src="vitrine_candy.jpg" alt="" width="600" height="800"><img src="vitrine_hilo.jpg" alt="" width="600" height="800"><img src="vitrine_corsair.jpg" alt="" width="600" height="800"></div>
+      <div class="door-body">
+        <span class="door-kicker" data-i18n="door.ig.k">4 jeux originaux · jouables ici</span>
+        <h2 class="door-title" data-i18n="tab.igaming">iGaming</h2>
+        <p class="door-desc" data-i18n="door.ig.d">Trois mini-jeux et une machine à sous, conçus et calculés de A à Z : RTP, volatilité, cash-out, avec leurs GDD et leurs maths.</p>
+        <span class="door-go" data-i18n="door.ig.go">Jouer aux jeux →</span>
+      </div>
+    </a>
   </div>
 
+  <div class="home-tags">
   <div class="moi-new-grid">
     <div class="tag-block">
       <h2 data-i18n="moi.skills">Expertises</h2>
@@ -289,19 +332,19 @@ footer a:hover{color:var(--acc)}
       </div>
     </div>
   </div>
+  </div>
 </section>
 
-<!-- ══ EXPÉRIENCES ══════════════════════════════ -->
-<section id="tab-exp" class="tab-panel" role="tabpanel" aria-labelledby="t-exp">
-  <div class="exp-section">
-    <h2 data-i18n="tab.exp">Exp&eacute;riences</h2>
-    <div class="timeline">
-
-      <!-- PLAYRION / PARADOX -->
-      <div class="timeline-item">
-        <div class="tl-dot-col" aria-hidden="true"><div class="tl-dot"></div><div class="tl-line"></div></div>
-        <div>
-          <h3 class="tl-role" data-i18n="exp.p.role">Game Designer — 2025 / 2026</h3>
+<!-- ══ JEU VIDÉO ════════════════════════════════ -->
+<section id="tab-jv" class="tab-panel" role="tabpanel" aria-labelledby="t-jv">
+  <div class="proj-hero">
+    <div>
+      <h1 class="proj-h1"><b class="h1a" data-i18n="tab.jv">Jeu vidéo</b><br><span data-i18n="jv.h1b">en studio</span></h1>
+      <p class="proj-p" data-i18n="jv.p">Deux projets mobiles F2P, sur Android et iOS : un jeu de course sous licence officielle et un nouveau projet sur lequel j'étais le seul game designer.</p>
+    </div>
+  </div>
+  <div class="jv-list">
+    <article>
           <div class="exp-banner">
             <img src="banner_paradox.jpg" width="900" height="134" alt="Paradox Interactive × Playrion" loading="lazy">
             <div class="exp-banner-footer">
@@ -309,6 +352,7 @@ footer a:hover{color:var(--acc)}
               <span class="exp-platform">Android &bull; iOS</span>
             </div>
           </div>
+      <div class="jv-head"><h2 class="jv-name" data-i18n="jv.p.name">Projet mobile non annoncé</h2><span class="jv-role" data-i18n="exp.p.role">Game Designer — 2025 / 2026</span></div>
           <ul class="tl-bullets">
             <li data-i18n="exp.p.0">Seul game designer du nouveau projet du studio</li>
             <li data-i18n="exp.p.1">Rédaction et maintenance de Game Design Documents complets</li>
@@ -317,14 +361,8 @@ footer a:hover{color:var(--acc)}
             <li data-i18n="exp.p.4">Analyses de données et simulations</li>
             <li data-i18n="exp.p.5">Collaboration avec des équipes pluridisciplinaires</li>
           </ul>
-        </div>
-      </div>
-
-      <!-- EDEN GAMES -->
-      <div class="timeline-item">
-        <div class="tl-dot-col" aria-hidden="true"><div class="tl-dot"></div></div>
-        <div>
-          <h3 class="tl-role" data-i18n="exp.e.role">Game Designer — 2023 / 2024</h3>
+    </article>
+    <article>
           <div class="exp-banner">
             <img src="banner_f1.jpg" width="900" height="92" alt="F1 Mobile Racing" loading="lazy">
             <div class="exp-banner-footer">
@@ -332,58 +370,30 @@ footer a:hover{color:var(--acc)}
               <span class="exp-platform">F1 Mobile Racing &bull; Android &bull; iOS</span>
             </div>
           </div>
+      <div class="jv-head"><h2 class="jv-name">F1 Mobile Racing</h2><span class="jv-role" data-i18n="exp.e.role">Game Designer — 2023 / 2024</span></div>
           <ul class="tl-bullets">
             <li data-i18n="exp.e.1">Refonte de l'onboarding de F1 Mobile Racing pour réduire le churn du funnel d'introduction</li>
             <li data-i18n="exp.e.2">Refonte de fonctionnalités clés du core gameplay pour améliorer le game feel</li>
             <li data-i18n="exp.e.3">Amélioration de l'accessibilité et de l'UX pour élargir l'audience mobile</li>
             <li data-i18n="exp.e.4">Conception de l'économie de la saison live-ops 2023</li>
           </ul>
-          <div class="tl-sub">
-            <h3 class="tl-role"><span data-i18n="exp.a.role">Assistant Game Designer — 2023</span> <small data-i18n="exp.a.intern">(stage)</small></h3>
+      <h3 class="jv-sub"><span data-i18n="exp.a.role">Assistant Game Designer — 2023</span> <small data-i18n="exp.a.intern">(stage)</small></h3>
             <ul class="tl-bullets">
               <li data-i18n="exp.a.1">Intégration des données live-ops pour les mises à jour de contenu</li>
               <li data-i18n="exp.a.2">Équilibrage des courbes de difficulté des défis pour optimiser la progression</li>
               <li data-i18n="exp.a.3">Collaboration avec les équipes QA et dev pour le débogage</li>
             </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <h2 style="margin-top:.5rem" data-i18n="edu.title">Formation</h2>
-    <div class="edu-item">
-      <h3 class="edu-degree" data-i18n="edu.ba">Bachelor Game Design &amp; Production</h3>
-      <p class="edu-school" data-i18n="edu.ba.school">Game Sup — École supérieure des métiers du jeu vidéo — 2019 / 2023</p>
-      <p class="edu-val" data-i18n="edu.ba.val">Major de promotion</p>
-    </div>
-    <div class="edu-item">
-      <h3 class="edu-degree" data-i18n="edu.bac">Baccalauréat Scientifique</h3>
-      <p class="edu-school" data-i18n="edu.bac.school">Lycée la Martinière Duchère — 2016 / 2017</p>
-    </div>
+    </article>
   </div>
 </section>
 
-<!-- ══ PROJETS ══════════════════════════════════ -->
-<section id="tab-projets" class="tab-panel active" role="tabpanel" aria-labelledby="t-projets">
+<!-- ══ iGAMING ══════════════════════════════════ -->
+<section id="tab-igaming" class="tab-panel" role="tabpanel" aria-labelledby="t-igaming">
   <div class="proj-hero">
     <div>
     <h1 class="proj-h1"><b class="h1a" data-i18n="hero.h1a">iGaming</b><br><span data-i18n="hero.h1b">démontré en direct</span></h1>
-    <p class="proj-p" data-i18n="hero.p">Game designer spécialisé en économie de jeu et en maths de casino, je cherche un poste de game designer dans un studio iGaming. Chaque jeu ci-dessous illustre des mécaniques iGaming réelles — RTP, house edge, cash-out, courbes de risque.</p>
-    <div class="proj-cta">
-      <a class="btn btn-primary" id="ctaMail" href="mailto:nathancollardpro@hotmail.com?subject=Contact%20depuis%20votre%20portfolio"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span data-i18n="cta.mail">Me contacter</span></a>
-      <a class="btn btn-ghost" href="https://linkedin.com/in/collard-nathan" target="_blank" rel="noopener">LinkedIn</a>
-      <a class="btn btn-ghost" href="#experiences" onclick="switchTab('exp');return false;" data-i18n="cta.path">Mon parcours</a>
+    <p class="proj-p" data-i18n="hero.p">Quatre jeux de casino originaux, que j'ai conçus, calculés et développés. Chaque jeu illustre des mécaniques iGaming réelles — RTP, house edge, cash-out, courbes de risque — et se joue ici avec un solde fictif.</p>
     </div>
-    </div>
-    <aside class="who" data-i18n-attr="aria-label:who.aria" aria-label="En bref">
-      <img src="photo_nathan.jpg" width="84" height="84" data-i18n-attr="alt:photo.alt" alt="Portrait de Nathan Collard">
-      <div><div class="who-name">Nathan Collard</div><div class="who-role" data-i18n="who.role">Game Designer · 2+ ans d'expérience</div></div>
-      <ul>
-        <li><b>Playrion × Paradox Interactive</b><span>2025 – 2026</span></li>
-        <li><b>Eden Games × EA / Codemasters</b><span>2023 – 2024</span></li>
-        <li><b data-i18n="who.school">Game Sup, major de promotion</b><span>2019 – 2023</span></li>
-      </ul>
-    </aside>
   </div>
   <div class="proj-section">
     <div class="sec-head">
@@ -400,6 +410,65 @@ footer a:hover{color:var(--acc)}
     <div class="game-grid" id="gridSlots"></div>
   </div>
 </section>
+
+<!-- ══ PARCOURS ═════════════════════════════════ -->
+<section id="tab-parcours" class="tab-panel" role="tabpanel" aria-labelledby="t-parcours">
+  <div class="moi-hero">
+    <div class="moi-grid">
+      <img class="moi-photo" src="photo_nathan.jpg" width="120" height="120" data-i18n-attr="alt:photo.alt" alt="Portrait de Nathan Collard">
+      <div>
+        <h2 class="moi-name">Game Designer<br><span>Nathan Collard</span></h2>
+        <p class="moi-title" data-i18n="moi.place">Paray-le-Monial, France · Permis B</p>
+        <div class="moi-contact">
+          <a href="mailto:nathancollardpro@hotmail.com"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>nathancollardpro@hotmail.com</a>
+          <a href="https://linkedin.com/in/collard-nathan" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="exp-section">
+    <h2 data-i18n="tab.exp">Exp&eacute;riences</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="tl-dot-col" aria-hidden="true"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div>
+          <h3 class="tl-role" data-i18n="exp.p.role">Game Designer — 2025 / 2026</h3>
+          <p class="tl-meta">Playrion × Paradox Interactive · Android &bull; iOS</p>
+          <p class="tl-meta" data-i18n="exp.p.0">Seul game designer du nouveau projet du studio</p>
+          <a class="tl-link" href="#jeu-video" onclick="switchTab('jv');return false;" data-i18n="tl.see">Voir le projet →</a>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-dot-col" aria-hidden="true"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div>
+          <h3 class="tl-role" data-i18n="exp.e.role">Game Designer — 2023 / 2024</h3>
+          <p class="tl-meta">Eden Games × EA / Codemasters · F1 Mobile Racing</p>
+          <h3 class="tl-role" style="margin-top:.8rem;font-size:1.05rem;color:#fff"><span data-i18n="exp.a.role">Assistant Game Designer — 2023</span> <small data-i18n="exp.a.intern">(stage)</small></h3>
+          <a class="tl-link" href="#jeu-video" onclick="switchTab('jv');return false;" data-i18n="tl.see">Voir le projet →</a>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-dot-col" aria-hidden="true"><div class="tl-dot"></div></div>
+        <div>
+          <h3 class="tl-role" data-i18n="exp.ig.role">Portfolio iGaming — 2026</h3>
+          <p class="tl-meta" data-i18n="exp.ig.meta">Projet personnel : 4 jeux originaux, maths et GDD</p>
+          <a class="tl-link" href="#igaming" onclick="switchTab('igaming');return false;" data-i18n="tl.play">Voir les jeux →</a>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="margin-top:.5rem" data-i18n="edu.title">Formation</h2>
+    <div class="edu-item">
+      <h3 class="edu-degree" data-i18n="edu.ba">Bachelor Game Design &amp; Production</h3>
+      <p class="edu-school" data-i18n="edu.ba.school">Game Sup — École supérieure des métiers du jeu vidéo — 2019 / 2023</p>
+      <p class="edu-val" data-i18n="edu.ba.val">Major de promotion</p>
+    </div>
+    <div class="edu-item">
+      <h3 class="edu-degree" data-i18n="edu.bac">Baccalauréat Scientifique</h3>
+      <p class="edu-school" data-i18n="edu.bac.school">Lycée la Martinière Duchère — 2016 / 2017</p>
+    </div>
+  </div>
+</section>
 </main>
 
 <footer>
@@ -414,9 +483,9 @@ footer a:hover{color:var(--acc)}
 <script>
 // ── TEXTES FR / EN ──
 KC.add({
-  'meta.title':{fr:'Nathan Collard — Game Designer iGaming',en:'Nathan Collard — iGaming Game Designer'},
-  'meta.desc':{fr:"Nathan Collard, game designer iGaming. Quatre jeux de casino originaux jouables dans le navigateur — Ricochet, Candy Monster, Hi-Lo Highway, Corsair's Fortune — avec leurs maths et leurs GDD.",
-               en:"Nathan Collard, iGaming game designer. Four original casino games playable in the browser — Ricochet, Candy Monster, Hi-Lo Highway, Corsair's Fortune — with their maths and GDDs."},
+  'meta.title':{fr:'Nathan Collard — Game Designer',en:'Nathan Collard — Game Designer'},
+  'meta.desc':{fr:"Nathan Collard, game designer spécialisé en économie de jeu et en maths : 2+ ans en jeu mobile F2P (F1 Mobile Racing, Paradox Interactive) et quatre jeux iGaming originaux jouables dans le navigateur.",
+               en:"Nathan Collard, game designer specialised in game economies and maths: 2+ years in mobile F2P (F1 Mobile Racing, Paradox Interactive) and four original iGaming games playable in the browser."},
   'live.title':{fr:'Visiteurs sur le site en ce moment (compteur réel)',en:'Visitors on the site right now (real count)'},
   'live.online.pl':{fr:'joueurs en ligne',en:'players online'},
   'live.online.sg':{fr:'joueur en ligne',en:'player online'},
@@ -430,9 +499,29 @@ KC.add({
   'bal.reloaded':{fr:'+1 000 € chargés — Solde : {v} €',en:'+1,000 € added — Balance: {v} €'},
   'bal.wasreset':{fr:'Solde réinitialisé à 1 000 €',en:'Balance reset to 1,000 €'},
   'bal.back':{fr:'Solde récupéré : {v} €',en:'Balance carried over: {v} €'},
-  'tab.moi':{fr:'Moi',en:'About'},
+  'tab.accueil':{fr:'Accueil',en:'Home'},
+  'tab.jv':{fr:'Jeu vidéo',en:'Video games'},
+  'tab.igaming':{fr:'iGaming',en:'iGaming'},
+  'tab.parcours':{fr:'Parcours',en:'Background'},
   'tab.exp':{fr:'Expériences',en:'Experience'},
-  'tab.projets':{fr:'Projets',en:'Projects'},
+  'home.h1b':{fr:'Game designer',en:'Game designer'},
+  'home.tag':{fr:"Économie de jeu & maths · 2+ ans d'expérience",en:'Game economies & maths · 2+ years of experience'},
+  'door.jv.k':{fr:'2 projets mobiles F2P · en studio',en:'2 mobile F2P projects · in studio'},
+  'door.jv.d':{fr:'F1 Mobile Racing (Eden Games × EA / Codemasters) et un nouveau projet Playrion × Paradox Interactive : onboarding, game feel, économie live-ops, systèmes de récompenses.',
+               en:'F1 Mobile Racing (Eden Games × EA / Codemasters) and a new Playrion × Paradox Interactive project: onboarding, game feel, live-ops economy, reward systems.'},
+  'door.jv.go':{fr:'Voir les projets →',en:'See the projects →'},
+  'door.ig.k':{fr:'4 jeux originaux · jouables ici',en:'4 original games · playable here'},
+  'door.ig.d':{fr:'Trois mini-jeux et une machine à sous, conçus et calculés de A à Z : RTP, volatilité, cash-out, avec leurs GDD et leurs maths.',
+               en:'Three mini-games and a slot, designed and calculated end to end: RTP, volatility, cash-out, with their GDDs and maths.'},
+  'door.ig.go':{fr:'Jouer aux jeux →',en:'Play the games →'},
+  'jv.h1b':{fr:'en studio',en:'in studio'},
+  'jv.p':{fr:"Deux projets mobiles F2P, sur Android et iOS : un jeu de course sous licence officielle et un nouveau projet sur lequel j'étais le seul game designer.",
+          en:'Two mobile F2P projects on Android and iOS: an officially licensed racing game, and a new project where I was the sole game designer.'},
+  'jv.p.name':{fr:'Projet mobile non annoncé',en:'Unannounced mobile project'},
+  'tl.see':{fr:'Voir le projet →',en:'See the project →'},
+  'tl.play':{fr:'Voir les jeux →',en:'See the games →'},
+  'exp.ig.role':{fr:'Portfolio iGaming — 2026',en:'iGaming portfolio — 2026'},
+  'exp.ig.meta':{fr:'Projet personnel : 4 jeux originaux, maths et GDD',en:'Personal project: 4 original games, maths and GDDs'},
   'photo.alt':{fr:'Portrait de Nathan Collard',en:'Portrait of Nathan Collard'},
   'moi.place':{fr:'Paray-le-Monial, France · Permis B',en:"Paray-le-Monial, France · Driving licence"},
   'moi.about':{fr:"Game Designer avec 2+ ans d'expérience en jeu mobile F2P, et des maths de casino démontrées sur des jeux originaux. Passionné par l'économie de jeu, l'équilibrage mathématique et la création de mécaniques engageantes. Je conçois des systèmes qui allient tension, lisibilité et rétention — du GDD à la calibration RTP.",
@@ -466,16 +555,12 @@ KC.add({
   'edu.bac':{fr:'Baccalauréat Scientifique',en:'French Baccalauréat, Science track'},
   'edu.bac.school':{fr:'Lycée la Martinière Duchère — 2016 / 2017',en:'Lycée la Martinière Duchère, Lyon — 2016 / 2017'},
   'hero.h1a':{fr:'iGaming',en:'iGaming'},
-  'logo.role':{fr:'Game Designer iGaming',en:'iGaming Game Designer'},
+  'logo.role':{fr:'Game Designer · jeu vidéo & iGaming',en:'Game Designer · video games & iGaming'},
   'hero.h1b':{fr:'démontré en direct',en:'shown, not told'},
-  'hero.p':{fr:"Game designer spécialisé en économie de jeu et en maths de casino, je cherche un poste de game designer dans un studio iGaming. Chaque jeu ci-dessous illustre des mécaniques iGaming réelles — RTP, house edge, cash-out, courbes de risque.",
-            en:"As a game designer specialised in game economies and casino maths, I'm looking for a game designer role at an iGaming studio. Every game below demonstrates real iGaming mechanics — RTP, house edge, cash-out, risk curves."},
+  'hero.p':{fr:"Quatre jeux de casino originaux, que j'ai conçus, calculés et développés. Chaque jeu illustre des mécaniques iGaming réelles — RTP, house edge, cash-out, courbes de risque — et se joue ici avec un solde fictif.",
+            en:"Four original casino games that I designed, calculated and built. Each one demonstrates real iGaming mechanics — RTP, house edge, cash-out, risk curves — and can be played here with play money."},
   'cta.mail':{fr:'Me contacter',en:'Contact me'},
   'cta.subject':{fr:'Contact depuis votre portfolio',en:'Contact from your portfolio'},
-  'cta.path':{fr:'Mon parcours',en:'My background'},
-  'who.aria':{fr:'En bref',en:'At a glance'},
-  'who.role':{fr:"Game Designer · 2+ ans d'expérience",en:'Game Designer · 2+ years of experience'},
-  'who.school':{fr:'Game Sup, major de promotion',en:'Game Sup, valedictorian'},
   'sec.mini':{fr:'Mini-jeux',en:'Mini-games'},
   'sec.note':{fr:'Solde fictif de 1 000 € partagé entre les jeux',en:'1,000 € play-money balance shared by every game'},
   'sec.slots':{fr:'Machines à sous',en:'Slots'},
@@ -520,14 +605,16 @@ setBal(getBal());
 try{if(sessionStorage.getItem('nc_came_from_game')){showToast(KC.t('bal.back',{v:fmtBal(getBal())}));sessionStorage.removeItem('nc_came_from_game');}}catch(e){}
 
 // ── TABS (avec URL : #moi, #experiences, #projets) ──
-const HASH={moi:'moi',exp:'experiences',projets:'projets'};
+const HASH={accueil:'accueil',jv:'jeu-video',igaming:'igaming',parcours:'parcours'};
+const OLDHASH={projets:'igaming',moi:'parcours',experiences:'parcours'};   // anciens liens partagés
 function switchTab(id,fromHash){
-  if(!HASH[id])id='projets';
+  if(!HASH[id])id='accueil';
+  document.body.dataset.tab=id;
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+id));
   document.querySelectorAll('.tab-btn').forEach(b=>b.setAttribute('aria-selected',b.id==='t-'+id?'true':'false'));
   if(!fromHash){try{history.replaceState(null,'',location.pathname+location.search+'#'+HASH[id]);}catch(e){}window.scrollTo({top:0});}
 }
-function tabFromHash(){const h=location.hash.replace('#','');const id=Object.keys(HASH).find(k=>HASH[k]===h);switchTab(id||'projets',true);}
+function tabFromHash(){const h=location.hash.replace('#','');const id=Object.keys(HASH).find(k=>HASH[k]===h)||OLDHASH[h];switchTab(id||'accueil',true);}
 window.addEventListener('hashchange',tabFromHash);
 tabFromHash();
 document.querySelector('.tabs-nav').addEventListener('keydown',e=>{
