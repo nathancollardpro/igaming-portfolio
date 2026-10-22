@@ -348,7 +348,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:4px solid #ffe0
           <p>3, 4 ou 5 barils paient ×2, ×10 ou ×100 la mise et lancent un bonus : <b>Simple Treasure</b> (3), <b>Incredible Treasure</b> (4) ou <b>Mega Start</b> (5). Dès que 2 barils sont posés, les rouleaux suivants ralentissent.</p>
           <h3>Le bonus au canon</h3>
           <p>Le plateau compte 4 blocs de 3×3. Les 4 radeaux sont séparés par des allées de mer ; au carrefour, le capitaine tire au mortier vers le ciel et les boulets retombent sur les tonneaux. Le centre de chaque bloc est un multiplicateur, caché jusqu'à l'activation du radeau ; les 32 autres cases sont des tonneaux. À chaque tir, chaque tonneau a 5 % de chances de révéler une pièce, et chaque pièce remet le compteur à 3 tirs.</p>
-          <p><b>Activation</b> : un bloc active son multiplicateur quand sa ligne du bas ou sa colonne de droite est remplie : le multiplicateur se déploie et multiplie aussitôt ses pièces. Sans activation, ses pièces paient leur valeur.</p>
+          <p><b>Activation</b> : un bloc active son multiplicateur quand l'un de ses deux bords tournés vers le capitaine est rempli (en haut à gauche : bord droit ou bas ; en haut à droite : bord gauche ou bas ; en bas à gauche : bord droit ou haut ; en bas à droite : bord gauche ou haut) : le multiplicateur se déploie et multiplie aussitôt ses pièces. Sans activation, ses pièces paient leur valeur.</p>
           <p><b>Ponts</b> : quand les bords qui se font face entre deux blocs voisins sont remplis, un pont de planches enjambe l'allée et leurs multiplicateurs s'additionnent. 4 blocs reliés = <b>Grand Chelem</b>.</p>
           <p><b>Boulets spéciaux</b> : à chaque tir, un <b>boulet doré</b> peut tomber sur un radeau qui a déjà des pièces et ajouter de 0,5× à 10× la mise à chacune (de 2× à 25× dans Incredible Treasure). Plus rare, un <b>boulet ramé</b> ajoute +1 à +2 à son multiplicateur (+1 à +3 dans Incredible Treasure). Si le radeau est relié par un pont, tout le groupe en profite.</p>
           <p><b>Simple Treasure</b> : multiplicateurs ×2 à ×4 (MEGA ×8 / ×12 / ×20). <b>Incredible Treasure</b> : pièces plus fortes, multiplicateurs ×3 à ×6 (MEGA ×15 / ×25 / ×40). <b>Mega Start</b> : Incredible Treasure avec 4 pièces déjà révélées et un multiplicateur MEGA garanti.</p>
@@ -402,8 +402,8 @@ const P={
   BUY_STD:100, BUY_SUP:500,
   // Boulets spéciaux du bonus (tirés à chaque tir, seulement s'il y a déjà des pièces sur un radeau)
   // or : +valeur (× la mise) à chaque pièce du radeau touché · ramé : + au multiplicateur du radeau. Un pont partage l'effet.
-  BOOST:{P_ADD:0.025,P_MULT:0.006,
-         ADD:{std:[[0.5,46],[1,30],[2,15],[5,7],[10,2]],sup:[[2,58],[5,30],[10,10],[25,2]]},
+  BOOST:{P_ADD:0.029,P_MULT:0.006,
+         ADD:{std:[[0.5,46],[1,30],[2,15],[5,7],[10,2]],sup:[[2,54],[5,31],[10,13],[25,2]]},
          MULT:{std:[[1,85],[2,15]],sup:[[1,65],[2,28],[3,7]]}},
   COINS:{std:[[0.5,65.3],[1,21],[2,7.5],[5,4.3],[10,1.3],[25,0.45],[50,0.1],[100,0.05]],
          sup:[[2,70.2],[5,19],[10,8],[25,2.1],[50,0.55],[100,0.15]]},
@@ -486,13 +486,15 @@ function edge(b,side){const [r0,c0]=BLOCKS[b],o=[];for(let k=0;k<3;k++){
   if(side==='right')o.push((r0+k)*6+c0+2);if(side==='left')o.push((r0+k)*6+c0);}return o;}
 // ponts : [blocX, côtéX, blocY, côtéY]
 const BRIDGES=[[0,'right',1,'left'],[2,'right',3,'left'],[0,'bottom',2,'top'],[1,'bottom',3,'top']];
+// activation : un radeau s'active quand l'un de ses deux bords tournés vers le capitaine (au centre) est plein
+const INNER=[['right','bottom'],['left','bottom'],['right','top'],['left','top']];
 function pick(tbl,rnd){const tot=tbl.reduce((a,t)=>a+t[1],0);let u=rnd()*tot;for(const [v,w] of tbl){u-=w;if(u<0)return v;}return tbl[tbl.length-1][0];}
 function drawMult(t,rnd){const m=P.MULT[t];const u=rnd()*100;let c=0;for(const [v,p] of m.mega){c+=p;if(u<c)return {v,mega:true};}
   return {v:m.lo+Math.floor(rnd()*(m.hi-m.lo+1)),mega:false};}
 // Résolution d'une grille finale : activations, ponts, groupes, gain
 function resolve(grid,mults,madd){
   const full=ids=>ids.every(i=>grid[i]!==null&&grid[i]!==undefined||CENTER.includes(i));
-  const active=[0,1,2,3].map(b=>full(edge(b,'bottom'))||full(edge(b,'right')));
+  const active=[0,1,2,3].map(b=>full(edge(b,INNER[b][0]))||full(edge(b,INNER[b][1])));
   const par=[0,1,2,3];const f=x=>par[x]===x?x:(par[x]=f(par[x]));
   const bridges=BRIDGES.filter(([a,sa,b,sb])=>full(edge(a,sa))&&full(edge(b,sb)));
   bridges.forEach(([a,,b])=>{par[f(a)]=f(b);});
@@ -592,7 +594,7 @@ KC.add({
           <p>3, 4 ou 5 barils paient ×2, ×10 ou ×100 la mise et lancent un bonus : <b>Simple Treasure</b> (3), <b>Incredible Treasure</b> (4) ou <b>Mega Start</b> (5). Dès que 2 barils sont posés, les rouleaux suivants ralentissent.</p>
           <h3>Le bonus au canon</h3>
           <p>Le plateau compte 4 blocs de 3×3. Les 4 radeaux sont séparés par des allées de mer ; au carrefour, le capitaine tire au mortier vers le ciel et les boulets retombent sur les tonneaux. Le centre de chaque bloc est un multiplicateur, caché jusqu'à l'activation du radeau ; les 32 autres cases sont des tonneaux. À chaque tir, chaque tonneau a 5 % de chances de révéler une pièce, et chaque pièce remet le compteur à 3 tirs.</p>
-          <p><b>Activation</b> : un bloc active son multiplicateur quand sa ligne du bas ou sa colonne de droite est remplie : le multiplicateur se déploie et multiplie aussitôt ses pièces. Sans activation, ses pièces paient leur valeur.</p>
+          <p><b>Activation</b> : un bloc active son multiplicateur quand l'un de ses deux bords tournés vers le capitaine est rempli (en haut à gauche : bord droit ou bas ; en haut à droite : bord gauche ou bas ; en bas à gauche : bord droit ou haut ; en bas à droite : bord gauche ou haut) : le multiplicateur se déploie et multiplie aussitôt ses pièces. Sans activation, ses pièces paient leur valeur.</p>
           <p><b>Ponts</b> : quand les bords qui se font face entre deux blocs voisins sont remplis, un pont de planches enjambe l'allée et leurs multiplicateurs s'additionnent. 4 blocs reliés = <b>Grand Chelem</b>.</p>
           <p><b>Boulets spéciaux</b> : à chaque tir, un <b>boulet doré</b> peut tomber sur un radeau qui a déjà des pièces et ajouter de 0,5× à 10× la mise à chacune (de 2× à 25× dans Incredible Treasure). Plus rare, un <b>boulet ramé</b> ajoute +1 à +2 à son multiplicateur (+1 à +3 dans Incredible Treasure). Si le radeau est relié par un pont, tout le groupe en profite.</p>
           <p><b>Simple Treasure</b> : multiplicateurs ×2 à ×4 (MEGA ×8 / ×12 / ×20). <b>Incredible Treasure</b> : pièces plus fortes, multiplicateurs ×3 à ×6 (MEGA ×15 / ×25 / ×40). <b>Mega Start</b> : Incredible Treasure avec 4 pièces déjà révélées et un multiplicateur MEGA garanti.</p>
@@ -610,7 +612,7 @@ KC.add({
           <p>3, 4 or 5 kegs pay ×2, ×10 or ×100 the bet and trigger a bonus: <b>Simple Treasure</b> (3), <b>Incredible Treasure</b> (4) or <b>Mega Start</b> (5). Once 2 kegs have landed, the remaining reels slow down.</p>
           <h3>The cannon bonus</h3>
           <p>The board has 4 blocks of 3×3. The 4 rafts are separated by sea lanes; at the crossroads, the captain fires his mortar into the sky and the cannonballs rain down on the barrels. The centre of each block is a multiplier, hidden until the raft activates; the other 32 cells are barrels. On every shot, each barrel has a 5% chance to reveal a coin, and every coin resets the counter to 3 shots.</p>
-          <p><b>Activation</b>: a block activates its multiplier when its bottom row or right column is full: the multiplier spreads out and instantly multiplies its coins. Without activation, its coins pay face value.</p>
+          <p><b>Activation</b>: a block activates its multiplier when either of its two edges facing the captain is full (top left: right or bottom edge; top right: left or bottom; bottom left: right or top; bottom right: left or top): the multiplier spreads out and instantly multiplies its coins. Without activation, its coins pay face value.</p>
           <p><b>Bridges</b>: when the facing edges of two neighbouring blocks are full, a plank bridge spans the lane and their multipliers add together. 4 linked blocks = <b>Grand Slam</b>.</p>
           <p><b>Special shots</b>: on any shot, a <b>golden ball</b> can land on a raft that already holds coins and add 0.5× to 10× the bet to each of them (2× to 25× in Incredible Treasure). Rarer, a <b>chain shot</b> adds +1 to +2 to its multiplier (+1 to +3 in Incredible Treasure). If the raft is bridged, the whole group benefits.</p>
           <p><b>Simple Treasure</b>: multipliers ×2 to ×4 (MEGA ×8 / ×12 / ×20). <b>Incredible Treasure</b>: bigger coins, multipliers ×3 to ×6 (MEGA ×15 / ×25 / ×40). <b>Mega Start</b>: Incredible Treasure with 4 coins already revealed and a guaranteed MEGA multiplier.</p>
@@ -1998,7 +2000,7 @@ function dismissIntro(){const V=bonusView;if(!V||!V.intro||V.intro.out)return;V.
 const AIM_T=550,UP_T=300,FALL_T=450,FLIGHT=450,REST_HIT=800,REST_MISS=650,DEPLOY_T=700;
 async function runBonus(B,bet){
   const sup=B.type!=='std',theme=sup?'#c77dff':'#f2c14e';
-  const V={bet,type:B.type,mults:B.mults,multShown:[false,false,false,false],grid:new Array(36).fill(null),born:{},boom:{},left:P.RESPINS,resetT:0,shake:0,
+  const V={bet,type:B.type,cap:B.cap,mults:B.mults,multShown:[false,false,false,false],grid:new Array(36).fill(null),born:{},boom:{},left:P.RESPINS,resetT:0,shake:0,
     banner:null,prompt:false,fireT:-1e9,shots:null,up:null,miss:null,phase:'play',focus:null,collected:{},flyers:null,stamp:null,pot:0,potShown:0,potT:-1e9,hits:0,deploy:{},shownM:[1,1,1,1],intro:null,madd:[0,0,0,0],special:null};
   V.live=CF.resolve(V.grid,B.mults,V.madd);
   Music.toBonus();
